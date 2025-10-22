@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2lmf pro j.d.o.o.</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background-color: #f6f6f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1b3a57;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    nav {
+      background-color: #142c42;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      color: #1b3a57;
+      border-bottom: 2px solid #1b3a57;
+      padding-bottom: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      background-color: #1b3a57;
+      color: white;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .contact p {
+      margin: 0.3rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>2lmf pro j.d.o.o.</h1>
+    <p>Prodaja građevinskog materijala • Izrada stolarije • Arhitektonski poslovi</p>
+  </header>
+
+  <nav>
+    <a href="#onama">O nama</a>
+    <a href="#usluge">Usluge</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+
+  <main>
+    <section id="onama">
+      <h2>O nama</h2>
+      <p>Tvrtka <strong>2lmf pro j.d.o.o.</strong> bavi se prodajom građevinskog materijala, izradom kvalitetne stolarije po mjeri te pružanjem arhitektonskih usluga. Naš cilj je pružiti cjelovita rješenja za gradnju, uređenje i projektiranje — s naglaskom na kvalitetu, preciznost i zadovoljstvo klijenata.</p>
+    </section>
+
+    <section id="usluge">
+      <h2>Naše usluge</h2>
+      <ul>
+        <li>Prodaja građevinskog materijala</li>
+        <li>Izrada drvene i PVC stolarije po mjeri</li>
+        <li>Arhitektonsko projektiranje i savjetovanje</li>
+      </ul>
+    </section>
+
+    <section id="kontakt" class="contact">
+      <h2>Kontakt</h2>
+      <p><strong>E-mail:</strong> <a href="mailto:2lmf.info@gmail.com">2lmf.info@gmail.com</a></p>
+      <p><strong>Telefon:</strong> <a href="tel:+385953115007">095 311 5007</a></p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 2lmf pro j.d.o.o. — Sva prava pridržana.
+  </footer>
+</body>
+</html>
