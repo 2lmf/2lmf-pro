@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradnja i Energetska Učinkovitost</title>
+    <style>
+        /* --- Osnovni dizajn --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        /* --- Navigacija --- */
+        header {
+            background: #2c3e50; /* Tamno siva/plava */
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        nav a:hover {
+            color: #e67e22; /* Narančasta za naglasak */
+        }
+
+        /* --- Hero Sekcija (Velika slika) --- */
+        .hero {
+            /* Slika moderne arhitekture */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 65vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #e67e22; /* Narančasta boja građevine/sigurnosti */
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #d35400;
+        }
+
+        /* --- Sadržaj --- */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            font-size: 2.2rem;
+        }
+
+        /* --- Kartice usluga --- */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .card {
+            background: #fff;
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            border-radius: 4px;
+            border-top: 5px solid #e67e22; /* Linija u boji na vrhu kartice */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Malo se podigne na hover */
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- O nama sekcija --- */
+        .about {
+            background: #fff;
+            padding: 50px;
+            border-radius: 4px;
+            margin-top: 60px;
+            border-left: 5px solid #2c3e50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #222;
+            color: #aaa;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
+
+        /* --- Mobilni prikaz --- */
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Gradnja & Dizajn</h1>
+        <nav>
+            <a href="#usluge">Usluge</a>
+            <a href="#o-nama">O nama</a>
+            <a href="#kontakt">Kontakt</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>Kvaliteta koja traje</h2>
+        <p>Stručna rješenja za vaš dom ili poslovni prostor. Spoj moderne arhitekture i vrhunske izolacije.</p>
+        <a href="#kontakt" class="cta-button">Zatražite ponudu</a>
+    </section>
+
+    <div class="container">
+        
+        <h2 id="usluge" class="section-title">Naše Specijalizacije</h2>
+        
+        <div class="features">
+            <div class="card">
+                <h3>Hidroizolacija</h3>
+                <p>Potpuna zaštita od vode i vlage. Sanacija ravnih krovova, terasa, podruma i temelja korištenjem najsuvremenijih bitumenskih i polimernih materijala.</p>
+            </div>
+
+            <div class="card">
+                <h3>Termoizolacija</h3>
+                <p>Energetska obnova fasada i krovišta. Smanjite troškove grijanja i hlađenja uz vrhunske izolacijske sustave (kamena vuna, stiropor).</p>
+            </div>
+
+            <div class="card">
+                <h3>Arhitektura</h3>
+                <p>Projektiranje, dizajn interijera i eksterijera. Od idejnog rješenja do realizacije, uz savjetovanje za ishodovanje građevinskih dozvola.</p>
+            </div>
+        </div>
+
+        <div id="o-nama" class="about">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">O Našoj Viziji</h2>
+            <p>
+                S fokusom na održivu gradnju i energetsku učinkovitost, naš tim nudi kompletna rješenja za moderne objekte. 
+                Razumijemo važnost detalja – od prve skice arhitekta do završnog sloja izolacije.
+            </p>
+            <p>
+                Posebnu pažnju posvećujemo projektima koji se mogu financirati iz <strong>EU fondova za energetsku obnovu</strong>, 
+                pružajući klijentima ne samo izvedbu radova, već i tehničku podršku u planiranju projekta kako bi zadovoljili sve propisane standarde.
+            </p>
+        </div>
+
+    </div>
+
+    <footer id="kontakt">
+        <p>Kontaktirajte nas za izvid terena i procjenu radova.</p>
+        <p>Email: info@vasa-tvrtka.com | Tel: +385 91 123 4567</p>
+        <p>&copy; 2026 Gradnja & Dizajn. Sva prava pridržana.</p>
+    </footer>
+
+</body>
+</html>
