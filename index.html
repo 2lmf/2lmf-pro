@@ -11,25 +11,19 @@
         /* --- DIZAJN (CSS) --- */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; scroll-behavior: smooth; overflow-x: hidden; }
         
-        /* --- NOVO: CSS ZA ANIMACIJE UKLIZAVANJA --- */
-        /* Početno stanje: skriveno i spušteno za 30px */
+        /* --- CSS ZA ANIMACIJE UKLIZAVANJA --- */
         .animate-block {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-
-        /* Završno stanje: vidljivo i na mjestu (JS dodaje ovu klasu kad se element pojavi) */
         .animate-block.appear {
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Odgode za kaskadni efekt (kartice) */
         .delay-1 { transition-delay: 0.2s; }
         .delay-2 { transition-delay: 0.4s; }
         .delay-3 { transition-delay: 0.6s; }
-        /* --- KRAJ CSS ZA ANIMACIJE --- */
 
 
         /* HEADER */
@@ -163,7 +157,9 @@
 
         <div id="misija" class="about animate-block">
             <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Naša Misija</h2>
-            <p>S fokusom na održivu gradnju i energetsku učinkovitost, naš tim nudi kompletna rješenja za moderne objekte. Razumijemo važnost detalja – od prve skice arhitekta do završnog sloja izolacije.</p>
+            
+            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama, bez kompromisa na vašem budžetu. Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najbolje cijene</strong> na tržištu koje osiguravaju maksimalnu vrijednost za vašu investiciju, <strong>vrhunska kvaliteta</strong> materijala i izvedbe koja garantira dugotrajnost, te <strong>brza isporuka</strong> i poštivanje rokova jer cijenimo vaše vrijeme. Vaše povjerenje gradimo stručnošću, transparentnošću i efikasnošću.</p>
+            
             <p>Posebnu pažnju posvećujemo projektima koji se mogu financirati iz <strong>EU fondova za energetsku obnovu</strong>.</p>
         </div>
 
@@ -198,49 +194,25 @@
     </footer>
 
     <script>
-        // Ova skripta čeka da se stranica učita, a zatim prati skrolanje.
-        // Kada element s klasom "animate-block" dođe u vidno polje,
-        // dodaje mu klasu "appear" koja pokreće CSS animaciju.
         document.addEventListener("DOMContentLoaded", function() {
-            
-            // Provjeravamo podržava li preglednik IntersectionObserver (svi moderni podržavaju)
             if ('IntersectionObserver' in window) {
-                
-                let observerOptions = {
-                    root: null,    // Gleda cijeli viewport
-                    rootMargin: "0px",
-                    threshold: 0.1 // Animacija kreće kad je 10% elementa vidljivo
-                };
-
                 let observer = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
-                        // Ako je element ušao u ekran
                         if (entry.isIntersecting) {
-                            // Dodaj klasu koja ga čini vidljivim
                             entry.target.classList.add('appear');
-                            // Prestani ga pratiti (da se ne animira ponovo kad skrolaš gore-dolje)
                             observer.unobserve(entry.target);
                         }
                     });
-                }, observerOptions);
-
-                // Pronađi sve elemente koje treba animirati
-                let animatedElements = document.querySelectorAll('.animate-block');
-                
-                // Reci observeru da prati svaki od njih
-                animatedElements.forEach(el => {
-                    observer.observe(el);
-                });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
             } else {
-                // Fallback za jako stare preglednike: odmah prikaži sve
-                document.querySelectorAll('.animate-block').forEach(el => {
-                    el.classList.add('appear');
-                });
+                document.querySelectorAll('.animate-block').forEach(el => el.classList.add('appear'));
             }
         });
     </script>
-    </body>
+</body>
 </html>
+
 
 
 
