@@ -11,7 +11,7 @@
         /* --- DIZAJN (CSS) --- */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; scroll-behavior: smooth; }
         
-        /* IZMJENA: Narančasti header */
+        /* HEADER */
         header { 
             background: #e67e22; /* NARANČASTA BOJA */
             color: #fff; 
@@ -24,27 +24,26 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* NOVO: Grupa za logo i tekst pored njega */
+        /* Grupa za logo i tekst */
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px; /* Razmak između loga i teksta */
+            gap: 20px; /* Malo veći razmak */
         }
 
-        /* IZMJENA: Povećan logo */
         .logo {
-            max-height: 75px; /* POVEĆANO */
+            max-height: 75px; 
             width: auto;
             display: block;
         }
 
-        /* NOVO: Stil za tekst pored loga */
+        /* IZMJENE NA TEKSTU PORED LOGA */
         .header-tagline {
-            font-size: 1rem; /* Manji font */
-            font-weight: 600;
-            color: #fff;
+            font-size: 1.3rem; /* POVEĆAN FONT */
+            font-weight: 700;  /* Deblji font */
+            color: #000;       /* CRNA BOJA */
             line-height: 1.2;
-            max-width: 250px; /* Da se tekst lijepo lomi ako je ekran uzak */
+            white-space: nowrap; /* PRISILJAVA JEDAN RED */
         }
         
         nav { 
@@ -54,10 +53,7 @@
             margin-top: 0; 
         }
         
-        /* Linkovi u navigaciji */
         nav > a { color: #fff; text-decoration: none; margin: 0 15px; font-weight: 500; font-size: 1.1rem; padding: 10px 0; }
-        
-        /* IZMJENA: Hover efekt sada mora biti taman jer je pozadina narančasta */
         nav a:hover { color: #2c3e50; } 
         
         /* Dropdown */
@@ -74,7 +70,7 @@
         .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; height: 65vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; padding: 20px; }
         .hero h2 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .hero p { font-size: 1.3rem; max-width: 700px; margin-bottom: 30px; }
-        .cta-button { display: inline-block; background: #e67e22; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s; border: 2px solid #fff; } /* Dodan bijeli rub gumbu radi kontrasta */
+        .cta-button { display: inline-block; background: #e67e22; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s; border: 2px solid #fff; } 
         .cta-button:hover { background: #fff; color: #e67e22; }
 
         /* Sadržaj */
@@ -140,8 +136,11 @@
         
         @media (max-width: 768px) { 
             header { flex-direction: column; padding: 1rem; text-align: center; } 
-            .logo-container { flex-direction: column; margin-bottom: 15px; } /* Na mobitelu tekst ide ispod loga */
-            .header-tagline { text-align: center; margin-top: 5px; }
+            .logo-container { flex-direction: column; margin-bottom: 15px; } 
+            
+            /* Na mobitelu dopuštamo da se tekst prelomi ako ne stane */
+            .header-tagline { white-space: normal; text-align: center; margin-top: 5px; }
+            
             nav { margin-top: 5px; justify-content: center; }
             .features { flex-direction: column; } 
             .hero h2 { font-size: 2rem; } 
@@ -158,7 +157,7 @@
             <a href="index.html">
                 <img src="2lmf_logo.png" alt="2LMF PRO Logo" class="logo">
             </a>
-            <span class="header-tagline">Vaš partner za<br>hidro i termo izolaciju</span>
+            <span class="header-tagline">Vaš partner za hidro i termo izolaciju</span>
         </div>
         
         <nav>
@@ -224,27 +223,4 @@
                 <p><strong>OIB:</strong> 29766043828</p>
                 <p><strong>MB:</strong> 081477933</p>
                 <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
-                <p><strong>Telefon:</strong> +385 95 311 5007</p>
-            </div>
-
-            <h3 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">Pošaljite nam upit</h3>
-
-            <form action="https://formspree.io/f/mqearpnn" method="POST">
-                <div class="form-group"><label>Ime i Prezime</label><input type="text" name="name" required></div>
-                <div class="form-group"><label>Email Adresa</label><input type="email" name="email" required></div>
-                <div class="form-group"><label>Broj Telefona</label><input type="tel" name="phone"></div>
-                <div class="form-group"><label>Vaša Poruka</label><textarea name="message" required></textarea></div>
-                <button type="submit" class="submit-btn">Pošalji Upit</button>
-            </form>
-        </div>
-
-    </div>
-
-    <footer>
-        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
-        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
-    </footer>
-
-</body>
-</html>
-
+                <p><strong>Telefon:</strong> +385
