@@ -6,7 +6,12 @@
     <title>Ostalo i Materijali - 2LMF PRO</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; overflow-x: hidden; }
+        
+        /* ANIMACIJE */
+        .animate-block { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .animate-block.appear { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.2s; }
         
         /* HEADER */
         header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -18,7 +23,7 @@
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
         
-        /* CONTENT */
+        /* SADRŽAJ */
         .page-content { max-width: 900px; margin: 40px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .page-content h2 { color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 10px; margin-bottom: 20px; }
         .page-content ul { list-style-type: square; padding-left: 20px; margin-bottom: 30px; }
@@ -58,36 +63,55 @@
     </header>
 
     <div class="page-content">
-        <h2>Ostali Materijali i Ventilirane Fasade</h2>
-        <p>Osim izolacijskih radova, nudimo širok spektar građevinskih materijala i sustava za moderne fasade. Radimo s renomiranim svjetskim brendovima.</p>
+        <h2 class="animate-block">Ostali Materijali i Ventilirane Fasade</h2>
+        <p class="animate-block delay-1">Osim izolacijskih radova, nudimo širok spektar građevinskih materijala i sustava za moderne fasade. Radimo s renomiranim svjetskim brendovima.</p>
 
-        <h3>Građevinski materijali:</h3>
-        <ul>
+        <h3 class="animate-block">Građevinski materijali:</h3>
+        <ul class="animate-block">
             <li><strong>OSB ploče:</strong> Višenamjenske drvene ploče za konstrukcije, podove i obloge.</li>
             <li><strong>Ljepilo za keramiku i glet mase:</strong> Vrhunski materijali za pripremu zidova i polaganje keramike.</li>
         </ul>
 
-        <h3 style="margin-top: 30px; border-bottom: 2px solid #e67e22; display:inline-block;">Ploče za ventilirane fasade:</h3>
-        <p>Nudimo dobavu i ugradnju najmodernijih fasadnih obloga:</p>
-        <ul>
+        <h3 style="margin-top: 30px; border-bottom: 2px solid #e67e22; display:inline-block;" class="animate-block">Ploče za ventilirane fasade:</h3>
+        <p class="animate-block">Nudimo dobavu i ugradnju najmodernijih fasadnih obloga:</p>
+        <ul class="animate-block">
             <li><strong>Trespa (HPL):</strong> Visokotlačni laminati iznimne otpornosti na vremenske uvjete i jednostavnog održavanja.</li>
             <li><strong>Equitone:</strong> Vlaknocementne ploče prirodnog izgleda, idealne za modernu arhitekturu.</li>
             <li><strong>Alucobond:</strong> Aluminijske kompozitne ploče s negorivom ispunom, savršene za poslovne objekte.</li>
         </ul>
 
-        <div class="cta-box">
+        <div class="cta-box animate-block delay-1">
             <h3>Trebate specifične materijale?</h3>
             <p>Javite nam se za ponudu ventiliranih fasada ili građevinskog materijala.</p>
             <a href="index.html#kontakt" class="back-btn" style="background: #e67e22;">Pošalji upit</a>
         </div>
         <br>
-        <a href="index.html" class="back-btn">← Povratak na naslovnu</a>
+        <a href="index.html" class="back-btn animate-block">← Povratak na naslovnu</a>
     </div>
 
     <footer>
         <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
         <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if ('IntersectionObserver' in window) {
+                let observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('appear');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
+            } else {
+                document.querySelectorAll('.animate-block').forEach(el => el.classList.add('appear'));
+            }
+        });
+    </script>
 </body>
 </html>
+
 
