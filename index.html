@@ -17,6 +17,7 @@
             line-height: 1.6;
             color: #333;
             background-color: #f9f9f9;
+            scroll-behavior: smooth;
         }
 
         /* --- Navigacija --- */
@@ -25,6 +26,8 @@
             color: #fff;
             padding: 1rem 0;
             text-align: center;
+            position: relative;
+            z-index: 1000;
         }
         
         header h1 {
@@ -37,17 +40,80 @@
 
         nav {
             margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        nav a {
+        nav > a {
             color: #ecf0f1;
             text-decoration: none;
             margin: 0 15px;
             font-weight: 500;
             font-size: 1.1rem;
+            padding: 10px 0;
         }
 
         nav a:hover {
+            color: #e67e22;
+        }
+
+        /* --- DROPDOWN MENU --- */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        .dropbtn {
+            background-color: transparent;
+            color: #ecf0f1;
+            padding: 10px 0;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            text-align: left;
+            border-radius: 4px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            border-bottom: 1px solid #2c3e50;
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
             color: #e67e22;
         }
 
@@ -118,13 +184,14 @@
         .card {
             background: #fff;
             flex: 1;
-            min-width: 300px;
+            min-width: 250px; /* Smanjeno malo da ljepše stanu 4 komada */
             padding: 30px;
             border-radius: 4px;
             border-top: 5px solid #e67e22;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             text-align: center;
             transition: transform 0.3s;
+            scroll-margin-top: 100px;
         }
 
         .card:hover {
@@ -137,7 +204,7 @@
             margin-bottom: 15px;
         }
 
-        /* --- O nama sekcija --- */
+        /* --- O nama / Misija sekcija --- */
         .about {
             background: #fff;
             padding: 50px;
@@ -145,6 +212,7 @@
             margin-top: 60px;
             border-left: 5px solid #2c3e50;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            scroll-margin-top: 50px;
         }
 
         /* --- KONTAKT FORMA DIZAJN --- */
@@ -220,6 +288,17 @@
             .hero h2 {
                 font-size: 2rem;
             }
+            .dropdown-content {
+                position: static;
+                transform: none;
+                box-shadow: none;
+                background-color: transparent;
+                padding-left: 20px;
+            }
+            .dropdown-content a {
+                border-bottom: none;
+                padding: 8px 0;
+            }
         }
     </style>
 </head>
@@ -228,8 +307,18 @@
     <header>
         <h1>Vaš partner za hidro i termo izolaciju</h1>
         <nav>
-            <a href="#usluge">Usluge</a>
-            <a href="#o-nama">O nama</a>
+            <div class="dropdown">
+                <button class="dropbtn">Ponuda &#9662;</button>
+                <div class="dropdown-content">
+                    <a href="#ponuda">Pregled svega</a>
+                    <a href="#hidro">Hidroizolacija</a>
+                    <a href="#termo">Termoizolacija</a>
+                    <a href="#ostalo">Ostalo</a>
+                    <a href="#arhitektura">Arhitektura</a>
+                </div>
+            </div>
+
+            <a href="#misija">Naša misija</a>
             <a href="#kontakt">Kontakt</a>
         </nav>
     </header>
@@ -242,27 +331,32 @@
 
     <div class="container">
         
-        <h2 id="usluge" class="section-title">Naše Specijalizacije</h2>
+        <h2 id="ponuda" class="section-title">Naša Ponuda</h2>
         
         <div class="features">
-            <div class="card">
+            <div class="card" id="hidro">
                 <h3>Hidroizolacija</h3>
                 <p>Potpuna zaštita od vode i vlage. Sanirajte ravni krov, terasu, podrum ili temelje korištenjem najsuvremenijih materijala.</p>
             </div>
 
-            <div class="card">
+            <div class="card" id="termo">
                 <h3>Termoizolacija</h3>
                 <p>Smanjite troškove grijanja i hlađenja uz vrhunske izolacijske sustave (kamena vuna, stiropor, alu izolacija...).</p>
             </div>
 
-            <div class="card">
+            <div class="card" id="ostalo">
+                <h3>Ostalo</h3>
+                <p>Manji građevinski zahvati, adaptacije i specifični zahtjevi. Kontaktirajte nas za detalje o ostalim uslugama.</p>
+            </div>
+
+            <div class="card" id="arhitektura">
                 <h3>Arhitektura</h3>
                 <p>Projektiranje, dizajn interijera i eksterijera. Od idejnog rješenja do realizacije, uz savjetovanje za ishodovanje građevinskih dozvola.</p>
             </div>
         </div>
 
-        <div id="o-nama" class="about">
-            <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">O Našoj Viziji</h2>
+        <div id="misija" class="about">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Naša Misija</h2>
             <p>
                 S fokusom na održivu gradnju i energetsku učinkovitost, naš tim nudi kompletna rješenja za moderne objekte. 
                 Razumijemo važnost detalja – od prve skice arhitekta do završnog sloja izolacije.
@@ -312,4 +406,5 @@
 
 </body>
 </html>
+
 
