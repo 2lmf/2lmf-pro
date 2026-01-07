@@ -8,7 +8,7 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; }
         
-        /* HEADER */
+        /* HEADER - NARANČASTI STIL */
         header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .logo-container { display: flex; align-items: center; gap: 20px; }
         .logo { max-height: 75px; width: auto; display: block; }
@@ -20,10 +20,15 @@
         
         .page-content { max-width: 900px; margin: 40px auto; padding: 20px; }
         
-        .blog-post { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 40px; }
-        .blog-post h2 { color: #2c3e50; margin-top: 0; }
-        .blog-date { color: #888; font-size: 0.9rem; margin-bottom: 15px; display: block; }
-        
+        /* DIZAJN BLOG ČLANKA */
+        .blog-post { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 40px; }
+        .blog-post h2 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #e67e22; padding-bottom: 10px; display: inline-block; }
+        .blog-date { color: #888; font-size: 0.9rem; margin-bottom: 20px; display: block; font-style: italic; }
+        .blog-post h3 { color: #e67e22; margin-top: 25px; margin-bottom: 10px; }
+        .blog-post p { margin-bottom: 15px; text-align: justify; }
+        .blog-cta { background: #fdf2e9; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: center; font-weight: bold; }
+        .blog-cta a { color: #e67e22; text-decoration: none; border-bottom: 2px solid #e67e22; }
+
         /* FOOTER */
         footer { background: #e67e22; color: #000; text-align: center; padding: 30px 0; margin-top: 60px; font-size: 1rem; font-weight: 600; }
 
@@ -55,18 +60,36 @@
     </header>
 
     <div class="page-content">
-        <h2 style="text-align: center; margin-bottom: 40px; color: #2c3e50;">Savjeti i Novosti</h2>
+        <h2 style="text-align: center; margin-bottom: 40px; color: #2c3e50; width: 100%; border-bottom: none;">Savjeti i Novosti</h2>
 
         <div class="blog-post">
-            <h2>Zašto je hidroizolacija temelja najvažniji korak u gradnji?</h2>
-            <span class="blog-date">Objavljeno: 10. Siječanj 2026.</span>
-            <p>Mnogi vlasnici kuća primjećuju vlagu tek kada se pojavi plijesan u kutovima soba. No, problem često leži dublje - u temeljima. Kvalitetna hidroizolacija temelja (bitumenska ili TPO) sprječava kapilarno uzdizanje vlage...</p>
+            <h2>Vodič kroz hidroizolaciju: Bitumen ili TPO – Što odabrati?</h2>
+            <span class="blog-date">Objavljeno: 7. Siječanj 2026. | Autor: 2LMF PRO</span>
+            
+            <p>Vlaga u domu nije samo estetski problem koji uzrokuje mrlje na zidovima. Ona je ozbiljna prijetnja strukturi same građevine i, što je još važnije, zdravlju stanara zbog nastanka plijesni. Bilo da gradite novu kuću ili sanirate postojeću, odabir pravog materijala za hidroizolaciju je ključan.</p>
+            
+            <p>U 2LMF PRO svakodnevno radimo s različitim sustavima, a ovo su tri najčešća materijala koja preporučujemo ovisno o situaciji:</p>
+
+            <h3>1. Bitumenska traka – Klasik za temelje</h3>
+            <p>Bitumenske trake (često nazivane ljepenkom) su tradicionalno i dokazano rješenje. Najčešće se koriste za <strong>izolaciju temelja i podrumskih zidova</strong>. Postavljaju se varenjem, čime se stvara nepropusna barijera protiv podzemnih voda. Iako je tehnologija stara, današnje bitumenske trake s poliesterskim uloškom su iznimno izdržljive i elastične.</p>
+
+            <h3>2. TPO i PVC folije – Moderno rješenje za krovove</h3>
+            <p>Kada govorimo o <strong>ravnim krovovima</strong>, sintetičke folije poput TPO (termoplastični poliolefin) ili PVC-a su danas standard. Zašto? Zato što su lagane, otporne na UV zračenje i velike temperaturne promjene. Za razliku od bitumena, folije se ne vare otvorenim plamenom već vrućim zrakom, što ih čini sigurnijima za ugradnju na krovovima.</p>
+
+            <h3>3. XPS (Stirodur) – Savršena dopuna hidroizolaciji</h3>
+            <p>XPS ili ekstrudirani polistiren (poznatiji kao stirodur) je specifičan materijal koji se koristi <strong>u kombinaciji s hidroizolacijom</strong>. Njegova primarna funkcija je toplinska izolacija, ali zbog zatvorene strukture ćelija on <strong>ne upija vodu</strong>. Zato se XPS ploče koriste kao zaštitni sloj preko hidroizolacije temelja ili na "obrnutim" ravnim krovovima, gdje štite osjetljivu hidroizolaciju od mehaničkih oštećenja.</p>
+
+            <div class="blog-cta">
+                Imate problema s vlagom ili planirate gradnju? <br>
+                <a href="index.html#kontakt">Zatražite naš stručni savjet i ponudu!</a>
+            </div>
         </div>
 
         <div class="blog-post">
             <h2>EU fondovi za energetsku obnovu: Kako dobiti sufinanciranje?</h2>
             <span class="blog-date">Objavljeno: 5. Siječanj 2026.</span>
-            <p>Planirate novu fasadu ili zamjenu krovišta? EU fondovi mogu pokriti značajan dio troškova (od 40% do 80%). Ključno je imati urednu dokumentaciju i izrađen glavni projekt...</p>
+            <p>Planirate novu fasadu ili zamjenu krovišta? Energetska obnova nije trošak, već investicija koja se isplaćuje kroz niže režije. EU fondovi mogu pokriti značajan dio troškova (često od 40% do 80%).</p> 
+            <p>Ključno je imati urednu dokumentaciju i izrađen glavni projekt. Naš tim arhitekata vam može pomoći u pripremi dokumentacije kako biste maksimalno iskoristili dostupna sredstva.</p>
         </div>
 
     </div>
@@ -77,3 +100,4 @@
     </footer>
 </body>
 </html>
+
