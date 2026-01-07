@@ -9,83 +9,47 @@
 
     <style>
         /* --- DIZAJN (CSS) --- */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; scroll-behavior: smooth; overflow-x: hidden; }
         
+        /* --- NOVO: CSS ZA ANIMACIJE UKLIZAVANJA --- */
+        /* Početno stanje: skriveno i spušteno za 30px */
+        .animate-block {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        /* Završno stanje: vidljivo i na mjestu (JS dodaje ovu klasu kad se element pojavi) */
+        .animate-block.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Odgode za kaskadni efekt (kartice) */
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+        /* --- KRAJ CSS ZA ANIMACIJE --- */
+
+
         /* HEADER */
-        header { 
-            background: #e67e22; /* NARANČASTA BOJA */
-            color: #fff; 
-            padding: 1rem 2rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: relative; 
-            z-index: 1000; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            max-height: 75px; 
-            width: auto;
-            display: block;
-        }
-
-        .header-tagline {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #000; /* CRNA BOJA */
-            line-height: 1.2;
-            white-space: nowrap;
-        }
+        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .logo-container { display: flex; align-items: center; gap: 20px; }
+        .logo { max-height: 75px; width: auto; display: block; }
+        .header-tagline { font-size: 1.3rem; font-weight: 700; color: #000; line-height: 1.2; white-space: nowrap; }
         
-        nav { 
-            display: flex; 
-            align-items: center; 
-            flex-wrap: wrap; 
-            margin-top: 0; 
-        }
-        
-        /* Linkovi u navigaciji - IZMJENA U CRNO */
-        nav > a { 
-            color: #000; /* CRNA BOJA */
-            text-decoration: none; 
-            margin: 0 15px; 
-            font-weight: 600; /* Malo deblja slova */
-            font-size: 1.1rem; 
-            padding: 10px 0; 
-        }
-        
-        /* Hover efekt - bijela slova kad pređeš mišem */
+        nav { display: flex; align-items: center; flex-wrap: wrap; margin-top: 0; }
+        nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; } 
         
         /* Dropdown */
         .dropdown { position: relative; display: inline-block; margin: 0 15px; }
-        
-        /* Gumb Ponuda - IZMJENA U CRNO */
-        .dropbtn { 
-            background-color: transparent; 
-            color: #000; /* CRNA BOJA */
-            padding: 10px 0; 
-            font-size: 1.1rem; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: 600; /* Malo deblja slova */
-            font-family: inherit; 
-        }
-        
+        .dropbtn { background-color: transparent; color: #000; padding: 10px 0; font-size: 1.1rem; border: none; cursor: pointer; font-weight: 600; font-family: inherit; }
         .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; text-align: left; border-radius: 4px; top: 100%; left: 50%; transform: translateX(-50%); }
-        .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 1rem; border-bottom: 1px solid #2c3e50; font-weight: 500; } /* Linkovi UNUTAR padajućeg izbornika ostaju bijeli da se vide na tamnoj pozadini */
+        .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 1rem; border-bottom: 1px solid #2c3e50; font-weight: 500; }
         .dropdown-content a:last-child { border-bottom: none; }
         .dropdown-content a:hover { background-color: #e67e22; color: white; }
         .dropdown:hover .dropdown-content { display: block; }
-        
-        /* Hover efekt za gumb Ponuda */
         .dropdown:hover .dropbtn { color: #fff; }
 
         /* Hero */
@@ -101,64 +65,19 @@
         .features { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; }
         
         /* Kartice */
-        .card { 
-            background: #fff; 
-            flex: 1; 
-            min-width: 250px; 
-            padding: 30px; 
-            border-radius: 4px; 
-            border-top: 5px solid #e67e22; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-            text-align: center; 
-            transition: transform 0.3s;
-            text-decoration: none; 
-            color: #333; 
-            display: block; 
-        }
-        .card:hover { transform: translateY(-5px); cursor: pointer; }
+        .card { background: #fff; flex: 1; min-width: 250px; padding: 30px; border-radius: 4px; border-top: 5px solid #e67e22; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; color: #333; display: block; }
+        .card:hover { transform: translateY(-10px); cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .card h3 { color: #2c3e50; font-size: 1.5rem; margin-bottom: 15px; }
         
         .about { background: #fff; padding: 50px; border-radius: 4px; margin-top: 60px; border-left: 5px solid #2c3e50; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
         /* Kontakt */
-        .contact-form-container { 
-            background: #fff; 
-            padding: 40px; 
-            border-radius: 8px; 
-            margin-top: 60px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            max-width: 800px; 
-            margin-left: auto; 
-            margin-right: auto; 
-            display: block;
-            overflow: hidden;
-        }
+        .contact-form-container { background: #fff; padding: 40px; border-radius: 8px; margin-top: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; display: block; overflow: hidden; }
         
-        .company-details {
-            text-align: left;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 30px;
-            border-left: 5px solid #34495e;
-            overflow-wrap: break-word; 
-        }
-        .company-details p {
-            margin: 8px 0;
-            font-size: 1rem;
-            color: #555;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-            display: flex; 
-            flex-wrap: wrap;
-        }
+        .company-details { text-align: left; background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 5px solid #34495e; overflow-wrap: break-word; }
+        .company-details p { margin: 8px 0; font-size: 1rem; color: #555; border-bottom: 1px solid #eee; padding-bottom: 5px; display: flex; flex-wrap: wrap; }
         .company-details p:last-child { border-bottom: none; }
-        .company-details strong {
-            color: #2c3e50;
-            font-weight: 700;
-            margin-right: 10px;
-            min-width: 80px; 
-        }
+        .company-details strong { color: #2c3e50; font-weight: 700; margin-right: 10px; min-width: 80px; }
 
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50; }
@@ -168,19 +87,7 @@
         .submit-btn:hover { background: #e67e22; }
 
         /* FOOTER DIZAJN */
-        footer { 
-            background: #e67e22; /* NARANČASTA */
-            color: #000;         /* CRNA SLOVA */
-            text-align: center; 
-            padding: 30px 0; 
-            margin-top: 60px; 
-            font-size: 1rem;
-            font-weight: 600;    
-            position: relative; 
-            z-index: 10;
-            clear: both;
-            width: 100%;
-        }
+        footer { background: #e67e22; color: #000; text-align: center; padding: 30px 0; margin-top: 60px; font-size: 1rem; font-weight: 600; position: relative; z-index: 10; clear: both; width: 100%; }
         
         @media (max-width: 768px) { 
             header { flex-direction: column; padding: 1rem; text-align: center; } 
@@ -222,43 +129,45 @@
     </header>
 
     <section class="hero">
-        <h2>Najpovoljnije cijene, vrhunska kvaliteta</h2>
-        <p>Obratite nam se sa povjerenjem i dobit ćete najbolju cijenu. Spoj kvalitete, povoljne cijene i vrhunske izolacije.</p>
-        <a href="#kontakt" class="cta-button">Zatražite ponudu</a>
+        <div class="animate-block">
+            <h2>Najpovoljnije cijene, vrhunska kvaliteta</h2>
+            <p>Obratite nam se sa povjerenjem i dobit ćete najbolju cijenu. Spoj kvalitete, povoljne cijene i vrhunske izolacije.</p>
+            <a href="#kontakt" class="cta-button">Zatražite ponudu</a>
+        </div>
     </section>
 
     <div class="container">
         
-        <h2 class="section-title">Izdvojeno iz ponude</h2>
+        <h2 class="section-title animate-block">Izdvojeno iz ponude</h2>
         <div class="features">
-            <a href="hidroizolacija.html" class="card">
+            <a href="hidroizolacija.html" class="card animate-block">
                 <h3>Hidroizolacija</h3>
                 <p>Potpuna zaštita od vode i vlage. Kliknite za detalje.</p>
             </a>
 
-            <a href="termoizolacija.html" class="card">
+            <a href="termoizolacija.html" class="card animate-block delay-1">
                 <h3>Termoizolacija</h3>
                 <p>Uštedite energiju uz vrhunske izolacijske sustave.</p>
             </a>
 
-            <a href="ostalo.html" class="card">
+            <a href="ostalo.html" class="card animate-block delay-2">
                 <h3>Ostalo</h3>
                 <p>Manji građevinski zahvati, adaptacije, fasade.</p>
             </a>
 
-            <a href="arhitektura.html" class="card">
+            <a href="arhitektura.html" class="card animate-block delay-3">
                 <h3>Arhitektura</h3>
                 <p>Projektiranje, dizajn interijera i dokumentacija.</p>
             </a>
         </div>
 
-        <div id="misija" class="about">
+        <div id="misija" class="about animate-block">
             <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Naša Misija</h2>
             <p>S fokusom na održivu gradnju i energetsku učinkovitost, naš tim nudi kompletna rješenja za moderne objekte. Razumijemo važnost detalja – od prve skice arhitekta do završnog sloja izolacije.</p>
             <p>Posebnu pažnju posvećujemo projektima koji se mogu financirati iz <strong>EU fondova za energetsku obnovu</strong>.</p>
         </div>
 
-        <div id="kontakt" class="contact-form-container">
+        <div id="kontakt" class="contact-form-container animate-block">
             <h2 class="section-title">Kontakt i Podaci o Tvrtki</h2>
             
             <div class="company-details">
@@ -281,13 +190,58 @@
             </form>
         </div> 
 
-    </div> <footer>
+    </div>
+
+    <footer>
         <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
         <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
     </footer>
 
-</body>
+    <script>
+        // Ova skripta čeka da se stranica učita, a zatim prati skrolanje.
+        // Kada element s klasom "animate-block" dođe u vidno polje,
+        // dodaje mu klasu "appear" koja pokreće CSS animaciju.
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Provjeravamo podržava li preglednik IntersectionObserver (svi moderni podržavaju)
+            if ('IntersectionObserver' in window) {
+                
+                let observerOptions = {
+                    root: null,    // Gleda cijeli viewport
+                    rootMargin: "0px",
+                    threshold: 0.1 // Animacija kreće kad je 10% elementa vidljivo
+                };
+
+                let observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        // Ako je element ušao u ekran
+                        if (entry.isIntersecting) {
+                            // Dodaj klasu koja ga čini vidljivim
+                            entry.target.classList.add('appear');
+                            // Prestani ga pratiti (da se ne animira ponovo kad skrolaš gore-dolje)
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                // Pronađi sve elemente koje treba animirati
+                let animatedElements = document.querySelectorAll('.animate-block');
+                
+                // Reci observeru da prati svaki od njih
+                animatedElements.forEach(el => {
+                    observer.observe(el);
+                });
+            } else {
+                // Fallback za jako stare preglednike: odmah prikaži sve
+                document.querySelectorAll('.animate-block').forEach(el => {
+                    el.classList.add('appear');
+                });
+            }
+        });
+    </script>
+    </body>
 </html>
+
 
 
 
