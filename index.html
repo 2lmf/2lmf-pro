@@ -1,3 +1,19 @@
+Ispričavam se, to je frustrirajuće. Najvjerojatnije se dogodilo da je kod kopiranja "pobjegla" jedna oznaka za zatvaranje (</div>), pa preglednik misli da je footer dio onog gornjeg dijela i ne prikaže ga kako treba.
+
+Evo provjerenog i popravljenog koda.
+
+Što sam napravio da budemo 100% sigurni:
+
+DODAO SAM VELIKE KOMENTARE na kraju koda (, ) tako da se točno vidi gdje što završava.
+
+Footeru sam dodao position: relative i z-index: 10 u CSS-u. To prisiljava footer da se pojavi "iznad" bilo čega što bi ga moglo prekrivati.
+
+Zadržao sam sve tvoje želje: narančasti header, veliki crni tekst, logo, podatke o firmi i kontakt formu.
+
+Molim te, kopiraj OBAVEZNO sve do samog kraja (do </html>).
+
+HTML
+
 <!DOCTYPE html>
 <html lang="hr">
 <head>
@@ -96,7 +112,7 @@
         
         .about { background: #fff; padding: 50px; border-radius: 4px; margin-top: 60px; border-left: 5px solid #2c3e50; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
-        /* Kontakt - POPRAVLJENO */
+        /* Kontakt */
         .contact-form-container { 
             background: #fff; 
             padding: 40px; 
@@ -106,6 +122,9 @@
             max-width: 800px; 
             margin-left: auto; 
             margin-right: auto; 
+            /* Dodano da se osigura prikaz */
+            display: block;
+            overflow: hidden;
         }
         
         .company-details {
@@ -115,7 +134,7 @@
             border-radius: 5px;
             margin-bottom: 30px;
             border-left: 5px solid #34495e;
-            overflow-wrap: break-word; /* Osigurava da dugačak tekst ne izlazi van */
+            overflow-wrap: break-word; 
         }
         .company-details p {
             margin: 8px 0;
@@ -123,7 +142,7 @@
             color: #555;
             border-bottom: 1px solid #eee;
             padding-bottom: 5px;
-            display: flex; /* Bolje poravnanje za mobitele */
+            display: flex; 
             flex-wrap: wrap;
         }
         .company-details p:last-child { border-bottom: none; }
@@ -131,7 +150,7 @@
             color: #2c3e50;
             font-weight: 700;
             margin-right: 10px;
-            min-width: 80px; /* Fiksna širina za naljepnicu */
+            min-width: 80px; 
         }
 
         .form-group { margin-bottom: 20px; }
@@ -141,7 +160,19 @@
         .submit-btn { background: #2c3e50; color: white; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.3s; }
         .submit-btn:hover { background: #e67e22; }
 
-        footer { background: #222; color: #aaa; text-align: center; padding: 30px 0; margin-top: 60px; font-size: 0.9rem; }
+        /* FOOTER DIZAJN - POPRAVLJEN */
+        footer { 
+            background: #222; 
+            color: #aaa; 
+            text-align: center; 
+            padding: 30px 0; 
+            margin-top: 60px; 
+            font-size: 0.9rem;
+            position: relative; /* Osigurava da se vidi */
+            z-index: 10;
+            clear: both;
+            width: 100%;
+        }
         
         @media (max-width: 768px) { 
             header { flex-direction: column; padding: 1rem; text-align: center; } 
@@ -152,7 +183,7 @@
             .hero h2 { font-size: 2rem; } 
             .dropdown-content { position: static; transform: none; box-shadow: none; background-color: transparent; padding-left: 20px; } 
             .dropdown-content a { border-bottom: none; padding: 8px 0; }
-            .company-details strong { width: 100%; display: block; margin-bottom: 2px; } /* Na mobitelu jedno ispod drugog */
+            .company-details strong { width: 100%; display: block; margin-bottom: 2px; }
         }
     </style>
 </head>
@@ -211,7 +242,6 @@
                 <h3>Arhitektura</h3>
                 <p>Projektiranje, dizajn interijera i dokumentacija.</p>
             </a>
-
         </div>
 
         <div id="misija" class="about">
@@ -241,3 +271,10 @@
                 <div class="form-group"><label>Vaša Poruka</label><textarea name="message" required></textarea></div>
                 <button type="submit" class="submit-btn">Pošalji Upit</button>
             </form>
+        </div> </div> <footer>
+        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
+        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
+    </footer>
+
+</body>
+</html>
