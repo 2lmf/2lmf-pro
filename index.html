@@ -13,7 +13,7 @@
         
         /* HEADER */
         header { 
-            background: #e67e22; /* NARANČASTA BOJA */
+            background: #e67e22; 
             color: #fff; 
             padding: 1rem 2rem; 
             display: flex; 
@@ -24,11 +24,10 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* Grupa za logo i tekst */
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 20px; /* Malo veći razmak */
+            gap: 20px;
         }
 
         .logo {
@@ -37,13 +36,12 @@
             display: block;
         }
 
-        /* IZMJENE NA TEKSTU PORED LOGA */
         .header-tagline {
-            font-size: 1.3rem; /* POVEĆAN FONT */
-            font-weight: 700;  /* Deblji font */
-            color: #000;       /* CRNA BOJA */
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #000;
             line-height: 1.2;
-            white-space: nowrap; /* PRISILJAVA JEDAN RED */
+            white-space: nowrap;
         }
         
         nav { 
@@ -98,8 +96,17 @@
         
         .about { background: #fff; padding: 50px; border-radius: 4px; margin-top: 60px; border-left: 5px solid #2c3e50; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
-        /* Kontakt */
-        .contact-form-container { background: #fff; padding: 40px; border-radius: 8px; margin-top: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; }
+        /* Kontakt - POPRAVLJENO */
+        .contact-form-container { 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 8px; 
+            margin-top: 60px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            max-width: 800px; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
         
         .company-details {
             text-align: left;
@@ -108,6 +115,7 @@
             border-radius: 5px;
             margin-bottom: 30px;
             border-left: 5px solid #34495e;
+            overflow-wrap: break-word; /* Osigurava da dugačak tekst ne izlazi van */
         }
         .company-details p {
             margin: 8px 0;
@@ -115,14 +123,15 @@
             color: #555;
             border-bottom: 1px solid #eee;
             padding-bottom: 5px;
+            display: flex; /* Bolje poravnanje za mobitele */
+            flex-wrap: wrap;
         }
         .company-details p:last-child { border-bottom: none; }
         .company-details strong {
             color: #2c3e50;
             font-weight: 700;
             margin-right: 10px;
-            display: inline-block;
-            width: 80px;
+            min-width: 80px; /* Fiksna širina za naljepnicu */
         }
 
         .form-group { margin-bottom: 20px; }
@@ -137,16 +146,13 @@
         @media (max-width: 768px) { 
             header { flex-direction: column; padding: 1rem; text-align: center; } 
             .logo-container { flex-direction: column; margin-bottom: 15px; } 
-            
-            /* Na mobitelu dopuštamo da se tekst prelomi ako ne stane */
             .header-tagline { white-space: normal; text-align: center; margin-top: 5px; }
-            
             nav { margin-top: 5px; justify-content: center; }
             .features { flex-direction: column; } 
             .hero h2 { font-size: 2rem; } 
             .dropdown-content { position: static; transform: none; box-shadow: none; background-color: transparent; padding-left: 20px; } 
             .dropdown-content a { border-bottom: none; padding: 8px 0; }
-            .company-details strong { width: auto; display: inline; }
+            .company-details strong { width: 100%; display: block; margin-bottom: 2px; } /* Na mobitelu jedno ispod drugog */
         }
     </style>
 </head>
@@ -235,14 +241,3 @@
                 <div class="form-group"><label>Vaša Poruka</label><textarea name="message" required></textarea></div>
                 <button type="submit" class="submit-btn">Pošalji Upit</button>
             </form>
-        </div>
-
-    </div>
-
-    <footer>
-        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
-        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
-    </footer>
-
-</body>
-</html>
