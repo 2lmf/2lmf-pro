@@ -33,10 +33,10 @@
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
         
-        /* HERO SEKCIJA - ČISTA SLIKA BEZ GRADIENTA */
+        /* HERO SEKCIJA - NOVA SLIKA NACRTA */
         .hero { 
-            /* Slika ruku koje crtaju nacrt (Unsplash) */
-            background: url('https://images.unsplash.com/photo-1531835551805-16d864c8d311?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); 
+            /* Slika ruku koje rade na arhitektonskim nacrtima (Unsplash) */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); 
             
             background-size: cover; 
             background-position: center; 
@@ -49,17 +49,9 @@
             color: #fff; 
             padding: 20px; 
             margin-bottom: -60px; 
-            
-            /* REZERVNA BOJA - Ako vidiš narančasto, slika se ne učitava. Ako vidiš crno, to je greška. */
-            background-color: #e67e22; 
+            background-color: #333; 
         }
-        
-        /* Dodana sjena na tekst da se vidi jer nema tamne folije */
-        .hero h1 { 
-            font-size: 3rem; 
-            margin-bottom: 10px; 
-            text-shadow: 2px 2px 8px #000; 
-        }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         
         /* SADRŽAJ */
         .page-content { max-width: 900px; margin: 40px auto; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; z-index: 10; }
@@ -148,6 +140,7 @@
     </script>
 </body>
 </html>
+
 
 
 
