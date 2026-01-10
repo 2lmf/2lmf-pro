@@ -33,10 +33,10 @@
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
 
-        /* HERO SEKCIJA - TESTNA VERZIJA */
+        /* HERO SEKCIJA - NOVA UNSPLASH SLIKA (Žuta vuna) */
         .hero { 
-            /* Slika fasade s izolacijskim pločama (Wikimedia) */
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Insulation_boards_on_a_building_facade.jpg/1280px-Insulation_boards_on_a_building_facade.jpg'); 
+            /* Ovo je slika izolacijske vune s istog izvora kao i hidroizolacija */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1600607686527-6fb886090705?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); 
             
             background-size: cover; 
             background-position: center; 
@@ -49,18 +49,9 @@
             color: #fff; 
             padding: 20px; 
             margin-bottom: -60px; 
-            
-            /* NARANČASTA TESTNA BOJA */
-            /* Ako se slika ne učita, vidjet ćeš narančasto, a ne crno */
-            background-color: #e67e22; 
+            background-color: #333; 
         }
-        
-        /* Dodao sam sjenu na tekst da se bolje vidi jer nema tamnog filtera */
-        .hero h1 { 
-            font-size: 3rem; 
-            margin-bottom: 10px; 
-            text-shadow: 2px 2px 8px #000; 
-        }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         
         /* SADRŽAJ */
         .page-content { max-width: 900px; margin: 40px auto; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; z-index: 10; }
@@ -150,6 +141,7 @@
     </script>
 </body>
 </html>
+
 
 
 
