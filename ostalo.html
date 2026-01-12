@@ -11,8 +11,11 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panelne Ograde, Vrata i Ventilirane Fasade - Prodaja i Montaža</title>
-    <meta name="description" content="Prodaja i montaža panelnih ograda (2D/3D), kliznih vrata i ventiliranih fasada (HPL). Nudimo i građevinski materijal te zvučnu izolaciju.">
+    <title>Panelne Ograde, Vrata i Ventilirane Fasade - 2LMF PRO</title>
+    
+    <link rel="canonical" href="https://www.2lmf-pro.hr/ostalo.html" />
+
+    <meta name="description" content="Kvalitetne panelne ograde, gabioni i HPL ploče za ventilirane fasade. Vrhunski materijali po odličnim cijenama.">
     
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
@@ -24,7 +27,7 @@
         .delay-1 { transition-delay: 0.2s; }
         
         /* HEADER */
-        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: relative; z-index: 1000; }
         .logo-container { display: flex; align-items: center; gap: 20px; }
         .logo { max-height: 75px; width: auto; display: block; }
         .header-tagline { font-size: 1.3rem; font-weight: 700; color: #000; line-height: 1.2; white-space: nowrap; }
@@ -32,18 +35,33 @@
         nav { display: flex; align-items: center; flex-wrap: wrap; margin-top: 0; }
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
+
+        /* HERO SEKCIJA */
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1599577965411-47128540455a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+            height: 50vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            color: #fff; 
+            padding: 20px; 
+            margin-bottom: -60px; 
+            background-color: #333; 
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         
         /* SADRŽAJ */
-        .page-content { max-width: 900px; margin: 40px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .page-content h2 { color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 10px; margin-bottom: 20px; }
+        .page-content { max-width: 900px; margin: 40px auto; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; z-index: 10; }
+        .page-content h2 { color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 10px; margin-bottom: 20px; margin-top: 0; }
         .page-content ul { list-style-type: square; padding-left: 20px; margin-bottom: 30px; }
         .page-content li { margin-bottom: 10px; font-size: 1.1rem; }
         .back-btn { display: inline-block; background: #34495e; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 20px; }
         .back-btn:hover { background: #2c3e50; }
         .cta-box { background: #fdf2e9; padding: 20px; border-left: 5px solid #e67e22; margin-top: 30px; }
-        
-        /* Stil za napomenu */
-        .note { background-color: #eee; padding: 10px 15px; border-left: 4px solid #555; font-style: italic; margin-bottom: 30px; }
 
         /* FOOTER */
         footer { background: #e67e22; color: #000; text-align: center; padding: 30px 0; margin-top: 60px; font-size: 1rem; font-weight: 600; }
@@ -53,6 +71,7 @@
             .logo-container { flex-direction: column; margin-bottom: 15px; } 
             .header-tagline { white-space: normal; text-align: center; margin-top: 5px; }
             nav { margin-top: 5px; justify-content: center; }
+            .hero h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -75,39 +94,25 @@
         </nav>
     </header>
 
-    <div class="page-content">
-        <h2 class="animate-block">Ostali Materijali i Ograde</h2>
-        <p class="animate-block delay-1">Osim izolacijskih radova, nudimo širok spektar građevinskih materijala, sustava za moderne fasade te kompletna rješenja za ograde.</p>
+    <section class="hero animate-block">
+        <h1>Ostala Ponuda</h1>
+    </section>
 
-        <h3 class="animate-block">Građevinski materijali:</h3>
-        <ul class="animate-block">
-            <li><strong>OSB ploče:</strong> Višenamjenske drvene ploče za konstrukcije, podove i obloge.</li>
-            <li><strong>Zvučna izolacija:</strong> Specijalni materijali za zaštitu od udarnog zvuka (podovi, međukatne konstrukcije).</li>
-            <li><strong>Ljepilo za keramiku i glet mase:</strong> Vrhunski materijali za pripremu zidova i polaganje keramike.</li>
-        </ul>
+    <div class="page-content animate-block delay-1">
+        <p>Osim izolacija, nudimo i vrhunska rješenja za uređenje okućnice i fasadnih obloga. Kvaliteta i estetika na prvom mjestu.</p>
 
-        <h3 style="margin-top: 30px; border-bottom: 2px solid #e67e22; display:inline-block;" class="animate-block">Ploče za ventilirane fasade:</h3>
-        <p class="animate-block">Nudimo dobavu i ugradnju najmodernijih fasadnih obloga:</p>
+        <h3 class="animate-block">Iz ponude izdvajamo:</h3>
         <ul class="animate-block">
-            <li><strong>HPL:</strong> Visokotlačni laminati iznimne otpornosti na vremenske uvjete i jednostavnog održavanja.</li>
-            <li><strong>Vlaknocementne ploče:</strong> Materijal prirodnog izgleda, idealan za modernu arhitekturu i dugotrajne fasade.</li>
-            <li><strong>Aluminijske ploče:</strong> Kompozitne ploče s negorivom ispunom, savršene za poslovne objekte.</li>
+            <li><strong>Panelne ograde:</strong> Čvrste, dugotrajne i estetski privlačne ograde za dvorišta i poslovne objekte. Dostupne u raznim visinama i bojama.</li>
+            <li><strong>Gabioni:</strong> Kamene košare za potporne zidove ili dekorativne elemente u vrtu.</li>
+            <li><strong>Ploče za ventilirane fasade:</strong> HPL ploče, vlaknocementne ploče i ostali materijali za moderne fasadne sustave.</li>
+            <li><strong>Sobna i ulazna vrata:</strong> Širok izbor modela po narudžbi.</li>
         </ul>
-
-        <h3 style="margin-top: 30px; border-bottom: 2px solid #e67e22; display:inline-block;" class="animate-block">Panelne ograde i vrata:</h3>
-        <ul class="animate-block">
-            <li><strong>2D i 3D ogradni paneli:</strong> Stupovi i prateći materijal - zeleno i antracit.</li>
-            <li><strong>Vrata:</strong> Pješačka, klizna, dvokrilna vrata po mjeri i standardna.</li>
-        </ul>
-        
-        <div class="note animate-block delay-1">
-            <strong>Napomena:</strong> Imamo i uslugu montaže ograda.
-        </div>
 
         <div class="cta-box animate-block delay-1">
-            <h3>Trebate ponudu za ogradu ili fasadu?</h3>
-            <p>Javite nam se za detalje i izračun cijene.</p>
-            <a href="index.html#kontakt" class="back-btn" style="background: #e67e22;">Pošalji upit</a>
+            <h3>Zanima vas nešto iz ove ponude?</h3>
+            <p>Pošaljite nam upit s dimenzijama i željama.</p>
+            <a href="index.html#kontakt" class="back-btn" style="background: #e67e22;">Zatraži ponudu</a>
         </div>
         <br>
         <a href="index.html" class="back-btn animate-block">← Povratak na naslovnu</a>
@@ -137,6 +142,7 @@
     </script>
 </body>
 </html>
+
 
 
 
