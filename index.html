@@ -6,60 +6,103 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
       gtag('config', 'G-M46VSK431N');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2LMF PRO | Hidroizolacija, Termoizolacija i Projektiranje - Zagreb</title>
-    <meta name="description" content="Vrhunska hidroizolacija, termoizolacija i arhitektonsko projektiranje. Najbolji omjer cijene i kvalitete u Zagrebu i okolici. Zatražite ponudu!">
-    <link rel="canonical" href="https://www.2lmf-pro.hr/" />
     
-    <meta property="og:title" content="2LMF PRO | Izolacije i Arhitektura">
-    <meta property="og:image" content="2lmf_logo.png">
-    <meta property="og:type" content="website">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "2LMF PRO j.d.o.o.",
-      "address": { "@type": "PostalAddress", "streetAddress": "Orešje 7", "addressLocality": "Zagreb", "postalCode": "10090", "addressCountry": "HR" },
-      "telephone": "+385953115007",
-      "url": "https://www.2lmf-pro.hr"
-    }
-    </script>
+    <title>2LMF PRO | Hidroizolacija, Termoizolacija i Projektiranje - Zagreb</title>
+    <meta name="description" content="Prodaja i ugradnja hidroizolacije (TPO, bitumen), kamene vune i panelnih ograda. Vrhunska kvaliteta uz najpovoljnije cijene u Zagrebu. Zatražite ponudu!">
+    <link rel="canonical" href="https://www.2lmf-pro.hr/" />
 
     <link rel="icon" type="image/png" href="favicon.png">
+
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; line-height: 1.6; color: #333; background: #f9f9f9; scroll-behavior: smooth; }
-        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .logo { max-height: 70px; }
-        nav a, .dropbtn { color: #000; text-decoration: none; margin: 0 10px; font-weight: 600; font-size: 1.1rem; border: none; background: none; cursor: pointer; }
-        nav a:hover { color: #fff; }
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { display: none; position: absolute; background: #34495e; min-width: 180px; border-radius: 4px; }
-        .dropdown-content a { color: #fff; padding: 10px; display: block; border-bottom: 1px solid #2c3e50; margin: 0; }
+        /* --- ORIGINALNI DIZAJN (CSS) --- */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; scroll-behavior: smooth; overflow-x: hidden; }
+        
+        .animate-block { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .animate-block.appear { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+
+        /* HEADER */
+        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .logo-container { display: flex; align-items: center; gap: 20px; }
+        .logo { max-height: 75px; width: auto; display: block; }
+        .header-tagline { font-size: 1.3rem; font-weight: 700; color: #000; line-height: 1.2; white-space: nowrap; }
+        
+        nav { display: flex; align-items: center; flex-wrap: wrap; margin-top: 0; }
+        nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
+        nav a:hover { color: #fff; } 
+        
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; margin: 0 15px; }
+        .dropbtn { background-color: transparent; color: #000; padding: 10px 0; font-size: 1.1rem; border: none; cursor: pointer; font-weight: 600; font-family: inherit; }
+        .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; text-align: left; border-radius: 4px; top: 100%; left: 50%; transform: translateX(-50%); }
+        .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 1rem; border-bottom: 1px solid #2c3e50; font-weight: 500; }
+        .dropdown-content a:hover { background-color: #e67e22; color: white; }
         .dropdown:hover .dropdown-content { display: block; }
-        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1350&q=80'); background-size: cover; height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; text-align: center; }
-        .animate-block { opacity: 0; transform: translateY(20px); transition: 0.8s forwards; }
-        .appear { opacity: 1; transform: translateY(0); }
-        .container { max-width: 1100px; margin: auto; padding: 40px 20px; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: #fff; padding: 25px; border-radius: 5px; border-top: 5px solid #e67e22; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .contact-box { background: #fff; padding: 30px; border-radius: 8px; margin-top: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .btn { background: #2c3e50; color: #fff; padding: 15px; border: none; width: 100%; font-weight: bold; cursor: pointer; }
-        .btn:hover { background: #e67e22; }
-        footer { background: #e67e22; text-align: center; padding: 20px; font-weight: bold; }
+
+        /* Hero */
+        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; height: 65vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; padding: 20px; }
+        .hero h2 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.3rem; max-width: 700px; margin-bottom: 30px; }
+        .cta-button { display: inline-block; background: #e67e22; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s; border: 2px solid #fff; } 
+        .cta-button:hover { background: #fff; color: #e67e22; }
+
+        /* Sadržaj */
+        .container { max-width: 1200px; margin: auto; padding: 50px 20px; }
+        .section-title { text-align: center; margin-bottom: 50px; color: #2c3e50; font-size: 2.2rem; }
+        .features { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; }
+        
+        /* Kartice */
+        .card { background: #fff; flex: 1; min-width: 250px; padding: 30px; border-radius: 4px; border-top: 5px solid #e67e22; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; color: #333; display: block; }
+        .card:hover { transform: translateY(-10px); cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card h3 { color: #2c3e50; font-size: 1.5rem; margin-bottom: 15px; }
+        
+        .about { background: #fff; padding: 50px; border-radius: 4px; margin-top: 60px; border-left: 5px solid #2c3e50; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        /* Kontakt */
+        .contact-form-container { background: #fff; padding: 40px; border-radius: 8px; margin-top: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; display: block; }
+        .company-details { text-align: left; background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 5px solid #34495e; }
+        .company-details p { margin: 8px 0; font-size: 1rem; color: #555; border-bottom: 1px solid #eee; padding-bottom: 5px; display: flex; flex-wrap: wrap; }
+        .company-details strong { color: #2c3e50; font-weight: 700; margin-right: 10px; min-width: 80px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
+        .submit-btn { background: #2c3e50; color: white; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.3s; }
+        .submit-btn:hover { background: #e67e22; }
+
+        /* FOOTER */
+        footer { background: #e67e22; color: #000; text-align: center; padding: 30px 0; margin-top: 60px; font-size: 1rem; font-weight: 600; }
+        
+        @media (max-width: 768px) { 
+            header { flex-direction: column; padding: 1rem; text-align: center; } 
+            .logo-container { flex-direction: column; margin-bottom: 15px; } 
+            nav { margin-top: 5px; justify-content: center; }
+            .features { flex-direction: column; } 
+            .hero h2 { font-size: 2rem; } 
+            .dropdown-content { position: static; transform: none; box-shadow: none; background-color: transparent; padding-left: 20px; } 
+        }
     </style>
 </head>
 <body>
+
     <header>
-        <a href="index.html"><img src="2lmf_logo.png" alt="2LMF PRO" class="logo"></a>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="2lmf_logo.png" alt="2LMF PRO Logo" class="logo">
+            </a>
+            <span class="header-tagline">Vaš partner za hidro i termo izolaciju</span>
+        </div>
+        
         <nav>
             <div class="dropdown">
-                <button class="dropbtn">Ponuda ▼</button>
+                <button class="dropbtn">Ponuda &#9662;</button>
                 <div class="dropdown-content">
                     <a href="hidroizolacija.html">Hidroizolacija</a>
                     <a href="termoizolacija.html">Termoizolacija</a>
@@ -67,46 +110,96 @@
                     <a href="arhitektura.html">Arhitektura</a>
                 </div>
             </div>
+            <a href="#misija">Naša misija</a>
             <a href="blog.html">Blog</a>
             <a href="#kontakt">Kontakt</a>
         </nav>
     </header>
 
-    <section class="hero animate-block">
-        <h1>Vrhunska kvaliteta, najpovoljnija cijena</h1>
-        <p>Stručnjaci za izolaciju i arhitekturu u Zagrebu.</p>
-        <a href="#kontakt" class="btn" style="width: auto; padding: 12px 30px; border-radius: 5px; text-decoration: none;">Zatraži ponudu</a>
+    <section class="hero">
+        <div class="animate-block">
+            <h2>Najpovoljnije cijene, vrhunska kvaliteta</h2>
+            <p>Obratite nam se sa povjerenjem i dobit ćete najbolju cijenu u Zagrebu i okolici.</p>
+            <a href="#kontakt" class="cta-button">Zatražite ponudu</a>
+        </div>
     </section>
 
     <div class="container">
+        
+        <h2 class="section-title animate-block">Izdvojeno iz ponude</h2>
         <div class="features">
-            <a href="hidroizolacija.html" class="card animate-block"><h3>Hidroizolacija</h3><p>TPO i bitumenski sustavi za krovove i temelje.</p></a>
-            <a href="termoizolacija.html" class="card animate-block"><h3>Termoizolacija</h3><p>Ušteda energije uz kamenu vunu i Reflectix.</p></a>
-            <a href="arhitektura.html" class="card animate-block"><h3>Arhitektura</h3><p>Projektiranje i dokumentacija za dozvole.</p></a>
+            <a href="hidroizolacija.html" class="card animate-block">
+                <h3>Hidroizolacija</h3>
+                <p>Potpuna zaštita od vode i vlage. TPO i bitumen.</p>
+            </a>
+
+            <a href="termoizolacija.html" class="card animate-block delay-1">
+                <h3>Termoizolacija</h3>
+                <p>Uštedite energiju uz vrhunske izolacijske sustave.</p>
+            </a>
+
+            <a href="ostalo.html" class="card animate-block delay-2">
+                <h3>Ostalo</h3>
+                <p>Ploče za ventilirane fasade i panelne ograde.</p>
+            </a>
+
+            <a href="arhitektura.html" class="card animate-block delay-3">
+                <h3>Arhitektura</h3>
+                <p>Projektiranje i dokumentacija za ishođenje dozvola.</p>
+            </a>
         </div>
 
-        <div id="kontakt" class="contact-box animate-block">
-            <h2>Kontaktirajte nas</h2>
-            <p><strong>2LMF PRO j.d.o.o.</strong> | Orešje 7, Zagreb | +385 95 311 5007</p>
-            <form action="https://formspree.io/f/mqearpnn" method="POST">
-                <input type="text" name="name" placeholder="Vaše Ime" required>
-                <input type="email" name="email" placeholder="Vaš Email" required>
-                <textarea name="message" placeholder="Vaša Poruka" required></textarea>
-                <button type="submit" class="btn">POŠALJI UPIT</button>
-            </form>
+        <div id="misija" class="about animate-block">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Naša misija</h2>
+            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama. Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najboljim cijenama</strong>, <strong>vrhunskoj kvaliteti</strong> materijala, te <strong>brzoj isporuci</strong> i poštivanju rokova.</p>
         </div>
+
+        <div id="kontakt" class="contact-form-container animate-block">
+            <h2 class="section-title">Kontakt i podaci o tvrtki</h2>
+            
+            <div class="company-details">
+                <p><strong>Tvrtka:</strong> 2LMF PRO j.d.o.o.</p>
+                <p><strong>Adresa:</strong> Orešje 7, 10090 Zagreb, Hrvatska</p>
+                <p><strong>OIB:</strong> 29766043828</p>
+                <p><strong>MB:</strong> 081477933</p>
+                <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
+                <p><strong>Telefon:</strong> +385 95 311 5007</p>
+            </div>
+
+            <h3 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">Pošaljite nam upit</h3>
+
+            <form action="https://formspree.io/f/mqearpnn" method="POST">
+                <div class="form-group"><label>Ime i Prezime</label><input type="text" name="name" required></div>
+                <div class="form-group"><label>Email Adresa</label><input type="email" name="email" required></div>
+                <div class="form-group"><label>Broj Telefona</label><input type="tel" name="phone"></div>
+                <div class="form-group"><label>Vaša Poruka</label><textarea name="message" required></textarea></div>
+                <button type="submit" class="submit-btn">Pošalji upit</button>
+            </form>
+        </div> 
+
     </div>
 
-    <footer><p>&copy; 2026 2LMF PRO j.d.o.o.</p></footer>
+    <footer>
+        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
+        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
+    </footer>
 
     <script>
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('appear'); });
+        document.addEventListener("DOMContentLoaded", function() {
+            let observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('appear');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
         });
-        document.querySelectorAll('.animate-block').forEach(el => obs.observe(el));
     </script>
 </body>
 </html>
+
 
 
 
