@@ -43,8 +43,6 @@
         }
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         .hero p { font-size: 1.5rem; max-width: 800px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-        .btn-main { background: #e67e22; color: #fff; padding: 15px 30px; text-decoration: none; font-size: 1.2rem; border-radius: 5px; margin-top: 20px; transition: background 0.3s; font-weight: bold; }
-        .btn-main:hover { background: #d35400; }
 
         /* USLUGE */
         .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 60px 20px; gap: 30px; max-width: 1200px; margin: 0 auto; }
@@ -53,15 +51,23 @@
         .service-card h2 { color: #e67e22; margin-bottom: 15px; }
         .service-card p { font-size: 1rem; color: #666; }
 
-        /* ZAŠTO MI? */
+        /* ZAŠTO MI? (PLAVI DIO) */
         .why-us { background: #2c3e50; color: #fff; padding: 60px 20px; text-align: center; }
         .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 40px auto; }
         .why-item h3 { color: #e67e22; font-size: 1.5rem; }
 
-        /* KONTAKT */
-        .contact { padding: 60px 20px; text-align: center; background: #fff; }
-        .contact-info { font-size: 1.2rem; margin-top: 20px; }
-        .contact-info p { margin: 10px 0; font-weight: 600; }
+        /* PDV KALKULATOR */
+        .vat-calculator { background: #fff; padding: 40px 20px; text-align: center; border-top: 5px solid #e67e22; }
+        .vat-container { max-width: 500px; margin: 0 auto; background: #fdf2e9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .vat-container input { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 1.1rem; text-align: center; }
+        .vat-result { font-size: 1.3rem; font-weight: bold; color: #e67e22; margin-top: 15px; }
+
+        /* KONTAKT SEKCIJA */
+        .contact-section { padding: 60px 20px; background: #fff; text-align: center; }
+        .contact-container { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; text-align: left; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .contact-form button { background: #e67e22; color: #fff; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        .contact-form button:hover { background: #d35400; }
 
         .hashtags { color: #7f8c8d; font-size: 0.85rem; padding: 40px 20px; text-align: center; max-width: 1000px; margin: 0 auto; line-height: 1.5; }
 
@@ -73,6 +79,7 @@
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1.1rem; }
             nav { justify-content: center; }
+            .contact-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -98,24 +105,23 @@
 
     <section class="hero animate-block">
         <h1>Vrhunska izolacija za vaš dom</h1>
-        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte trajnu zaštitu i uštedu energije uz najpovoljnije cijene materijala u Zagrebu.</p>
-        <a href="#kontakt" class="btn-main">Zatražite ponudu</a>
+        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte trajnu zaštitu i uštedu energije uz najpovoljnije cijene materijala.</p>
     </section>
 
     <section class="services">
         <div class="service-card animate-block">
             <h2>Hidroizolacija</h2>
-            <p>Zaštita temelja, krovova i terasa vrhunskim TPO folijama i bitumenskim ljepenkama. Zaustavite vlagu trajno.</p>
+            <p>TPO folije, bitumen i polimercementni premazi za krovove i temelje.</p>
             <a href="hidroizolacija.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
         </div>
         <div class="service-card animate-block">
             <h2>Termoizolacija</h2>
-            <p>Kamena vuna i aluminijska izolacija za maksimalnu energetsku učinkovitost i niže račune za grijanje.</p>
+            <p>Kamena vuna i aluminijska izolacija za vrhunsku energetsku učinkovitost.</p>
             <a href="termoizolacija.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
         </div>
         <div class="service-card animate-block">
             <h2>Arhitektura</h2>
-            <p>Idejni i izvedbeni projekti s fokusom na uštedu materijala. Projektiranje modernih ventiliranih fasada.</p>
+            <p>Projektiranje i savjetovanje s fokusom na uštedu kroz izvedbene projekte.</p>
             <a href="arhitektura.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
         </div>
     </section>
@@ -125,26 +131,49 @@
         <div class="why-grid">
             <div class="why-item">
                 <h3>Najpovoljnije cijene</h3>
-                <p>Nismo u sustavu PDV-a, što nam omogućuje da klijentima (fizičkim osobama) ponudimo materijale po konkurentnijim cijenama.</p>
+                <p>Nismo u sustavu PDV-a, što nam omogućuje da fizičkim osobama ponudimo materijale bez dodatnog troška poreza.</p>
             </div>
             <div class="why-item">
                 <h3>Stručna podrška</h3>
-                <p>Naš tim čine inženjeri i projektanti koji će vam pomoći odabrati točno ono što vašem objektu treba.</p>
+                <p>Naš tim inženjera i projektanata vodi vas kroz cijeli proces odabira i projektiranja izolacije u Zagrebu i cijeloj Hrvatskoj.</p>
             </div>
             <div class="why-item">
                 <h3>Premium materijali</h3>
-                <p>Radimo isključivo s provjerenim materijalima: HPL ploče, vlaknocement, TPO folije i kamena vuna vrhunske kvalitete.</p>
+                <p>HPL ploče, vlaknocement i TPO folije vrhunske kvalitete za dugovječnost vašeg objekta.</p>
             </div>
         </div>
     </section>
 
-    <section id="kontakt" class="contact animate-block">
-        <h2>Kontaktirajte nas</h2>
-        <p>Trebate savjet ili preciznu ponudu za materijal i projektiranje? Javite nam se s povjerenjem.</p>
-        <div class="contact-info">
-            <p>Email: <a href="mailto:2lmf.info@gmail.com" style="color:#e67e22; text-decoration:none;">2lmf.info@gmail.com</a></p>
-            <p>Tel: <a href="tel:+385953115007" style="color:#e67e22; text-decoration:none;">+385 95 311 5007</a></p>
-            <p>Lokacija: Zagreb i cijela Hrvatska</p>
+    <section class="vat-calculator animate-block">
+        <h2>Uštedite kupnjom kod nas</h2>
+        <p>Provjerite koliko biste platili materijal u trgovinama s PDV-om:</p>
+        <div class="vat-container">
+            <input type="number" id="baseAmount" placeholder="Unesite iznos bez PDV-a (€)" oninput="calculateVAT()">
+            <div class="vat-result" id="vatResult">Iznos s PDV-om: 0.00 €</div>
+            <p style="font-size: 0.9rem; margin-top: 10px; color: #666;">*Kupnjom kod nas, ovaj iznos s PDV-om ne plaćate.</p>
+        </div>
+    </section>
+
+    <section id="kontakt" class="contact-section animate-block">
+        <div class="contact-container">
+            <div>
+                <h2>Kontaktirajte nas</h2>
+                <p>Trebate ponudu ili savjet? Naš tim je spreman odgovoriti na sve upite vezane uz izolacije i projektiranje.</p>
+                <div style="margin-top: 30px;">
+                    <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
+                    <p><strong>Tel:</strong> +385 95 311 5007</p>
+                    <p><strong>Lokacija:</strong> Zagreb / Cijela Hrvatska</p>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form action="https://formspree.io/f/xvgzgekb" method="POST">
+                    <input type="text" name="ime" placeholder="Vaše ime" required>
+                    <input type="email" name="email" placeholder="Vaš Email" required>
+                    <input type="text" name="naslov" placeholder="Predmet (npr. Ponuda za fasadu)">
+                    <textarea name="poruka" rows="5" placeholder="Vaša poruka" required></textarea>
+                    <button type="submit">POŠALJI UPIT</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -157,15 +186,24 @@
     </footer>
 
     <script>
+        // Animacija pojave elemenata
         document.addEventListener("DOMContentLoaded", function() {
             let observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('appear'); });
             }, { threshold: 0.1 });
             document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
         });
+
+        // Kalkulator PDV-a
+        function calculateVAT() {
+            const amount = document.getElementById('baseAmount').value;
+            const result = amount * 1.25;
+            document.getElementById('vatResult').innerText = "Iznos s PDV-om: " + result.toFixed(2) + " €";
+        }
     </script>
 </body>
 </html>
+
 
 
 
