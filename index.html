@@ -11,82 +11,68 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2LMF PRO | Hidroizolacija, Termoizolacija i Ventilirane Fasade Zagreb</title>
     
-    <title>2LMF PRO | Hidroizolacija, Termoizolacija i Projektiranje - Zagreb</title>
-    <meta name="description" content="Prodaja i ugradnja hidroizolacije (TPO, bitumen), kamene vune i panelnih ograda. Vrhunska kvaliteta uz najpovoljnije cijene u Zagrebu. Zatražite ponudu!">
     <link rel="canonical" href="https://www.2lmf-pro.hr/" />
 
+    <meta name="description" content="Vaš partner za hidro i termo izolaciju u Zagrebu. Nudimo najpovoljnije cijene za TPO folije, kamenu vunu, HPL ploče i projektiranje fasada.">
     <link rel="icon" type="image/png" href="favicon.png">
-
     <style>
-        /* --- ORIGINALNI DIZAJN (CSS) --- */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f4f4f4; overflow-x: hidden; scroll-behavior: smooth; }
         
+        /* ANIMACIJE */
         .animate-block { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .animate-block.appear { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.2s; }
-        .delay-2 { transition-delay: 0.4s; }
-        .delay-3 { transition-delay: 0.6s; }
 
         /* HEADER */
-        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .logo-container { display: flex; align-items: center; gap: 20px; }
         .logo { max-height: 75px; width: auto; display: block; }
         .header-tagline { font-size: 1.3rem; font-weight: 700; color: #000; line-height: 1.2; white-space: nowrap; }
         
-        nav { display: flex; align-items: center; flex-wrap: wrap; margin-top: 0; }
+        nav { display: flex; align-items: center; flex-wrap: wrap; }
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
-        nav a:hover { color: #fff; } 
-        
-        /* Dropdown */
-        .dropdown { position: relative; display: inline-block; margin: 0 15px; }
-        .dropbtn { background-color: transparent; color: #000; padding: 10px 0; font-size: 1.1rem; border: none; cursor: pointer; font-weight: 600; font-family: inherit; }
-        .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; text-align: left; border-radius: 4px; top: 100%; left: 50%; transform: translateX(-50%); }
-        .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 1rem; border-bottom: 1px solid #2c3e50; font-weight: 500; }
-        .dropdown-content a:hover { background-color: #e67e22; color: white; }
-        .dropdown:hover .dropdown-content { display: block; }
+        nav a:hover { color: #fff; }
 
-        /* Hero */
-        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; height: 65vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; padding: 20px; }
-        .hero h2 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero p { font-size: 1.3rem; max-width: 700px; margin-bottom: 30px; }
-        .cta-button { display: inline-block; background: #e67e22; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s; border: 2px solid #fff; } 
-        .cta-button:hover { background: #fff; color: #e67e22; }
+        /* HERO */
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('fasada_hero.jpg'); 
+            background-size: cover; background-position: center; height: 70vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            text-align: center; color: #fff; padding: 20px; 
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
+        .hero p { font-size: 1.5rem; max-width: 800px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .btn-main { background: #e67e22; color: #fff; padding: 15px 30px; text-decoration: none; font-size: 1.2rem; border-radius: 5px; margin-top: 20px; transition: background 0.3s; font-weight: bold; }
+        .btn-main:hover { background: #d35400; }
 
-        /* Sadržaj */
-        .container { max-width: 1200px; margin: auto; padding: 50px 20px; }
-        .section-title { text-align: center; margin-bottom: 50px; color: #2c3e50; font-size: 2.2rem; }
-        .features { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; }
-        
-        /* Kartice */
-        .card { background: #fff; flex: 1; min-width: 250px; padding: 30px; border-radius: 4px; border-top: 5px solid #e67e22; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; color: #333; display: block; }
-        .card:hover { transform: translateY(-10px); cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .card h3 { color: #2c3e50; font-size: 1.5rem; margin-bottom: 15px; }
-        
-        .about { background: #fff; padding: 50px; border-radius: 4px; margin-top: 60px; border-left: 5px solid #2c3e50; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        /* USLUGE */
+        .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 60px 20px; gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .service-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px; width: 300px; text-align: center; transition: transform 0.3s; }
+        .service-card:hover { transform: translateY(-10px); }
+        .service-card h2 { color: #e67e22; margin-bottom: 15px; }
+        .service-card p { font-size: 1rem; color: #666; }
 
-        /* Kontakt */
-        .contact-form-container { background: #fff; padding: 40px; border-radius: 8px; margin-top: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; display: block; }
-        .company-details { text-align: left; background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 5px solid #34495e; }
-        .company-details p { margin: 8px 0; font-size: 1rem; color: #555; border-bottom: 1px solid #eee; padding-bottom: 5px; display: flex; flex-wrap: wrap; }
-        .company-details strong { color: #2c3e50; font-weight: 700; margin-right: 10px; min-width: 80px; }
+        /* ZAŠTO MI? */
+        .why-us { background: #2c3e50; color: #fff; padding: 60px 20px; text-align: center; }
+        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 40px auto; }
+        .why-item h3 { color: #e67e22; font-size: 1.5rem; }
 
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
-        .submit-btn { background: #2c3e50; color: white; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.3s; }
-        .submit-btn:hover { background: #e67e22; }
+        /* KONTAKT */
+        .contact { padding: 60px 20px; text-align: center; background: #fff; }
+        .contact-info { font-size: 1.2rem; margin-top: 20px; }
+        .contact-info p { margin: 10px 0; font-weight: 600; }
 
-        /* FOOTER */
-        footer { background: #e67e22; color: #000; text-align: center; padding: 30px 0; margin-top: 60px; font-size: 1rem; font-weight: 600; }
-        
-        @media (max-width: 768px) { 
-            header { flex-direction: column; padding: 1rem; text-align: center; } 
-            .logo-container { flex-direction: column; margin-bottom: 15px; } 
-            nav { margin-top: 5px; justify-content: center; }
-            .features { flex-direction: column; } 
-            .hero h2 { font-size: 2rem; } 
-            .dropdown-content { position: static; transform: none; box-shadow: none; background-color: transparent; padding-left: 20px; } 
+        .hashtags { color: #7f8c8d; font-size: 0.85rem; padding: 40px 20px; text-align: center; max-width: 1000px; margin: 0 auto; line-height: 1.5; }
+
+        footer { background: #e67e22; color: #000; text-align: center; padding: 20px 0; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 1rem; }
+            .logo-container { flex-direction: column; margin-bottom: 15px; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1.1rem; }
+            nav { justify-content: center; }
         }
     </style>
 </head>
@@ -99,114 +85,88 @@
             </a>
             <span class="header-tagline">Vaš partner za hidro i termo izolaciju</span>
         </div>
-        
         <nav>
-            <div class="dropdown">
-                <button class="dropbtn">Ponuda &#9662;</button>
-                <div class="dropdown-content">
-                    <a href="hidroizolacija.html">Hidroizolacija</a>
-                    <a href="termoizolacija.html">Termoizolacija</a>
-                    <a href="ostalo.html">Ostalo</a>
-                    <a href="arhitektura.html">Arhitektura</a>
-                </div>
-            </div>
-            <a href="#misija">Naša misija</a>
+            <a href="index.html">Početna</a>
+            <a href="hidroizolacija.html">Hidroizolacija</a>
+            <a href="termoizolacija.html">Termoizolacija</a>
+            <a href="ostalo.html">Ostalo</a>
+            <a href="arhitektura.html">Arhitektura</a>
             <a href="blog.html">Blog</a>
             <a href="#kontakt">Kontakt</a>
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="animate-block">
-            <h2>Najpovoljnije cijene, vrhunska kvaliteta</h2>
-            <p>Obratite nam se sa povjerenjem i dobit ćete najbolju cijenu u Zagrebu i okolici.</p>
-            <a href="#kontakt" class="cta-button">Zatražite ponudu</a>
+    <section class="hero animate-block">
+        <h1>Vrhunska izolacija za vaš dom</h1>
+        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte trajnu zaštitu i uštedu energije uz najpovoljnije cijene materijala u Zagrebu.</p>
+        <a href="#kontakt" class="btn-main">Zatražite ponudu</a>
+    </section>
+
+    <section class="services">
+        <div class="service-card animate-block">
+            <h2>Hidroizolacija</h2>
+            <p>Zaštita temelja, krovova i terasa vrhunskim TPO folijama i bitumenskim ljepenkama. Zaustavite vlagu trajno.</p>
+            <a href="hidroizolacija.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
+        </div>
+        <div class="service-card animate-block">
+            <h2>Termoizolacija</h2>
+            <p>Kamena vuna i aluminijska izolacija za maksimalnu energetsku učinkovitost i niže račune za grijanje.</p>
+            <a href="termoizolacija.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
+        </div>
+        <div class="service-card animate-block">
+            <h2>Arhitektura</h2>
+            <p>Idejni i izvedbeni projekti s fokusom na uštedu materijala. Projektiranje modernih ventiliranih fasada.</p>
+            <a href="arhitektura.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
         </div>
     </section>
 
-    <div class="container">
-        
-        <h2 class="section-title animate-block">Izdvojeno iz ponude</h2>
-        <div class="features">
-            <a href="hidroizolacija.html" class="card animate-block">
-                <h3>Hidroizolacija</h3>
-                <p>Potpuna zaštita od vode i vlage. TPO i bitumen.</p>
-            </a>
-
-            <a href="termoizolacija.html" class="card animate-block delay-1">
-                <h3>Termoizolacija</h3>
-                <p>Uštedite energiju uz vrhunske izolacijske sustave.</p>
-            </a>
-
-            <a href="ostalo.html" class="card animate-block delay-2">
-                <h3>Ostalo</h3>
-                <p>Ploče za ventilirane fasade i panelne ograde.</p>
-            </a>
-
-            <a href="arhitektura.html" class="card animate-block delay-3">
-                <h3>Arhitektura</h3>
-                <p>Projektiranje i dokumentacija za ishođenje dozvola.</p>
-            </a>
-        </div>
-
-        <div id="misija" class="about animate-block">
-            <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Naša misija</h2>
-            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama. Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najboljim cijenama</strong>, <strong>vrhunskoj kvaliteti</strong> materijala, te <strong>brzoj isporuci</strong> i poštivanju rokova.</p>
-        </div>
-
-        <div id="kontakt" class="contact-form-container animate-block">
-            <h2 class="section-title">Kontakt i podaci o tvrtki</h2>
-            
-            <div class="company-details">
-                <p><strong>Tvrtka:</strong> 2LMF PRO j.d.o.o.</p>
-                <p><strong>Adresa:</strong> Orešje 7, 10090 Zagreb, Hrvatska</p>
-                <p><strong>OIB:</strong> 29766043828</p>
-                <p><strong>MB:</strong> 081477933</p>
-                <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
-                <p><strong>Telefon:</strong> +385 95 311 5007</p>
-
-                <p style="background-color: #e67e22; color: #000; font-weight: bold; font-size: 1.15rem; padding: 10px; border-radius: 4px; margin-top: 15px;">
-                    2LMF PRO j.d.o.o. nije u sustavu PDV-a, pa PDV ne možemo iskazati na računima
-                </p>
+    <section class="why-us animate-block">
+        <h2>Zašto odabrati 2LMF PRO?</h2>
+        <div class="why-grid">
+            <div class="why-item">
+                <h3>Najpovoljnije cijene</h3>
+                <p>Nismo u sustavu PDV-a, što nam omogućuje da klijentima (fizičkim osobama) ponudimo materijale po konkurentnijim cijenama.</p>
             </div>
+            <div class="why-item">
+                <h3>Stručna podrška</h3>
+                <p>Naš tim čine inženjeri i projektanti koji će vam pomoći odabrati točno ono što vašem objektu treba.</p>
+            </div>
+            <div class="why-item">
+                <h3>Premium materijali</h3>
+                <p>Radimo isključivo s provjerenim materijalima: HPL ploče, vlaknocement, TPO folije i kamena vuna vrhunske kvalitete.</p>
+            </div>
+        </div>
+    </section>
 
-            <h3 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">Pošaljite nam upit</h3>
+    <section id="kontakt" class="contact animate-block">
+        <h2>Kontaktirajte nas</h2>
+        <p>Trebate savjet ili preciznu ponudu za materijal i projektiranje? Javite nam se s povjerenjem.</p>
+        <div class="contact-info">
+            <p>Email: <a href="mailto:2lmf.info@gmail.com" style="color:#e67e22; text-decoration:none;">2lmf.info@gmail.com</a></p>
+            <p>Tel: <a href="tel:+385953115007" style="color:#e67e22; text-decoration:none;">+385 95 311 5007</a></p>
+            <p>Lokacija: Zagreb i cijela Hrvatska</p>
+        </div>
+    </section>
 
-            <form action="https://formspree.io/f/mqearpnn" method="POST">
-                <div class="form-group"><label>Ime i Prezime</label><input type="text" name="name" required></div>
-                <div class="form-group"><label>Email Adresa</label><input type="email" name="email" required></div>
-                <div class="form-group"><label>Broj Telefona</label><input type="tel" name="phone"></div>
-                <div class="form-group"><label>Vaša Poruka</label><textarea name="message" required></textarea></div>
-                <button type="submit" class="submit-btn">Pošalji upit</button>
-            </form>
-        </div> 
-
-    </div>
-
-    <div style="display:none;">
+    <div class="hashtags">
         #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija #najpovoljnije #vrhunskakvaliteta #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen #bitumenskaljepenka #ljepenka #arhitektura
     </div>
 
     <footer>
-        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
-        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
+        <p>&copy; 2026 2LMF PRO j.d.o.o. | Vaš stručnjak za izolacije</p>
     </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('appear');
-                        observer.unobserve(entry.target);
-                    }
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('appear'); });
             }, { threshold: 0.1 });
             document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
         });
     </script>
 </body>
 </html>
+
 
 
 
