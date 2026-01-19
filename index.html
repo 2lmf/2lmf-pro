@@ -74,10 +74,18 @@
         .service-card h2 { color: #e67e22; margin-bottom: 10px; font-size: 1.3rem; }
         .service-card p { font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4; }
 
-        /* ZAŠTO MI? - RAZMAKNUTI STUPCI */
-        .why-us { background: #2c3e50; color: #fff; padding: 60px 20px; text-align: center; }
+        /* ZAŠTO MI? - SLIKA POZADINE S OVERLAYEM */
+        .why-us { 
+            /* Ovdje je dodana slika s tamnoplavim premazom */
+            background-image: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax efekt */
+            color: #fff; 
+            padding: 80px 20px; 
+            text-align: center; 
+        }
         
-        /* Ovdje smo povećali minmax na 300px i gap na 60px da se tekst raširi */
         .why-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -128,6 +136,7 @@
             nav { justify-content: center; }
             .contact-container { grid-template-columns: 1fr; gap: 30px; }
             .service-link { width: 100%; max-width: 300px; }
+            .why-us { background-attachment: scroll; } /* Isključuje parallax na mobitelima radi performansi */
         }
     </style>
 </head>
@@ -246,6 +255,7 @@
     </script>
 </body>
 </html>
+
 
 
 
