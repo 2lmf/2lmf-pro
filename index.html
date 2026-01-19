@@ -34,7 +34,7 @@
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
 
-        /* HERO */
+        /* HERO - VRAĆENA SLIKA */
         .hero { 
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('fasada_hero.jpg'); 
             background-size: cover; background-position: center; height: 70vh; 
@@ -44,27 +44,21 @@
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         .hero p { font-size: 1.5rem; max-width: 800px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
 
-        /* USLUGE */
+        /* USLUGE - VRAĆENE SVE 4 KARTICE */
         .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 60px 20px; gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .service-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px; width: 300px; text-align: center; transition: transform 0.3s; }
+        .service-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px; width: 250px; text-align: center; transition: transform 0.3s; }
         .service-card:hover { transform: translateY(-10px); }
-        .service-card h2 { color: #e67e22; margin-bottom: 15px; }
+        .service-card h2 { color: #e67e22; margin-bottom: 15px; font-size: 1.5rem; }
         .service-card p { font-size: 1rem; color: #666; }
 
-        /* ZAŠTO MI? (PLAVI DIO) */
+        /* ZAŠTO MI? */
         .why-us { background: #2c3e50; color: #fff; padding: 60px 20px; text-align: center; }
         .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 40px auto; }
         .why-item h3 { color: #e67e22; font-size: 1.5rem; }
 
-        /* PDV KALKULATOR */
-        .vat-calculator { background: #fff; padding: 40px 20px; text-align: center; border-top: 5px solid #e67e22; }
-        .vat-container { max-width: 500px; margin: 0 auto; background: #fdf2e9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .vat-container input { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 1.1rem; text-align: center; }
-        .vat-result { font-size: 1.3rem; font-weight: bold; color: #e67e22; margin-top: 15px; }
-
         /* KONTAKT SEKCIJA */
         .contact-section { padding: 60px 20px; background: #fff; text-align: center; }
-        .contact-container { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; text-align: left; }
+        .contact-container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; text-align: left; }
         .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         .contact-form button { background: #e67e22; color: #fff; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
         .contact-form button:hover { background: #d35400; }
@@ -80,6 +74,7 @@
             .hero p { font-size: 1.1rem; }
             nav { justify-content: center; }
             .contact-container { grid-template-columns: 1fr; }
+            .service-card { width: 100%; }
         }
     </style>
 </head>
@@ -105,7 +100,7 @@
 
     <section class="hero animate-block">
         <h1>Vrhunska izolacija za vaš dom</h1>
-        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte trajnu zaštitu i uštedu energije uz najpovoljnije cijene materijala.</p>
+        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte trajnu zaštitu i uštedu energije uz vrhunsku kvalitetu materijala.</p>
     </section>
 
     <section class="services">
@@ -124,33 +119,28 @@
             <p>Projektiranje i savjetovanje s fokusom na uštedu kroz izvedbene projekte.</p>
             <a href="arhitektura.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
         </div>
+        <div class="service-card animate-block">
+            <h2>Ostalo</h2>
+            <p>Panelne ograde, vrata, ljepila i ostali materijali za završne radove.</p>
+            <a href="ostalo.html" style="color:#e67e22; font-weight:bold; text-decoration:none;">Saznajte više →</a>
+        </div>
     </section>
 
     <section class="why-us animate-block">
         <h2>Zašto odabrati 2LMF PRO?</h2>
         <div class="why-grid">
             <div class="why-item">
-                <h3>Najpovoljnije cijene</h3>
-                <p>Nismo u sustavu PDV-a, što nam omogućuje da fizičkim osobama ponudimo materijale bez dodatnog troška poreza.</p>
+                <h3>Vrhunska kvaliteta</h3>
+                <p>Nudimo isključivo certificirane materijale vodećih svjetskih proizvođača za trajnu sigurnost vašeg objekta.</p>
             </div>
             <div class="why-item">
                 <h3>Stručna podrška</h3>
                 <p>Naš tim inženjera i projektanata vodi vas kroz cijeli proces odabira i projektiranja izolacije u Zagrebu i cijeloj Hrvatskoj.</p>
             </div>
             <div class="why-item">
-                <h3>Premium materijali</h3>
-                <p>HPL ploče, vlaknocement i TPO folije vrhunske kvalitete za dugovječnost vašeg objekta.</p>
+                <h3>Transparentnost</h3>
+                <p>Napomena: Nismo u sustavu PDV-a prema čl. 90 st. 1 i 2 Zakona o PDV-u, stoga isti nije iskazan na računu.</p>
             </div>
-        </div>
-    </section>
-
-    <section class="vat-calculator animate-block">
-        <h2>Uštedite kupnjom kod nas</h2>
-        <p>Provjerite koliko biste platili materijal u trgovinama s PDV-om:</p>
-        <div class="vat-container">
-            <input type="number" id="baseAmount" placeholder="Unesite iznos bez PDV-a (€)" oninput="calculateVAT()">
-            <div class="vat-result" id="vatResult">Iznos s PDV-om: 0.00 €</div>
-            <p style="font-size: 0.9rem; margin-top: 10px; color: #666;">*Kupnjom kod nas, ovaj iznos s PDV-om ne plaćate.</p>
         </div>
     </section>
 
@@ -186,23 +176,16 @@
     </footer>
 
     <script>
-        // Animacija pojave elemenata
         document.addEventListener("DOMContentLoaded", function() {
             let observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('appear'); });
             }, { threshold: 0.1 });
             document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
         });
-
-        // Kalkulator PDV-a
-        function calculateVAT() {
-            const amount = document.getElementById('baseAmount').value;
-            const result = amount * 1.25;
-            document.getElementById('vatResult').innerText = "Iznos s PDV-om: " + result.toFixed(2) + " €";
-        }
     </script>
 </body>
 </html>
+
 
 
 
