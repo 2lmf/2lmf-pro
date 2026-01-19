@@ -34,11 +34,13 @@
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
 
-        /* HERO - ORIGINALNA SINTAKSA ZA SLIKU */
+        /* HERO - SLIKA IZ STAROG KODA */
         .hero { 
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('fasada_hero.jpg'); 
-            background-size: cover; 
-            background-position: center; 
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #333; /* Rezervna boja */
             height: 70vh; 
             display: flex; 
             flex-direction: column; 
@@ -47,12 +49,11 @@
             text-align: center; 
             color: #fff; 
             padding: 20px; 
-            background-color: #333; /* Rezervna boja ako slika kasni */
         }
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         .hero p { font-size: 1.5rem; max-width: 800px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
 
-        /* USLUGE - KARTICE KAO LINKOVI (POPRAVLJEN PREKLOP) */
+        /* USLUGE */
         .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 60px 20px; gap: 30px; max-width: 1200px; margin: 0 auto; }
         .service-link { text-decoration: none; color: inherit; width: 220px; display: block; }
         
@@ -63,7 +64,7 @@
             padding: 25px; 
             text-align: center; 
             transition: transform 0.3s, box-shadow 0.3s; 
-            height: 220px; /* Fiksna visina da budu iste */
+            min-height: 240px; 
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
@@ -82,8 +83,10 @@
         .contact-section { padding: 60px 20px; background: #fff; text-align: center; }
         .contact-container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; text-align: left; align-items: start; }
         
-        .contact-details h2 { margin-top: 0; color: #2c3e50; }
-        .contact-details p { margin: 8px 0; line-height: 1.4; font-size: 1.1rem; color: #333; }
+        .contact-details h2 { margin-top: 0; color: #2c3e50; margin-bottom: 20px; }
+        
+        /* Smanjen prored */
+        .contact-details p { margin: 2px 0; line-height: 1.3; font-size: 1.1rem; color: #333; }
         .contact-details strong { color: #000; }
         
         .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
@@ -152,7 +155,7 @@
         <a href="ostalo.html" class="service-link animate-block">
             <div class="service-card">
                 <h2>Ostalo</h2>
-                <p>Panelne ograde, vrata, ljepila i ostali materijali za završne radove.</p>
+                <p>Ploče za ventilirane fasade, zvučna izolacija, panelne ograde i vrata i ostali materijali</p>
             </div>
         </a>
     </section>
@@ -181,11 +184,10 @@
                 <h2>Kontaktirajte nas</h2>
                 <p>Trebate ponudu ili savjet? Naš tim je spreman odgovoriti na sve upite vezane uz izolacije i projektiranje.</p>
                 <div style="margin-top: 25px;">
-                    <p style="font-weight: bold; font-size: 1.2rem;">2LMF PRO j.d.o.o.</p>
+                    <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 8px;">2LMF PRO j.d.o.o.</p>
                     <p>Orešje 7, 10000 Zagreb</p>
                     <p><strong>OIB:</strong> 85558066371</p>
                     <p><strong>MBS:</strong> 081541893</p>
-                    <br>
                     <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
                     <p><strong>Tel:</strong> +385 95 311 5007</p>
                 </div>
@@ -220,6 +222,7 @@
     </script>
 </body>
 </html>
+
 
 
 
