@@ -34,35 +34,60 @@
         nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
         nav a:hover { color: #fff; }
 
-        /* HERO - SLIKA */
+        /* HERO - ORIGINALNA SINTAKSA ZA SLIKU */
         .hero { 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('fasada_hero.jpg'); 
-            background-size: cover; background-position: center; height: 70vh; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            text-align: center; color: #fff; padding: 20px; 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('fasada_hero.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            height: 70vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            color: #fff; 
+            padding: 20px; 
+            background-color: #333; /* Rezervna boja ako slika kasni */
         }
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
         .hero p { font-size: 1.5rem; max-width: 800px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
 
-        /* USLUGE - POPRAVLJEN LAYOUT */
-        .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 60px 20px; gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .service-link { text-decoration: none; color: inherit; width: 220px; }
-        .service-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 25px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; height: 200px; display: flex; flex-direction: column; justify-content: center; }
+        /* USLUGE - KARTICE KAO LINKOVI (POPRAVLJEN PREKLOP) */
+        .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 60px 20px; gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .service-link { text-decoration: none; color: inherit; width: 220px; display: block; }
+        
+        .service-card { 
+            background: #fff; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            padding: 25px; 
+            text-align: center; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+            height: 220px; /* Fiksna visina da budu iste */
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+        }
         .service-card:hover { transform: translateY(-10px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
         .service-card h2 { color: #e67e22; margin-bottom: 10px; font-size: 1.3rem; }
-        .service-card p { font-size: 0.9rem; color: #666; margin: 0; }
+        .service-card p { font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4; }
 
         /* ZAŠTO MI? */
         .why-us { background: #2c3e50; color: #fff; padding: 60px 20px; text-align: center; }
         .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 40px auto; }
         .why-item h3 { color: #e67e22; font-size: 1.5rem; }
 
-        /* KONTAKT SEKCIJA - POPRAVLJENI PODACI */
+        /* KONTAKT SEKCIJA */
         .contact-section { padding: 60px 20px; background: #fff; text-align: center; }
-        .contact-container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; text-align: left; }
-        .contact-details p { margin: 5px 0; line-height: 1.2; font-size: 1.1rem; }
-        .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .contact-form button { background: #e67e22; color: #fff; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        .contact-container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; text-align: left; align-items: start; }
+        
+        .contact-details h2 { margin-top: 0; color: #2c3e50; }
+        .contact-details p { margin: 8px 0; line-height: 1.4; font-size: 1.1rem; color: #333; }
+        .contact-details strong { color: #000; }
+        
+        .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+        .contact-form button { background: #e67e22; color: #fff; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.3s; }
         .contact-form button:hover { background: #d35400; }
 
         .hashtags { color: #7f8c8d; font-size: 0.85rem; padding: 40px 20px; text-align: center; max-width: 1000px; margin: 0 auto; line-height: 1.5; }
@@ -75,8 +100,8 @@
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1.1rem; }
             nav { justify-content: center; }
-            .contact-container { grid-template-columns: 1fr; }
-            .service-link { width: 100%; }
+            .contact-container { grid-template-columns: 1fr; gap: 30px; }
+            .service-link { width: 100%; max-width: 300px; }
         }
     </style>
 </head>
@@ -155,11 +180,12 @@
             <div class="contact-details">
                 <h2>Kontaktirajte nas</h2>
                 <p>Trebate ponudu ili savjet? Naš tim je spreman odgovoriti na sve upite vezane uz izolacije i projektiranje.</p>
-                <div style="margin-top: 20px;">
-                    <p><strong>2LMF PRO j.d.o.o.</strong></p>
+                <div style="margin-top: 25px;">
+                    <p style="font-weight: bold; font-size: 1.2rem;">2LMF PRO j.d.o.o.</p>
                     <p>Orešje 7, 10000 Zagreb</p>
                     <p><strong>OIB:</strong> 85558066371</p>
                     <p><strong>MBS:</strong> 081541893</p>
+                    <br>
                     <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
                     <p><strong>Tel:</strong> +385 95 311 5007</p>
                 </div>
@@ -194,6 +220,7 @@
     </script>
 </body>
 </html>
+
 
 
 
