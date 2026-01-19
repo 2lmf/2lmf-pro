@@ -30,16 +30,10 @@
         .logo { max-height: 75px; width: auto; display: block; }
         .header-tagline { font-size: 1.3rem; font-weight: 700; color: #000; line-height: 1.2; white-space: nowrap; }
         
-        /* NAVIGACIJA & DROPDOWN */
+        /* NAVIGACIJA - BEZ DROPDOWNA */
         nav { display: flex; align-items: center; flex-wrap: wrap; }
-        nav > a, .dropbtn { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; background: none; border: none; cursor: pointer; font-family: inherit; }
-        nav a:hover, .dropdown:hover .dropbtn { color: #fff; }
-
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-top: 3px solid #333; }
-        .dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; margin: 0; font-size: 1rem; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background-color: #f1f1f1; color: #e67e22; }
-        .dropdown:hover .dropdown-content { display: block; }
+        nav > a { color: #000; text-decoration: none; margin: 0 10px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; transition: color 0.3s; }
+        nav a:hover { color: #fff; }
 
         /* HERO */
         .hero { 
@@ -81,13 +75,7 @@
         .service-card h2 { color: #e67e22; margin-bottom: 10px; font-size: 1.3rem; }
         .service-card p { font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4; }
 
-        /* SEKCIJA NAŠA MISIJA (VRAĆENA) */
-        .mission-section { background: #fff; padding: 60px 20px; text-align: center; border-bottom: 1px solid #eee; }
-        .mission-container { max-width: 1000px; margin: 0 auto; }
-        .mission-section h2 { color: #2c3e50; font-size: 2.2rem; margin-bottom: 20px; }
-        .mission-section p { font-size: 1.1rem; color: #555; line-height: 1.8; }
-
-        /* ZAŠTO MI? */
+        /* ZAŠTO MI? + MISIJA */
         .why-us { 
             background-image: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2071&auto=format&fit=crop');
             background-size: cover;
@@ -106,6 +94,16 @@
             margin: 40px auto; 
         }
         .why-item h3 { color: #e67e22; font-size: 1.5rem; margin-bottom: 15px; }
+
+        /* Stil za misiju unutar why-us sekcije */
+        .mission-inline {
+            max-width: 900px;
+            margin: 60px auto 0; /* Razmak od gornjeg dijela */
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3); /* Diskretna crta */
+        }
+        .mission-inline h3 { color: #e67e22; font-size: 1.8rem; margin-bottom: 20px; }
+        .mission-inline p { font-size: 1.1rem; line-height: 1.8; opacity: 0.95; }
 
         /* KONTAKT SEKCIJA */
         .contact-section { padding: 60px 20px; background: #fff; text-align: center; }
@@ -128,13 +126,10 @@
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1.1rem; }
             nav { justify-content: center; }
+            nav > a { margin: 5px 10px; } /* Malo više mjesta na mobitelu */
             .contact-container { grid-template-columns: 1fr; gap: 30px; }
             .service-link { width: 100%; max-width: 300px; }
             .why-us { background-attachment: scroll; }
-            
-            /* Mobile dropdown fix */
-            .dropdown-content { position: static; box-shadow: none; border-top: none; background-color: #f9f9f9; width: 100%; text-align: center; }
-            .dropdown:hover .dropdown-content { display: block; }
         }
     </style>
 </head>
@@ -149,18 +144,10 @@
         </div>
         <nav>
             <a href="index.html">Početna</a>
-            
-            <div class="dropdown">
-                <button class="dropbtn">Ponuda &#9662;</button>
-                <div class="dropdown-content">
-                    <a href="hidroizolacija.html">Hidroizolacija</a>
-                    <a href="termoizolacija.html">Termoizolacija</a>
-                    <a href="ostalo.html">Ostalo</a>
-                    <a href="arhitektura.html">Arhitektura</a>
-                </div>
-            </div>
-
-            <a href="#misija">Naša misija</a>
+            <a href="hidroizolacija.html">Hidroizolacija</a>
+            <a href="termoizolacija.html">Termoizolacija</a>
+            <a href="ostalo.html">Ostalo</a>
+            <a href="arhitektura.html">Arhitektura</a>
             <a href="blog.html">Blog</a>
             <a href="#kontakt">Kontakt</a>
         </nav>
@@ -198,13 +185,6 @@
         </a>
     </section>
 
-    <section id="misija" class="mission-section animate-block">
-        <div class="mission-container">
-            <h2>Naša misija</h2>
-            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama, bez kompromisa na vašem budžetu. Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najboljim cijenama</strong> na tržištu koje osiguravaju maksimalnu vrijednost za vašu investiciju, <strong>vrhunskoj kvaliteti</strong> materijala koja garantira dugotrajnost, te <strong>brzoj isporuci</strong> i poštivanju rokova jer cijenimo vaše vrijeme. Vaše povjerenje gradimo stručnošću, transparentnošću i efikasnošću.</p>
-        </div>
-    </section>
-
     <section class="why-us animate-block">
         <h2>Zašto odabrati 2LMF PRO?</h2>
         <div class="why-grid">
@@ -221,6 +201,11 @@
                 <p>Pokažite nam najbolju ponudu, a mi ćemo vam dati još bolju.</p>
                 <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">Napomena: nismo u sustavu PDV-a, pa PDV ne možemo iskazati na računu.</p>
             </div>
+        </div>
+
+        <div class="mission-inline">
+            <h3>Naša misija</h3>
+            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama, bez kompromisa na vašem budžetu. Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najboljim cijenama</strong> na tržištu koje osiguravaju maksimalnu vrijednost za vašu investiciju, <strong>vrhunskoj kvaliteti</strong> materijala koja garantira dugotrajnost, te <strong>brzoj isporuci</strong> i poštivanju rokova jer cijenimo vaše vrijeme. Vaše povjerenje gradimo stručnošću, transparentnošću i efikasnošću.</p>
         </div>
     </section>
 
@@ -268,6 +253,7 @@
     </script>
 </body>
 </html>
+
 
 
 
