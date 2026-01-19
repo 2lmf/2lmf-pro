@@ -74,10 +74,18 @@
         .service-card h2 { color: #e67e22; margin-bottom: 10px; font-size: 1.3rem; }
         .service-card p { font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4; }
 
-        /* ZAŠTO MI? */
+        /* ZAŠTO MI? - RAZMAKNUTI STUPCI */
         .why-us { background: #2c3e50; color: #fff; padding: 60px 20px; text-align: center; }
-        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 40px auto; }
-        .why-item h3 { color: #e67e22; font-size: 1.5rem; }
+        
+        /* Ovdje smo povećali minmax na 300px i gap na 60px da se tekst raširi */
+        .why-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 60px; 
+            max-width: 1300px; 
+            margin: 40px auto; 
+        }
+        .why-item h3 { color: #e67e22; font-size: 1.5rem; margin-bottom: 15px; }
 
         /* KONTAKT SEKCIJA */
         .contact-section { padding: 60px 20px; background: #fff; text-align: center; }
@@ -187,8 +195,9 @@
                 <p>Naš tim inženjera i projektanata vodi vas kroz cijeli proces odabira i projektiranja izolacije u Zagrebu i cijeloj Hrvatskoj.</p>
             </div>
             <div class="why-item">
-                <h3>Transparentnost</h3>
-                <p>Napomena: Nismo u sustavu PDV-a prema čl. 90 st. 1 i 2 Zakona o PDV-u, stoga isti nije iskazan na računu.</p>
+                <h3>Najbolje cijene</h3>
+                <p>Pokažite nam najbolju ponudu, a mi ćemo vam dati još bolju.</p>
+                <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">Napomena: nismo u sustavu PDV-a, pa PDV ne možemo iskazati na računu.</p>
             </div>
         </div>
     </section>
@@ -237,6 +246,7 @@
     </script>
 </body>
 </html>
+
 
 
 
