@@ -1,0 +1,968 @@
+
+// DOM Elements
+const navBtns = document.querySelectorAll('.nav-btn');
+const contentArea = document.getElementById('calculator-content');
+const resultsSection = document.getElementById('results-section');
+const resultsContainer = document.getElementById('results-container');
+
+// State
+let currentModule = 'facade';
+
+// Module HTML Layouts (later we can move these to separate files if needed)
+const templates = {
+    facade: `
+        <div class="module-header" style="margin-bottom: 2rem;">
+            <h2>🧱 Fasada (ETICS & ventilirana)</h2>
+            <p>Izračunajte materijal za kontaktnu ili ventiliranu fasadu.</p>
+        </div>
+        <form id="calc-form">
+            <div class="form-group">
+                <label for="facade-type">Tip fasade</label>
+                <select id="facade-type" name="type" onchange="toggleSubOptions()">
+                    <option value="etics">ETICS (kontaktna - stiropor/vuna)</option>
+                    <option value="ventilated">Ventilirana</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="area">Površina zida (m²)</label>
+                <input type="text" inputmode="decimal" id="area" name="area" placeholder="npr. 150,5" required>
+            </div>
+
+            <!-- ETICS Options -->
+            <div id="etics-options">
+                <div class="form-group">
+                    <label for="insulation-type">Vrsta izolacije</label>
+                    <select id="insulation-type" name="material">
+                        <option value="eps">EPS (stiropor)</option>
+                        <option value="wool">Kamena vuna</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="thickness">Debljina izolacije (cm)</label>
+                    <input type="number" id="thickness" name="thickness" value="10" min="1">
+                </div>
+            </div>
+
+            <!-- Ventilated Options -->
+            <div id="ventilated-options" class="hidden">
+                 <div class="form-group">
+                    <label for="cladding-type">Vrsta obloge</label>
+                    <select id="cladding-type" name="cladding">
+                        <option value="hpl">HPL ploče</option>
+                        <option value="alu">Aluminijski kompozit (alucobond)</option>
+                        <option value="fiber">Vlaknocementne ploče</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="vent-insulation">Debljina vune (cm)</label>
+                    <input type="number" id="vent-insulation" name="vent-thickness" value="10" min="1">
+                </div>
+            </div>
+
+            </div>
+
+            <!-- Contact Form -->
+            <div class="user-details-grid">
+                <div class="form-group">
+                    <label for="user-name">Ime</label>
+                    <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                </div>
+                <div class="form-group">
+                    <label for="user-phone">Kontakt broj</label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                </div>
+                <div class="form-group">
+                    <label for="user-location">Lokacija</label>
+                    <input type="text" id="user-location" name="userLocation" placeholder="Grad/Adresa">
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Izračunaj</button>
+        </form>
+    `,
+    thermal: `
+        <div class="module-header" style="margin-bottom: 2rem;">
+            <h2>🌡️ Termoizolacija</h2>
+            <p>XPS za podove/temelje i Vuna za krovove.</p>
+        </div>
+        <form id="calc-form">
+            <div class="form-group">
+                <label for="thermal-type">Primjena</label>
+                <select id="thermal-type" name="type">
+                    <option value="xps">XPS (podovi, temelji, podrum)</option>
+                    <option value="roof">Kosi krov (staklena/kamena vuna)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="area">Površina (m²)</label>
+                <input type="text" inputmode="decimal" id="area" name="area" placeholder="npr. 50,5" required>
+            </div>
+            <div class="form-group">
+                <label for="thickness">Debljina (cm)</label>
+                <input type="number" id="thickness" name="thickness" value="5">
+            </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="user-details-grid">
+                <div class="form-group">
+                    <label for="user-name">Ime</label>
+                    <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                </div>
+                <div class="form-group">
+                    <label for="user-phone">Kontakt broj</label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                </div>
+                <div class="form-group">
+                    <label for="user-location">Lokacija</label>
+                    <input type="text" id="user-location" name="userLocation" placeholder="Grad/Adresa">
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Izračunaj</button>
+        </form>
+    `,
+    hydro: `
+        <div class="module-header" style="margin-bottom: 2rem;">
+            <h2>💧 Hidroizolacija</h2>
+            <p>Bitumen, Polimer cement ili TPO/PVC folije.</p>
+        </div>
+        <form id="calc-form" onsubmit="handleCalculation(event)">
+            <div class="form-group">
+                <label for="hydro-type">Sustav</label>
+                <select id="hydro-type" name="type" required onchange="toggleHydroOptions()">
+                    <option value="" disabled selected>Odaberite tip...</option>
+                    <option value="bitumen-foundation">Bitumen - temelji</option>
+                    <option value="bitumen-roof">Bitumen - ravni krov</option>
+                    <option value="membrane-roof">TPO/PVC - ravni krov</option>
+                    <option value="pvc-foundation">PVC - temelji</option>
+                    <option value="polymer">Polimercement - terase/kupaonice</option>
+                    <option value="isoflex-pu500">Poliuretan, PU - terase</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="area">Površina (m²)</label>
+                <input type="text" inputmode="decimal" id="area" name="area" placeholder="npr. 30,5" required>
+            </div>
+            
+            <div id="membrane-options" class="hidden">
+                 <div class="form-group">
+                     <label for="membrane-mat">Materijal membrane</label>
+                     <select id="membrane-mat" name="membraneMaterial" onchange="toggleMembraneThickness()">
+                        <option value="tpo">TPO (termoplastični)</option>
+                        <option value="pvc">PVC (polivinil klorid)</option>
+                     </select>
+                </div>
+                <!-- TPO Thickness Options -->
+                <div class="form-group" id="tpo-thickness-group">
+                    <label for="tpo-thickness">Debljina TPO folije</label>
+                    <select id="tpo-thickness" name="tpoThickness">
+                        <option value="1.5">1.5 mm</option>
+                        <option value="1.8">1.8 mm</option>
+                        <option value="2.0">2.0 mm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="hydro-xps-options" class="hidden">
+                <div class="form-group">
+                    <label for="hydro-thickness">Debljina XPS-a (cm) (min. 5cm)</label>
+                    <input type="number" id="hydro-thickness" name="hydroThickness" value="5" min="5">
+                </div>
+            </div>
+
+            <div id="polymer-options" class="hidden">
+                 <div class="form-group">
+                    <label for="polymer-finish">Završna obloga</label>
+                    <select id="polymer-finish" name="polymerFinish">
+                        <option value="none">Bez završne obloge</option>
+                        <option value="ceramics">Keramika (Pločice)</option>
+                    </select>
+                </div>
+            </div>
+
+            </div>
+
+            <!-- Contact Form -->
+            <div class="user-details-grid">
+                <div class="form-group">
+                    <label for="user-name">Ime</label>
+                    <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                </div>
+                <div class="form-group">
+                    <label for="user-phone">Kontakt broj</label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                </div>
+                <div class="form-group">
+                    <label for="user-location">Lokacija</label>
+                    <input type="text" id="user-location" name="userLocation" placeholder="Grad/Adresa">
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Izračunaj</button>
+        </form>
+    `,
+    fence: `
+        <div class="module-header" style="margin-bottom: 2rem;">
+            <h2>🏡 Panel ograde</h2>
+            <p>Izračun panelne ograde (2D ili 3D), stupova i pribora.</p>
+        </div>
+        <form id="calc-form">
+            <!-- 0. Color Selection -->
+            <div class="form-group">
+                <label>Odaberite Boju</label>
+                <div class="color-selection-row">
+                    <div class="color-btn btn-ral-7016 active" onclick="selectColor('7016', this)">
+                        ANTRACIT - RAL 7016
+                    </div>
+                    <div class="color-btn btn-ral-6005" onclick="selectColor('6005', this)">
+                        ZELENO - RAL 6005
+                    </div>
+                </div>
+                <!-- Hidden input to store selection -->
+                <input type="hidden" id="fence-color" name="fenceColor" value="7016">
+            </div>
+
+            <!-- 1. Panel Type Selection -->
+            <div class="form-group">
+                <label for="panel-type">Tip panela</label>
+                <select id="panel-type" name="panelType" onchange="toggleFenceOptions()">
+                    <option value="2d">2D panel (6/5/6 mm)</option>
+                    <option value="3d">3D panel</option>
+                </select>
+            </div>
+
+            <!-- 2. Thickness (Only for 3D) -->
+            <div id="fence-3d-options" class="hidden">
+                <div class="form-group">
+                    <label for="panel-thickness">Debljina žice (3D)</label>
+                    <select id="panel-thickness" name="panelThickness">
+                        <option value="4">4 mm</option>
+                        <option value="5">5 mm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="length">Ukupna dužina ograde (m)</label>
+                <input type="text" inputmode="decimal" id="length" name="length" placeholder="npr. 25,5" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="height">Visina panela</label>
+                <select id="height" name="height">
+                    <option value="103">103 cm</option>
+                    <option value="123">123 cm</option>
+                    <option value="153">153 cm</option>
+                    <option value="173">173 cm</option>
+                    <option value="203">203 cm</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="post-type">Tip stupova (60x60mm, sa kapom)</label>
+                <select id="post-type" name="postType">
+                     <option value="plate">S pločicom (za beton)</option>
+                     <option value="concrete">Za betoniranje (stup duži min. 50cm od visine panela)</option>
+                </select>
+            </div>
+
+            <!-- Layout Options -->
+             <div class="form-group">
+                <label>Izgled ograde</label>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="layout-btn active" id="layout-straight" onclick="selectLayout('straight')">
+                        <div class="layout-btn-text">Ravna</div>
+                    </div>
+                    <div class="layout-btn" id="layout-corners" onclick="selectLayout('corners')">
+                        <input type="number" id="fence-corners" name="fenceCorners" placeholder="Broj kuteva ograde" min="0" onfocus="selectLayout('corners')">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Installation Option -->
+            <div class="form-group">
+                <label>Trebate montažu?</label>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="layout-btn" id="install-yes" onclick="selectInstallation('yes')">
+                        <div class="layout-btn-text">DA</div>
+                    </div>
+                    <div class="layout-btn active" id="install-no" onclick="selectInstallation('no')">
+                        <div class="layout-btn-text">NE</div>
+                    </div>
+                </div>
+                <input type="hidden" id="fence-installation" name="fenceInstallation" value="no">
+                <p style="font-size: 0.9rem; color: black; font-weight: 700; margin-top: 0.5rem; margin-bottom: 0;">
+                    * Iznos montaže je informativnog karaktera i vrijedi za Zagreb i okolicu do 20km.
+                </p>
+            </div>
+            
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="user-details-grid">
+                <div class="form-group">
+                    <label for="user-name">Ime</label>
+                    <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                </div>
+                <div class="form-group">
+                    <label for="user-phone">Kontakt broj</label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                </div>
+                <div class="form-group">
+                    <label for="user-location">Lokacija</label>
+                    <input type="text" id="user-location" name="userLocation" placeholder="Grad/Adresa">
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Izračunaj</button>
+        </form>
+    `
+};
+
+// Event Listeners
+navBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class
+        navBtns.forEach(b => b.classList.remove('active'));
+        // Add active class
+        btn.classList.add('active');
+
+        currentModule = btn.dataset.module;
+        loadModule(currentModule);
+    });
+});
+
+// Functions
+function loadModule(moduleName) {
+    contentArea.innerHTML = templates[moduleName];
+    // Re-attach listeners for the new form
+    const form = document.getElementById('calc-form');
+    if (form) {
+        form.addEventListener('submit', handleCalculation);
+
+        // Auto-format main input field (area or length)
+        const mainInput = form.querySelector('input[name="area"], input[name="length"]');
+        if (mainInput) {
+            mainInput.addEventListener('blur', function () {
+                let val = this.value.replace(',', '.');
+                if (val && !isNaN(val)) {
+                    this.value = parseFloat(val).toFixed(2).replace('.', ',');
+                }
+            });
+        }
+    }
+
+    // Initial toggle check for Facade (and now Fence)
+    if (moduleName === 'facade') toggleSubOptions();
+    if (moduleName === 'hydro') toggleHydroOptions();
+    if (moduleName === 'fence') {
+        toggleFenceOptions();
+        updateFenceHeights();
+    }
+}
+
+// UI Toggles
+window.selectLayout = function (type) {
+    const btnStraight = document.getElementById('layout-straight');
+    const btnCorners = document.getElementById('layout-corners');
+    const inputCorners = document.getElementById('fence-corners');
+
+    if (type === 'straight') {
+        btnStraight.classList.add('active');
+        btnCorners.classList.remove('active');
+        // Clear input logic
+        if (inputCorners) inputCorners.value = '';
+    } else {
+        btnCorners.classList.add('active');
+        btnStraight.classList.remove('active');
+        // If simply clicked container, focus input
+        if (inputCorners && document.activeElement !== inputCorners) {
+            inputCorners.focus();
+        }
+    }
+}
+
+window.selectInstallation = function (val) {
+    const btnYes = document.getElementById('install-yes');
+    const btnNo = document.getElementById('install-no');
+    const input = document.getElementById('fence-installation');
+
+    input.value = val;
+
+    if (val === 'yes') {
+        btnYes.classList.add('active');
+        btnNo.classList.remove('active');
+    } else {
+        btnNo.classList.add('active');
+        btnYes.classList.remove('active');
+    }
+}
+
+window.toggleFenceOptions = function () {
+    const type = document.getElementById('panel-type').value;
+    const opt3d = document.getElementById('fence-3d-options');
+
+    if (type === '3d') {
+        opt3d.classList.remove('hidden');
+    } else {
+        opt3d.classList.add('hidden');
+    }
+    // Refresh height list
+    updateFenceHeights();
+}
+
+// Data for heights
+const fenceHeights = {
+    '2d': [83, 103, 123, 143, 163, 183, 203],
+    '3d': [83, 103, 123, 153, 173, 203]
+};
+
+window.updateFenceHeights = function () {
+    const type = document.getElementById('panel-type').value;
+    const heightSelect = document.getElementById('height');
+    const validHeights = fenceHeights[type] || [];
+    const currentVal = parseInt(heightSelect.value) || 0;
+
+    heightSelect.innerHTML = '';
+
+    validHeights.forEach(h => {
+        const option = document.createElement('option');
+        option.value = h;
+        option.text = `${h} cm`;
+        if (h === currentVal) option.selected = true;
+        heightSelect.appendChild(option);
+    });
+}
+
+window.toggleSubOptions = function () {
+    const type = document.getElementById('facade-type').value;
+    const eticsOpts = document.getElementById('etics-options');
+    const ventOpts = document.getElementById('ventilated-options');
+
+    if (type === 'etics') {
+        eticsOpts.classList.remove('hidden');
+        ventOpts.classList.add('hidden');
+    } else {
+        eticsOpts.classList.add('hidden');
+        ventOpts.classList.remove('hidden');
+    }
+}
+
+window.toggleHydroOptions = function () {
+    const type = document.getElementById('hydro-type').value;
+    const membraneOpts = document.getElementById('membrane-options');
+    const xpsOpts = document.getElementById('hydro-xps-options');
+
+    // Show Membrane options only for TPO/PVC Roof
+    if (type === 'membrane-roof') {
+        membraneOpts.classList.remove('hidden');
+        toggleMembraneThickness(); // Check sub-options
+    } else {
+        membraneOpts.classList.add('hidden');
+    }
+
+    // Show XPS options for Foundations (Bitumen/PVC) AND now Roof (TPO/PVC)
+    if (type === 'bitumen-foundation' || type === 'pvc-foundation' || type === 'membrane-roof') {
+        xpsOpts.classList.remove('hidden');
+    } else {
+        xpsOpts.classList.add('hidden');
+    }
+
+    // Show Polymer Options
+    const polymerOpts = document.getElementById('polymer-options');
+    if (polymerOpts) {
+        if (type === 'polymer') {
+            polymerOpts.classList.remove('hidden');
+        } else {
+            polymerOpts.classList.add('hidden');
+        }
+    }
+}
+
+window.toggleMembraneThickness = function () {
+    const matSelect = document.getElementById('membrane-mat');
+    const tpoGroup = document.getElementById('tpo-thickness-group');
+
+    if (matSelect && matSelect.value === 'tpo') {
+        tpoGroup.classList.remove('hidden');
+    } else {
+        tpoGroup.classList.add('hidden');
+    }
+}
+
+// Main Calculator Logic
+function handleCalculation(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+
+    console.log("Calculating for module:", currentModule, data);
+
+    let results = [];
+
+    // --- LOGIC ROUTER ---
+    if (currentModule === 'facade') {
+        results = calculateFacade(data);
+    } else if (currentModule === 'thermal') {
+        results = calculateThermal(data);
+    } else if (currentModule === 'hydro') {
+        results = calculateHydro(data);
+    } else if (currentModule === 'fence') {
+        results = calculateFence(data);
+    }
+
+    displayResults(results);
+}
+
+// --- CALCULATION ENGINES ---
+
+function calculateFacade(data) {
+    const area = parseFloat(data.area.replace(',', '.'));
+    const waste = 1.05; // 5% waste
+    let items = [];
+
+    if (data.type === 'etics') {
+        // ETICS Logic
+        items.push({ name: `${data.material.toUpperCase()} izolacijske ploče (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²' });
+        items.push({ name: 'Ljepilo za ljepljenje (cca 5kg/m²)', value: (area * 5).toFixed(1), unit: 'kg' });
+        items.push({ name: 'Ljepilo za armiranje (cca 4kg/m²)', value: (area * 4).toFixed(1), unit: 'kg' });
+        items.push({ name: 'Fasadna mrežica (1.1m/m²)', value: (area * 1.1).toFixed(2), unit: 'm²' });
+        items.push({ name: 'Tiple (6 kom/m²)', value: Math.ceil(area * 6), unit: 'kom' });
+        items.push({ name: 'Primer (0.2L/m²)', value: (area * 0.2).toFixed(1), unit: 'L' });
+        items.push({ name: 'Završna žbuka (2.5kg/m²)', value: (area * 2.5).toFixed(1), unit: 'kg' });
+
+    } else {
+        // Ventilated Logic
+        items.push({ name: 'Kamena vuna s voalom', value: (area * waste).toFixed(2), unit: 'm²' });
+        items.push({ name: `Fasadna obloga (${data.cladding === 'alu' ? 'Alu-kompozit' : data.cladding.toUpperCase()})`, value: (area * waste).toFixed(2), unit: 'm²' });
+
+        // Generic substructure estimation
+        items.push({ name: 'Alu nosači (fiksni + klizni ~2.5/m²)', value: Math.ceil(area * 2.5), unit: 'kom' });
+        items.push({ name: 'Vertikalni profili (L/T ~2.2m/m²)', value: (area * 2.2).toFixed(1), unit: 'm' });
+        items.push({ name: 'Vijci/Zakovice (cca 15/m²)', value: Math.ceil(area * 15), unit: 'kom' });
+    }
+
+    return items;
+}
+
+function calculateThermal(data) {
+    const area = parseFloat(data.area.replace(',', '.'));
+    const waste = 1.05;
+    let items = [];
+
+    if (data.type === 'xps') {
+        const thickness = parseInt(data.thickness);
+        const xpsPrice = getXPSPrice(thickness);
+
+        items.push({ name: `XPS ploče (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: xpsPrice });
+        items.push({ name: 'Ljepilo/Pjena (opcionalno)', value: Math.ceil(area / 10), unit: 'pak', price: 0 });
+        // Čepasta folija za zaštitu temelja
+        items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
+    } else {
+        const thickness = parseInt(data.thickness);
+        const woolPrice = getWoolPrice(thickness);
+
+        items.push({ name: `Mineralna vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
+        items.push({ name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al });
+    }
+    return items;
+}
+
+function calculateHydro(data) {
+    const area = parseFloat(data.area.replace(',', '.'));
+    let items = [];
+
+    // --- BITUMEN TEMELJI ---
+    if (data.type === 'bitumen-foundation') {
+        const thickness = parseInt(data.hydroThickness) || 5; // Default 5cm
+        const xpsPrice = getXPSPrice(thickness);
+
+        // 1. Bitumen (Premaz + Traka)
+        items.push({ name: 'Bitumenski premaz', value: (area * 0.3).toFixed(1), unit: 'L', price: 0 });
+        items.push({ name: 'Bitumenska traka (Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4 });
+
+        // 2. XPS
+        items.push({ name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        items.push({ name: 'Ljepilo/Pjena za XPS', value: Math.ceil(area / 10), unit: 'pak', price: 0 });
+
+        // 3. Čepasta folija
+        items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
+
+    } else if (data.type === 'bitumen-roof') {
+        items.push({ name: 'Bitumenski premaz', value: (area * 0.3).toFixed(1), unit: 'L', price: 0 });
+        items.push({ name: 'Bitumenska traka (Diamond P4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4 });
+        items.push({ name: 'Geotekstil', value: (area * 1.1).toFixed(2), unit: 'm²', price: 0 });
+
+        // --- MEMBRANE (TPO/PVC - KROV) ---
+    } else if (data.type === 'membrane-roof') {
+        const waste = 1.10;
+        const matType = data.membraneMaterial || 'tpo';
+        const tpoThickness = data.tpoThickness || '1.5';
+
+        // XPS Params
+        const thickness = parseInt(data.hydroThickness) || 5;
+        const xpsPrice = getXPSPrice(thickness);
+
+        let folijaPrice = 0;
+        let naziv = "";
+
+        if (matType === 'tpo') {
+            if (tpoThickness === '1.8') {
+                folijaPrice = prices.membranes.tpo_18;
+                naziv = "TPO folija 1.8mm";
+            } else if (tpoThickness === '2.0') {
+                folijaPrice = prices.membranes.tpo_20;
+                naziv = "TPO folija 2.0mm";
+            } else {
+                folijaPrice = prices.membranes.tpo_15;
+                naziv = "TPO folija 1.5mm";
+            }
+        } else {
+            folijaPrice = prices.membranes.pvc_krov;
+            naziv = "PVC folija (krov)";
+        }
+
+        // 1. XPS (First, as base)
+        items.push({ name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+
+        // 2. Foil & Layers
+        items.push({ name: `${naziv} (10% preklop)`, value: (area * waste).toFixed(2), unit: 'm²', price: folijaPrice });
+        items.push({ name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
+
+        const limPrice = (matType === 'tpo') ? prices.others.tpo_lim : prices.others.pvc_lim;
+        items.push({ name: 'Limovi (2x1m) - Procjena', value: 4, unit: 'kom', price: limPrice });
+
+        // --- PVC - TEMELJI ---
+    } else if (data.type === 'pvc-foundation') {
+        const thickness = parseInt(data.hydroThickness) || 5;
+        const xpsPrice = getXPSPrice(thickness);
+
+        // 1. PVC + Geotekstil
+        items.push({ name: 'PVC folija za temelje (BSL 1.5mm)', value: (area * 1.10).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji });
+        items.push({ name: 'Geotekstil (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: 0 });
+
+        // 2. XPS
+        items.push({ name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        items.push({ name: 'Ljepilo/Pjena za XPS', value: Math.ceil(area / 10), unit: 'pak', price: 0 });
+
+        // 3. Čepasta folija
+        items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
+
+    } else if (data.type === 'polymer') {
+        // Polymer
+        items.push({ name: 'Polimercement (Aquamat Elastic) 2 sloja', value: (area * 3).toFixed(1), unit: 'kg', price: prices.chemicals.aquamat_elastic });
+        items.push({ name: 'Brtveća traka', value: Math.ceil(Math.sqrt(area) * 4), unit: 'm', price: 0 });
+
+        // Add Tile Adhesive if Ceramics selected
+        if (data.polymerFinish === 'ceramics') {
+            items.push({ name: 'Isomat AK-20 (ljepilo za pločice, cca 3-4kg/m²)', value: (area * 3.5).toFixed(1), unit: 'kg', price: prices.chemicals.ak20 });
+        }
+
+    } else if (data.type === 'isoflex-pu500') {
+        // Isoflex PU500 (PU - Terase)
+        // 1. Primer
+        items.push({ name: 'Primer (Primer-PU 100 ili sl.)', value: (area * 0.2).toFixed(1), unit: 'kg', price: 0 });
+
+        // 2. Membrane (2 sloja - 1.5kg/m2)
+        items.push({ name: 'Isomat Isoflex PU500 (2 sloja)', value: (area * 1.5).toFixed(1), unit: 'kg', price: prices.chemicals.isoflex_pu500 });
+
+        // 3. Geotekstil? Tape? - Assuming Brtveća traka is useful here too for corners
+        items.push({ name: 'Brtveća traka', value: Math.ceil(Math.sqrt(area) * 4), unit: 'm', price: 0 });
+    }
+
+    return items;
+}
+
+// Color Selection Logic
+window.selectColor = function (ral, btn) {
+    // Update hidden input
+    document.getElementById('fence-color').value = ral;
+
+    // Update UI
+    const btns = document.querySelectorAll('.color-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function calculateFence(data) {
+    const length = parseFloat(data.length.replace(',', '.'));
+    const height = data.height; // "103", "123", ...
+    const type = data.panelType; // "2d" or "3d"
+    const color = data.fenceColor === '6005' ? 'Zelena (RAL 6005)' : 'Antracit (RAL 7016)';
+
+    let items = [];
+
+    // Construct Price Key
+    let panelPriceKey = "";
+    let panelName = "";
+
+    if (type === '2d') {
+        panelPriceKey = `panel_2d_${height}`;
+        panelName = `2D panel 6/5/6 mm (${height}cm) - ${color}`;
+    } else {
+        const thickness = data.panelThickness || '4'; // Default to 4 if missing
+        panelPriceKey = `panel_3d_${thickness}_${height}`;
+        panelName = `3D panel ${thickness}mm (${height}cm) - ${color}`;
+    }
+
+    // 1. Paneli (Dužina / 2.5m)
+    const numPanels = Math.ceil(length / 2.5);
+    const panelPrice = prices.fence[panelPriceKey] || 0;
+
+    items.push({
+        name: panelName,
+        value: numPanels,
+        unit: 'kom',
+        price: panelPrice
+    });
+
+    // 2. Stupovi (Broj panela + 1 za početak/kraj)
+    // Za savršeni niz n panela treba n+1 stupova.
+    // Svaki kut dodaje još 1 stup (prekid niza).
+    const corners = parseInt(data.fenceCorners) || 0;
+    const numPosts = numPanels + 1 + corners;
+
+    let postHeight = parseInt(height) + 2;
+
+    if (data.postType === 'concrete') {
+        const h = parseInt(height);
+        // Standard lengths: 155, 175, 205, 225, 255
+        if (h <= 103) postHeight = 155;
+        else if (h <= 123) postHeight = 175;
+        else if (h <= 153) postHeight = 205; // Covers 143(2D) and 153(3D)
+        else if (h <= 173) postHeight = 225; // Covers 163(2D) and 173(3D)
+        else postHeight = 255; // Covers 183(2D) and 203
+    }
+
+    const postPriceKey = `post_${postHeight}`;
+    const postPrice = prices.fence[postPriceKey] || 0;
+
+    const postTypeLabel = data.postType === 'plate' ? 's pločicom' : 'za betoniranje';
+
+    items.push({
+        name: `Stup ${postHeight}cm (${postTypeLabel}) - ${color}`,
+        value: numPosts,
+        unit: 'kom',
+        price: postPrice
+    });
+
+    // 3. Pribor
+    // Spojnice: (Broj stupova x Broj spojnica po stupu)
+    // 2D paneli (103-203cm) usually 2-4 clamps depending on height. Estimate 3 per post avg.
+    // 3D paneli usually 3-4 clamps.
+    // Let's use a mapping or simple estimate: ceil(height/50cm) clamps per post?
+    // Simplified: 3 clamps/post for <150cm, 4 clamps/post for >150cm.
+    const clampsPerPost = postHeight > 150 ? 4 : 3;
+    const totalClamps = numPosts * clampsPerPost;
+
+    items.push({
+        name: 'Spojnice (Komplet s vijkom)',
+        value: totalClamps,
+        unit: 'kom',
+        price: prices.fence.set_spojnica
+    });
+
+    if (data.postType === 'plate') {
+        // Anker vijci (4 po stupu)
+        items.push({
+            name: 'Anker vijci, M10 (za montažu na beton)',
+            value: numPosts * 4,
+            unit: 'kom',
+            price: prices.fence.anker_vijci
+        });
+    }
+
+    // 4. Montaža (Optional)
+    if (data.fenceInstallation === 'yes') {
+        let installPrice = prices.fence.montaza_plate;
+        let installName = 'Usluga montaže ograde';
+
+        if (data.postType === 'concrete') {
+            installPrice = prices.fence.montaza_concrete;
+            installName += '<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(iskop i beton uključen u cijenu montaže)</small>';
+        }
+
+        items.push({
+            name: installName,
+            value: length.toFixed(2),
+            unit: 'm',
+            price: installPrice
+        });
+    }
+
+    return items;
+}
+
+function displayResults(items) {
+    resultsSection.classList.remove('hidden');
+    resultsContainer.innerHTML = '';
+
+    // Header Row
+    const header = document.createElement('div');
+    header.className = 'result-item result-header-row';
+    header.innerHTML = `
+        <span class="col-name">Materijal</span>
+        <span class="col-qty">Količina</span>
+        <span class="col-price">Cijena/jed</span>
+        <span class="col-total">Ukupno</span>
+    `;
+    resultsContainer.appendChild(header);
+
+    let grandTotal = 0;
+
+    items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+
+        const qty = parseFloat(item.value);
+        const unitPrice = item.price || 0;
+        const totalCost = qty * unitPrice;
+
+        if (unitPrice > 0) grandTotal += totalCost;
+
+        // Formatiranje brojeva (hr-HR lokacija: točka za tisućice, zarez za decimale)
+        const fmtPrice = unitPrice > 0 ? unitPrice.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €' : '-';
+        const fmtTotal = unitPrice > 0 ? totalCost.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €' : '-';
+
+        div.innerHTML = `
+            <span class="result-label col-name">${item.name}</span>
+            <span class="result-value col-qty">${item.value} <small>${item.unit}</small></span>
+            <span class="result-price col-price">${fmtPrice}</span>
+            <span class="result-total col-total">${fmtTotal}</span>
+        `;
+        resultsContainer.appendChild(div);
+    });
+
+    // Grand Total Row
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'result-item grand-total';
+    const fmtGrandTotal = grandTotal.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Conditional Styling for Fence Module
+    if (currentModule === 'fence') {
+        const fenceColor = document.getElementById('fence-color').value;
+        const colorCode = fenceColor === '6005' ? '#0B3D2E' : '#383E42'; // Green or Anthracite
+        totalDiv.style.backgroundColor = colorCode;
+        totalDiv.style.color = 'white'; // White text on dark bg
+
+        // Add specific class to handle hover overrides if needed, 
+        // but inline style might persist. We can handle hover via 'onmouseenter' / 'onmouseleave' 
+        // or effectively by toggling classes. 
+        // Simplest: Event listeners here to swap styles.
+        totalDiv.addEventListener('mouseenter', () => {
+            totalDiv.style.backgroundColor = 'rgba(230, 126, 34, 0.15)'; // Light Orange
+            totalDiv.style.color = 'black';
+            // Target inner strong tags if necessary, but inheritance usually works for color
+            const strongs = totalDiv.querySelectorAll('strong');
+            strongs.forEach(s => s.style.color = 'black');
+        });
+        totalDiv.addEventListener('mouseleave', () => {
+            totalDiv.style.backgroundColor = colorCode;
+            totalDiv.style.color = 'white';
+            const strongs = totalDiv.querySelectorAll('strong');
+            strongs.forEach(s => s.style.color = 'white');
+        });
+
+        // Initial White Text for child elements
+        // We'll handle this in the innerHTML construction or verify after
+    }
+
+    totalDiv.innerHTML = `
+        <span class="col-name"><strong>SVEUKUPNO:</strong></span>
+        <span class="col-qty"></span>
+        <span class="col-price"></span>
+        <span class="col-total"><strong>${fmtGrandTotal} €</strong></span>
+    `;
+
+    if (currentModule === 'fence') {
+        // Ensure initial inner text is white
+        const strongs = totalDiv.querySelectorAll('strong');
+        strongs.forEach(s => s.style.color = 'white');
+    }
+
+    resultsContainer.appendChild(totalDiv);
+
+    resultsSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Export Logic
+const pdfBtn = document.getElementById('pdf-btn');
+const emailBtn = document.getElementById('email-btn');
+
+if (pdfBtn) {
+    pdfBtn.addEventListener('click', () => {
+        const element = document.getElementById('results-section');
+        const opt = {
+            margin: 10,
+            filename: `izracun_${currentModule}_${new Date().toISOString().split('T')[0]}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        // Temporarily hide buttons for clean PDF
+        const btns = document.querySelector('.action-buttons');
+        btns.style.display = 'none';
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btns.style.display = 'flex'; // Restore buttons
+        });
+    });
+}
+
+const emailBtnSend = document.getElementById('email-btn-send');
+
+if (emailBtnSend) {
+    emailBtnSend.addEventListener('click', () => {
+        const emailInput = document.getElementById('user-email');
+        const emailTo = emailInput.value.trim();
+
+        if (!emailTo) {
+            alert("Molim vas upišite email adresu.");
+            return;
+        }
+
+        const items = document.querySelectorAll('.result-item:not(.result-header-row)');
+        let body = `Poštovani,\n\nOvo je izračun materijala za kategoriju: ${currentModule.toUpperCase()}\n\n`;
+
+        items.forEach(item => {
+            const name = item.querySelector('.col-name').innerText;
+            const qty = item.querySelector('.col-qty').innerText;
+            const price = item.querySelector('.col-price').innerText;
+            const total = item.querySelector('.col-total').innerText;
+
+            body += `${name} | ${qty} | ${price} | ${total}\n`;
+        });
+
+        // Add Grand Total logic if present in text
+        const grandTotal = document.querySelector('.grand-total .col-total');
+        if (grandTotal) {
+            body += `\nSVEUKUPNO (stavke s cijenom): ${grandTotal.innerText}`;
+        }
+
+        body += `\n\nLijep pozdrav,\n2LMF Kalkulator`;
+
+        // Open mail client addressed TO the input email
+        window.location.href = `mailto:${emailTo}?subject=Izracun 2LMF - ${currentModule.toUpperCase()}&body=${encodeURIComponent(body)}`;
+    });
+}
+
+// Load default
+loadModule('facade');
