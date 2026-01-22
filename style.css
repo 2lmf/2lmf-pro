@@ -160,29 +160,32 @@ nav a:hover {
     background-position: center;
     background-attachment: fixed;
     color: #fff;
-    padding: 40px 20px;
-    /* Reduced padding */
+    padding: 20px 10px;
+    /* Tightly compressed */
     text-align: center;
 }
 
 .why-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 60px;
+    gap: 40px;
     max-width: 1300px;
-    margin: 40px auto;
+    margin: 20px auto;
+    /* Reduced margin */
 }
 
 .why-item h3 {
     color: #e67e22;
     font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .mission-inline {
     max-width: 900px;
-    margin: 60px auto 0;
-    padding-top: 40px;
+    margin: 20px auto 0;
+    /* Reduced margin-top */
+    padding-top: 20px;
+    /* Reduced padding-top */
     border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -381,8 +384,12 @@ nav a:hover {
     font-size: 2.5rem;
     /* Increased size */
     color: white;
-    margin-bottom: 0.2rem;
-    /* Reduced margin */
+    margin-bottom: 0;
+    /* Removed margin */
+    margin-top: -10px;
+    /* Pull up */
+    line-height: 1;
+    /* Tighter line height */
     letter-spacing: 1px;
     font-weight: 700;
     /* Bold */
