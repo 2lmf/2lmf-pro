@@ -1,0 +1,77 @@
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; overflow-x: hidden; scroll-behavior: smooth; }
+
+/* ANIMACIJE */
+.animate-block { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.animate-block.appear { opacity: 1; transform: translateY(0); }
+
+/* HEADER */
+header { background: #e67e22; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: relative; z-index: 1000; }
+.logo-container { display: flex; align-items: center; gap: 20px; }
+.logo { max-height: 75px; width: auto; display: block; }
+.header-tagline { font-size: 1.3rem; font-weight: 700; color: #000; line-height: 1.2; white-space: nowrap; }
+
+nav { display: flex; align-items: center; flex-wrap: wrap; margin-top: 0; }
+nav > a { color: #000; text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1.1rem; padding: 10px 0; }
+nav a:hover { color: #fff; }
+
+/* HERO */
+.hero { 
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); 
+    background-size: cover; background-position: center; height: 35vh; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    text-align: center; color: #fff; padding: 20px; 
+}
+.hero h1 { font-size: 3rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
+
+/* LAYOUT */
+.blog-container { max-width: 1200px; margin: 40px auto; display: flex; gap: 30px; padding: 0 20px; }
+
+/* SIDEBAR */
+.blog-sidebar { width: 280px; position: sticky; top: 20px; align-self: flex-start; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 4px solid #e67e22; height: fit-content; }
+.blog-sidebar h4 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.blog-sidebar ul { list-style: none; padding: 0; }
+.blog-sidebar li { margin-bottom: 15px; }
+.blog-sidebar a { text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; display: block; }
+.blog-sidebar a:hover { color: #e67e22; }
+
+/* POSTS */
+.page-content { flex: 1; max-width: 850px; }
+.blog-post { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 50px; scroll-margin-top: 40px; }
+
+/* POPRAVLJENA VISINA SLIKE (350px) */
+.blog-post img { 
+    width: 100%; 
+    height: 350px;       /* Fiksna visina */
+    object-fit: cover;   /* Cropanje viška slike */
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+}
+
+.blog-post h2 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #e67e22; padding-bottom: 10px; display: inline-block; }
+.blog-date { color: #888; font-size: 0.9rem; margin-bottom: 20px; display: block; font-style: italic; }
+.blog-post h3 { color: #e67e22; margin-top: 25px; margin-bottom: 10px; }
+.blog-post ul { padding-left: 20px; margin-bottom: 15px; }
+.blog-post li { margin-bottom: 10px; }
+
+/* TABLICA STIL */
+.comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95rem; }
+.comparison-table th, .comparison-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+.comparison-table th { background-color: #333; color: white; }
+.comparison-table tr:nth-child(even) { background-color: #f9f9f9; }
+
+.blog-cta { background: #fdf2e9; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: center; font-weight: bold; }
+.blog-cta a { color: #e67e22; text-decoration: none; border-bottom: 2px solid #e67e22; }
+.hashtags { color: #7f8c8d; font-size: 0.85rem; margin-top: 25px; font-style: italic; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.4; }
+
+/* FOOTER */
+footer { background: #e67e22; color: #000; text-align: center; padding: 30px 0; margin-top: 60px; font-weight: 600; }
+
+@media (max-width: 992px) { .blog-container { flex-direction: column; } .blog-sidebar { width: 100%; position: relative; } }
+@media (max-width: 768px) { 
+    header { flex-direction: column; padding: 1rem; text-align: center; } 
+    .logo-container { flex-direction: column; margin-bottom: 15px; } 
+    .hero h1 { font-size: 2rem; }
+    .comparison-table { font-size: 0.85rem; }
+    .comparison-table th, .comparison-table td { padding: 5px; }
+    .blog-post img { height: 250px; }
+}
