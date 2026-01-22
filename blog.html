@@ -59,8 +59,14 @@
         .page-content { flex: 1; max-width: 850px; }
         .blog-post { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 50px; scroll-margin-top: 40px; }
         
-        /* DODATNO ZA SLIKE U BLOGU */
-        .blog-post img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
+        /* POPRAVLJENA VISINA SLIKE */
+        .blog-post img { 
+            width: 100%; 
+            height: 350px;       /* Fiksna visina */
+            object-fit: cover;   /* Cropanje viška slike */
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+        }
         
         .blog-post h2 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #e67e22; padding-bottom: 10px; display: inline-block; }
         .blog-date { color: #888; font-size: 0.9rem; margin-bottom: 20px; display: block; font-style: italic; }
@@ -88,6 +94,8 @@
             .hero h1 { font-size: 2rem; }
             .comparison-table { font-size: 0.85rem; }
             .comparison-table th, .comparison-table td { padding: 5px; }
+            /* Na mobitelu možemo malo smanjiti sliku da ne zauzme cijeli ekran */
+            .blog-post img { height: 250px; }
         }
     </style>
 </head>
@@ -367,6 +375,7 @@
     </script>
 </body>
 </html>
+
 
 
 
