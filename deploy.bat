@@ -1,30 +1,32 @@
 @echo off
 cd /d "%~dp0"
+set GIT_PATH="C:\Program Files\Git\cmd\git.exe"
+
 echo ----------------------------------------
 echo PRIPREMA ZA SLANJE NA GITHUB (Popravljeno)
 echo ----------------------------------------
 echo.
 
 echo 1. Postavljanje korisnickih podataka (2LMF PRO)...
-git config user.email "2lmf.info@gmail.com"
-git config user.name "2LMF PRO"
+%GIT_PATH% config user.email "2lmf.info@gmail.com"
+%GIT_PATH% config user.name "2LMF PRO"
 
 echo 2. Inicijalizacija...
-git init
+%GIT_PATH% init
 
 echo 3. Dodavanje datoteka...
-git add .
+%GIT_PATH% add .
 
 echo 4. Spremanje promjena...
-git commit -m "Initial commit of website"
+%GIT_PATH% commit -m "Update footer design (Split Header/Footer)"
 
 echo 5. Povezivanje s repozitorijem...
-git remote remove origin 2>nul
-git remote add origin https://github.com/2lmf/2lmf-web.git
+%GIT_PATH% remote remove origin 2>nul
+%GIT_PATH% remote add origin https://github.com/2lmf/2lmf-web.git
 
 echo 6. Slanje na GitHub...
-git branch -M main
-git push -u origin main
+%GIT_PATH% branch -M main
+%GIT_PATH% push -u origin main
 
 echo.
 echo ----------------------------------------

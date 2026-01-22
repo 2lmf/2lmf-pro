@@ -339,6 +339,16 @@ nav a:hover {
 }
 
 /* FOOTER (Dark Theme V2 Refined) */
+.footer-header-mirror {
+    background: #e67e22;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+    /* Mirrors header but without nav */
+}
+
 .main-footer {
     background-color: #1a1a1a;
     /* Very Dark Grey */
@@ -346,7 +356,8 @@ nav a:hover {
     /* Light Grey Text */
     padding: 2.5rem 0 1.5rem;
     /* Reduced padding */
-    margin-top: 60px;
+    margin-top: 0;
+    /* Margin moved to header mirror */
     border-top: 1px solid #333;
 }
 
