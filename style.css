@@ -339,23 +339,14 @@ nav a:hover {
 }
 
 /* FOOTER (Dark Theme V2 Refined) */
-.footer-header-mirror {
-    background: #e67e22;
-    color: #fff;
-    margin-top: 60px;
-    padding: 0;
-    /* Mirrors header but without nav */
-}
-
 .main-footer {
-    background-color: #1a1a1a;
-    /* Very Dark Grey */
+    background-color: #000000;
+    /* Pure Black */
     color: #b0b0b0;
     /* Light Grey Text */
     padding: 2.5rem 0 1.5rem;
     /* Reduced padding */
-    margin-top: 0;
-    /* Margin moved to header mirror */
+    margin-top: 60px;
     border-top: 1px solid #333;
 }
 
@@ -389,6 +380,8 @@ nav a:hover {
     color: white;
     margin-bottom: 1rem;
     letter-spacing: 1px;
+    font-weight: 700;
+    /* Bold */
 }
 
 .footer-logo {
