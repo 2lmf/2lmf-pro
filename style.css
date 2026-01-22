@@ -346,7 +346,8 @@ nav a:hover {
     /* Light Grey Text */
     padding: 2.5rem 0 1.5rem;
     /* Reduced padding */
-    margin-top: 60px;
+    /* Reduced padding */
+    margin-top: 0;
     border-top: 1px solid #333;
 }
 
