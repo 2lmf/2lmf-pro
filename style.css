@@ -342,10 +342,8 @@ nav a:hover {
 .footer-header-mirror {
     background: #e67e22;
     color: #fff;
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
     margin-top: 60px;
+    padding: 0;
     /* Mirrors header but without nav */
 }
 
