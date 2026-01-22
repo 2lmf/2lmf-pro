@@ -160,7 +160,8 @@ nav a:hover {
     background-position: center;
     background-attachment: fixed;
     color: #fff;
-    padding: 80px 20px;
+    padding: 40px 20px;
+    /* Reduced padding */
     text-align: center;
 }
 
@@ -377,7 +378,8 @@ nav a:hover {
 
 .footer-brand {
     font-family: 'Stardos Stencil', cursive;
-    font-size: 2rem;
+    font-size: 2.5rem;
+    /* Increased size */
     color: white;
     margin-bottom: 1rem;
     letter-spacing: 1px;
