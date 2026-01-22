@@ -12,19 +12,349 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Fasade i Hidroizolacija | Savjeti | 2LMF PRO</title>
-    <link rel="canonical" href="https://www.2lmf-pro.hr/blog.html" />
+    <title>2LMF PRO | Hidroizolacija, Termoizolacija i Ventilirane Fasade Zagreb</title>
+
+    <link rel="canonical" href="https://www.2lmf-pro.hr/" />
+
     <meta name="description"
-        content="Savjeti stručnjaka o fasadama, hidroizolaciji, energetskoj obnovi i odabiru materijala za vaš dom.">
+        content="Vaš partner za hidro i termo izolaciju u Zagrebu. Nudimo najpovoljnije cijene za TPO folije, kamenu vunu, HPL ploče i projektiranje fasada.">
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* ANIMACIJE */
+        .animate-block {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-block.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* HEADER */
+        header {
+            background: #e67e22;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            max-height: 75px;
+            width: auto;
+            display: block;
+        }
+
+        .header-tagline {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #000;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        /* NAVIGACIJA - BEZ DROPDOWNA */
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav>a {
+            color: #000;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        /* HERO */
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('index.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #333;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* USLUGE */
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 60px 20px;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-link {
+            text-decoration: none;
+            color: inherit;
+            width: 220px;
+            display: block;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card h2 {
+            color: #e67e22;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* ZAŠTO MI? + MISIJA */
+        .why-us {
+            background-image: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            max-width: 1300px;
+            margin: 40px auto;
+        }
+
+        .why-item h3 {
+            color: #e67e22;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Stil za misiju unutar why-us sekcije */
+        .mission-inline {
+            max-width: 900px;
+            margin: 60px auto 0;
+            /* Razmak od gornjeg dijela */
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            /* Diskretna crta */
+        }
+
+        .mission-inline h3 {
+            color: #e67e22;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .mission-inline p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        /* KONTAKT SEKCIJA */
+        .contact-section {
+            padding: 60px 20px;
+            background: #fff;
+            text-align: center;
+        }
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            text-align: left;
+            align-items: start;
+        }
+
+        .contact-details h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .contact-details p {
+            margin: 2px 0;
+            line-height: 1.3;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .contact-details strong {
+            color: #000;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .contact-form button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: #e67e22;
+        }
+
+        .hashtags {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            padding: 40px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: #e67e22;
+            color: #000;
+            text-align: center;
+            padding: 20px 0;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo-container {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            nav>a {
+                margin: 5px 10px;
+            }
+
+            /* Malo više mjesta na mobitelu */
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .service-link {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .why-us {
+                background-attachment: scroll;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
     <header>
         <div class="logo-container">
             <a href="index.html">
-                <img src="https://via.placeholder.com/200x75?text=2LMF+PRO" alt="2LMF PRO Logo" class="logo">
+                <img src="2lmf_logo.png" alt="2LMF PRO Logo" class="logo">
             </a>
             <span class="header-tagline">Vaš partner za hidro i termo izolaciju</span>
         </div>
@@ -35,118 +365,109 @@
             <a href="ostalo.html">Ostalo</a>
             <a href="arhitektura.html">Arhitektura</a>
             <a href="blog.html">Blog</a>
-            <a href="index.html#kontakt">Kontakt</a>
+            <a href="#kontakt">Kontakt</a>
         </nav>
     </header>
 
     <section class="hero animate-block">
-        <h1>Novosti i savjeti</h1>
+        <h1>Vrhunska izolacija za vaš dom</h1>
+        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte
+            trajnu zaštitu i uštedu energije uz vrhunsku kvalitetu materijala.</p>
     </section>
 
-    <div class="blog-container">
-        <aside class="blog-sidebar animate-block">
-            <h4>Teme bloga</h4>
-            <ul>
-                <li><a href="vuna-vs-eps.html">Kamena vuna vs. stiropor EPS</a></li>
-                <li><a href="zasto-izvedbeni-projekt.html">Zašto izvedbeni projekt?</a></li>
-                <li><a href="ploce-ventilirane-fasade.html">Ploče za ventilirane fasade</a></li>
-                <li><a href="etics-vs-ventilirana.html">Klasična ili ventilirana fasada</a></li>
-                <li><a href="vodic-hidroizolacija.html">Vodič kroz hidroizolaciju</a></li>
-            </ul>
-        </aside>
+    <section class="services">
+        <a href="hidroizolacija.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Hidroizolacija</h2>
+                <p>TPO folije, bitumen i polimercementni premazi za krovove i temelje.</p>
+            </div>
+        </a>
+        <a href="termoizolacija.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Termoizolacija</h2>
+                <p>Kamena vuna i aluminijska izolacija za vrhunsku energetsku učinkovitost.</p>
+            </div>
+        </a>
+        <a href="arhitektura.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Arhitektura</h2>
+                <p>Projektiranje i savjetovanje s fokusom na uštedu kroz izvedbene projekte.</p>
+            </div>
+        </a>
+        <a href="ostalo.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Ostalo</h2>
+                <p>Ploče za ventilirane fasade, zvučna izolacija, panelne ograde i vrata i ostali materijali</p>
+            </div>
+        </a>
+    </section>
 
-        <main class="page-content">
+    <section class="why-us animate-block">
+        <h2>Zašto odabrati 2LMF PRO?</h2>
+        <div class="why-grid">
+            <div class="why-item">
+                <h3>Vrhunska kvaliteta</h3>
+                <p>Nudimo isključivo certificirane materijale vodećih svjetskih proizvođača za trajnu sigurnost vašeg
+                    objekta.</p>
+            </div>
+            <div class="why-item">
+                <h3>Stručna podrška</h3>
+                <p>Naš tim inženjera i projektanata vodi vas kroz cijeli proces odabira i projektiranja izolacije u
+                    Zagrebu i cijeloj Hrvatskoj.</p>
+            </div>
+            <div class="why-item">
+                <h3>Najbolje cijene</h3>
+                <p>Pokažite nam najbolju ponudu, a mi ćemo vam dati još bolju.</p>
+                <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">Napomena: nismo u sustavu PDV-a, pa PDV ne
+                    možemo iskazati na računu.</p>
+            </div>
+        </div>
 
-            <!-- Članak 1 -->
-            <article class="blog-post animate-block">
-                <a href="vuna-vs-eps.html" style="text-decoration: none; color: inherit;">
-                    <img src="stone_wool.png" alt="Kamena vuna vs. stiropor EPS">
-                </a>
+        <div class="mission-inline">
+            <h3>Naša misija</h3>
+            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama, bez kompromisa na vašem budžetu.
+                Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najboljim cijenama</strong> na tržištu koje
+                osiguravaju maksimalnu vrijednost za vašu investiciju, <strong>vrhunskoj kvaliteti</strong> materijala
+                koja garantira dugotrajnost, te <strong>brzoj isporuci</strong> i poštivanju rokova jer cijenimo vaše
+                vrijeme. Vaše povjerenje gradimo stručnošću, transparentnošću i efikasnošću.</p>
+        </div>
+    </section>
 
-                <h2><a href="vuna-vs-eps.html" style="text-decoration: none; color: inherit;">Kamena vuna vs. stiropor
-                        EPS: Zašto struka uvijek bira vunu?</a></h2>
-                <span class="blog-date">22. Siječanj 2026.</span>
+    <section id="kontakt" class="contact-section animate-block">
+        <div class="contact-container">
+            <div class="contact-details">
+                <h2>Kontaktirajte nas</h2>
+                <p>Trebate ponudu ili savjet? Naš tim je spreman odgovoriti na sve upite vezane uz izolacije i
+                    projektiranje.</p>
+                <div style="margin-top: 25px;">
+                    <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 8px;">2LMF PRO j.d.o.o.</p>
+                    <p>Orešje 7, 10090 Zagreb</p>
+                    <p><strong>OIB:</strong> 29766043828</p>
+                    <p><strong>MBS:</strong> 081477933</p>
+                    <p><strong>Email:</strong> 2lmf.info@gmail.com</p>
+                    <p><strong>Tel:</strong> +385 95 311 5007</p>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form action="https://formspree.io/f/xvgzgekb" method="POST">
+                    <input type="text" name="ime" placeholder="Vaše ime" required>
+                    <input type="email" name="email" placeholder="Vaš Email" required>
+                    <input type="text" name="naslov" placeholder="Predmet (npr. Ponuda za fasadu)">
+                    <textarea name="poruka" rows="5" placeholder="Vaša poruka" required></textarea>
+                    <button type="submit">POŠALJI UPIT</button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-                <p>Kada se krene u energetsku obnovu ili gradnju kuće, jedno od najčešćih pitanja investitora je:
-                    "Hoćemo li staviti stiropor EPS ili kamenu vunu?" Saznajte zašto je vuna sigurniji i dugoročno
-                    isplativiji izbor.</p>
-
-                <div class="blog-cta"><a href="vuna-vs-eps.html">Pročitaj cijeli članak &rarr;</a></div>
-            </article>
-
-            <!-- Članak 2 -->
-            <article class="blog-post animate-block">
-                <a href="zasto-izvedbeni-projekt.html" style="text-decoration: none; color: inherit;">
-                    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                        alt="Izvedbeni projekt">
-                </a>
-
-                <h2><a href="zasto-izvedbeni-projekt.html" style="text-decoration: none; color: inherit;">Zašto je
-                        izvedbeni projekt ključ uštede, a ne samo dodatni trošak?</a></h2>
-                <span class="blog-date">19. Siječanj 2026.</span>
-
-                <p>Mnogi investitori misle da je izvedbeni projekt nepotreban trošak. Otkrijte kako vam precizni detalji
-                    i krojne liste mogu uštedjeti tisuće eura na materijalu i naknadnim popravcima.</p>
-
-                <div class="blog-cta"><a href="zasto-izvedbeni-projekt.html">Pročitaj cijeli članak &rarr;</a></div>
-            </article>
-
-            <!-- Članak 3 -->
-            <article class="blog-post animate-block">
-                <a href="ploce-ventilirane-fasade.html" style="text-decoration: none; color: inherit;">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                        alt="Ploče za fasade">
-                </a>
-
-                <h2><a href="ploce-ventilirane-fasade.html" style="text-decoration: none; color: inherit;">Ploče za
-                        ventilirane fasade: HPL, vlaknocement ili aluminij – Što odabrati?</a></h2>
-                <span class="blog-date">17. Siječanj 2026.</span>
-
-                <p>Izbor materijala diktira cijenu, izgled i dugovječnost vaše fasade. Pročitajte našu detaljnu
-                    usporedbu tri najpopularnija materijala: HPL laminata, vlaknocementa i aluminijskih kompozita.</p>
-
-                <div class="blog-cta"><a href="ploce-ventilirane-fasade.html">Pročitaj cijeli članak &rarr;</a></div>
-            </article>
-
-            <!-- Članak 4 -->
-            <article class="blog-post animate-block">
-                <a href="etics-vs-ventilirana.html" style="text-decoration: none; color: inherit;">
-                    <img src="ventilated_facade.png" alt="ETICS vs Ventilirana fasada">
-                </a>
-
-                <h2><a href="etics-vs-ventilirana.html" style="text-decoration: none; color: inherit;">Fasada: Klasična
-                        (ETICS) ili ventilirana? Vodič za pametan odabir</a></h2>
-                <span class="blog-date">11. Siječanj 2026.</span>
-
-                <p>Dilema svakog graditelja: odabrati povoljniju klasičnu fasadu ili investirati u "Mercedes" među
-                    fasadama - ventiliranu fasadu? Donosimo pregled prednosti i mana oba sustava.</p>
-
-                <div class="blog-cta"><a href="etics-vs-ventilirana.html">Pročitaj cijeli članak &rarr;</a></div>
-            </article>
-
-            <!-- Članak 5 -->
-            <article class="blog-post animate-block">
-                <a href="vodic-hidroizolacija.html" style="text-decoration: none; color: inherit;">
-                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                        alt="Hidroizolacija">
-                </a>
-
-                <h2><a href="vodic-hidroizolacija.html" style="text-decoration: none; color: inherit;">Vodič kroz
-                        hidroizolaciju: Bitumen ili TPO – Što odabrati?</a></h2>
-                <span class="blog-date">7. Siječanj 2026.</span>
-
-                <p>Vlaga je ozbiljna prijetnja svakoj građevini. Saznajte kada je bolje koristiti klasičnu bitumensku
-                    traku, a kada moderne TPO ili PVC folije za zaštitu vašeg doma.</p>
-
-                <div class="blog-cta"><a href="vodic-hidroizolacija.html">Pročitaj cijeli članak &rarr;</a></div>
-            </article>
-
-        </main>
+    <div class="hashtags">
+        #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija #najpovoljnije
+        #vrhunskakvaliteta #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen
+        #bitumenskaljepenka #ljepenka #arhitektura
     </div>
 
     <footer>
-        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
-        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
+        <p>&copy; 2026 2LMF PRO j.d.o.o. | Vaš partner za hidro i termo izolaciju i ventilirane fasade</p>
     </footer>
 
     <script>
