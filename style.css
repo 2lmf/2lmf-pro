@@ -38,17 +38,20 @@ header {
 .logo-container {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
+    /* Reduced gap */
 }
 
 .logo {
-    max-height: 75px;
+    max-height: 90px;
+    /* Increased size */
     width: auto;
     display: block;
 }
 
 .header-tagline {
-    font-size: 1.3rem;
+    font-size: 1rem;
+    /* Reduced size */
     font-weight: 700;
     color: #000;
     line-height: 1.2;
