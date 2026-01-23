@@ -37,8 +37,26 @@
     --shadow-glow: 0 0 10px rgba(230, 126, 34, 0.3);
 }
 
-/* --- Tech Background - Managed by style.css but kept here for completeness of calculator module --- */
-/* (We assume style.css handles the body background if not, this adds the pattern) */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-ui);
+    background-color: transparent;
+    /* Fix: Let .tech-background show through */
+    color: var(--text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* --- Tech Background --- */
 .tech-background {
     position: fixed;
     top: 0;
@@ -49,7 +67,7 @@
     height: 100%;
     z-index: -9999;
     /* Force behind everything */
-    background-color: #F4F4F4;
+    background-color: var(--bg-dark);
     /* Light Grey */
 
     /* Subtle Grey Grid + Technical Drawings */
@@ -71,7 +89,6 @@
 }
 
 /* --- Header --- */
-/* Renamed to avoid conflict if necessary, but keeping .main-header as per source */
 .main-header {
     background: var(--primary);
     /* Solid Orange */
@@ -83,8 +100,6 @@
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(230, 126, 34, 0.4);
-    margin-top: 0;
-    /* Ensure no top margin */
 }
 
 .main-header .container {
@@ -530,8 +545,153 @@
     font-size: 1.2rem;
 }
 
-/* --- Footer --- */
-/* (Styles moved/adapted to main footer in style.css or omitted if not needed for module) */
+/* --- Footer (Dark Theme V2 Refined) --- */
+.main-footer {
+    background-color: #1a1a1a;
+    /* Very Dark Grey (Almost Black) */
+    color: #b0b0b0;
+    /* Light Grey Text */
+    padding: 4rem 0 2rem;
+    margin-top: auto;
+    border-top: 1px solid #333;
+}
+
+/* Widen container specifically for footer to let columns breathe */
+.main-footer .container {
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.footer-content {
+    display: grid;
+    /* Brand (Equal), Contact (Narrow layout), Form (Equal) */
+    grid-template-columns: 1fr 0.8fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    text-align: left;
+    align-items: start;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+    /* Prevent overflow issues */
+}
+
+/* Tablet/Mobile Responsive: Stack them */
+@media (max-width: 900px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+.footer-brand {
+    font-family: var(--font-brand);
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.footer-desc {
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* Contact Blocks */
+.contact-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.contact-label {
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+}
+
+.contact-block p {
+    margin: 0;
+    padding-left: 1.8rem;
+    /* Indent text to align under label text (icon width approx) */
+    color: #b0b0b0;
+}
+
+/* Footer Form */
+.footer-heading {
+    color: white;
+    font-family: var(--font-header);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.footer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-form input,
+.footer-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #333;
+    border: 1px solid #444;
+    color: white;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+
+.footer-form input:focus,
+.footer-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.footer-form button {
+    background-color: var(--primary);
+    color: black;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.8rem;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-header);
+    letter-spacing: 1px;
+    transition: background-color 0.2s;
+    border-radius: var(--radius-sm);
+}
+
+.footer-form button:hover {
+    background-color: var(--primary-dim);
+}
+
+/* Company Details (OIB etc) */
+.company-details {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: auto;
+    /* Push to bottom of column if space permits */
+}
+
+.company-details p {
+    margin: 0.2rem 0;
+}
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
