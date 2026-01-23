@@ -540,7 +540,7 @@ function calculateFacade(data) {
     if (data.type === 'etics') {
         // ETICS Logic
         // Mat is always 'wool' now, but let's be clean
-        let matName = 'Kamena vuna';
+        let matName = 'Kamena vuna (Ravatherm SW ETICS)';
         if (data.material === 'eps') matName = 'EPS (Stiropor)'; // Fallback if ever needed
 
         const thickness = parseInt(data.thickness);
@@ -557,8 +557,8 @@ function calculateFacade(data) {
 
     } else {
         // Ventilated Logic
-        items.push({ name: 'Kamena vuna s voalom', value: (area * waste).toFixed(2), unit: 'm²' });
-        items.push({ name: `Fasadna obloga (${data.cladding === 'alu' ? 'Alu-kompozit' : data.cladding.toUpperCase()})`, value: (area * waste).toFixed(2), unit: 'm²' });
+        items.push({ name: 'Kamena vuna s voalom (Ravatherm SW)', value: (area * waste).toFixed(2), unit: 'm²' });
+        items.push({ name: `Fasadna obloga (${data.cladding === 'alu' ? 'Alu-kompozit' : 'HPL (Trespa)'})`, value: (area * waste).toFixed(2), unit: 'm²' });
 
         // Generic substructure estimation
         items.push({ name: 'Alu nosači (fiksni + klizni ~2.5/m²)', value: Math.ceil(area * 2.5), unit: 'kom' });
@@ -578,7 +578,7 @@ function calculateThermal(data) {
         const thickness = parseInt(data.thickness);
         const xpsPrice = getXPSPrice(thickness);
 
-        items.push({ name: `XPS ploče (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: xpsPrice });
+        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: xpsPrice });
         items.push({ name: 'Ljepilo/Pjena (opcionalno)', value: Math.ceil(area / 10), unit: 'pak', price: 0 });
         // Čepasta folija za zaštitu temelja
         items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
@@ -587,8 +587,8 @@ function calculateThermal(data) {
         const woolPrice = getWoolPrice(thickness);
 
         // Changed from 'Mineralna vuna' to 'Kamena vuna' per request to exclude glass wool
-        items.push({ name: `Kamena vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
-        items.push({ name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al });
+        items.push({ name: `Kamena vuna (Ravatherm SW) (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
+        items.push({ name: 'Parna brana (RAVAPROOF Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al });
     }
     return items;
 }
@@ -604,10 +604,11 @@ function calculateHydro(data) {
 
         // 1. Bitumen (Premaz + Traka)
         items.push({ name: 'Bitumenski premaz', value: (area * 0.3).toFixed(1), unit: 'L', price: 0 });
-        items.push({ name: 'Bitumenska traka (Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4 });
+        items.push({ name: 'Bitumenska traka (RAVAPROOF Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4 });
 
         // 2. XPS
-        items.push({ name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        // 2. XPS
+        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
 
         // 3. Čepasta folija
         items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
@@ -617,8 +618,8 @@ function calculateHydro(data) {
     else if (data.type === 'bitumen-roof') {
         // Bitumen x 2 layers usually + coating
         items.push({ name: 'Bitumenski premaz', value: (area * 0.3).toFixed(1), unit: 'L', price: 0 });
-        items.push({ name: 'Bitumenska traka (sloj 1 - V3/V4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4 });
-        items.push({ name: 'Bitumenska traka (sloj 2 - završna)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4 * 1.2 }); // Approx slightly more
+        items.push({ name: 'Bitumenska traka (sloj 1 - RAVAPROOF Diamond P 4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4 });
+        items.push({ name: 'Bitumenska traka (sloj 2 - završna)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4 * 1.2 }); // Approx slightly more
     }
     // --- TPO/PVC RAVNI KROV ---
     else if (data.type === 'membrane-roof') {
@@ -630,7 +631,8 @@ function calculateHydro(data) {
         items.push({ name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
 
         // 2. XPS (Thermal)
-        items.push({ name: `XPS ploče (${thickness}cm) (termika)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        // 2. XPS (Thermal)
+        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm) (termika)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
 
         // 3. Geotekstil (iznad XPS-a, ispod folije)
         items.push({ name: 'Geotekstil (zaštitni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
@@ -640,7 +642,7 @@ function calculateHydro(data) {
             const tpoThick = data.tpoThickness || '1.5';
             const tpoKey = 'tpo_' + tpoThick.replace('.', '');
             const tpoPrice = prices.membranes[tpoKey] || 0;
-            items.push({ name: `TPO Folija (${tpoThick}mm)`, value: (area * 1.08).toFixed(2), unit: 'm²', price: tpoPrice });
+            items.push({ name: `TPO Folija (Flagon EP/PR) (${tpoThick}mm)`, value: (area * 1.08).toFixed(2), unit: 'm²', price: tpoPrice });
         } else {
             items.push({ name: 'PVC Folija (1.5mm)', value: (area * 1.08).toFixed(2), unit: 'm²', price: prices.membranes.pvc_krov });
         }
@@ -653,7 +655,7 @@ function calculateHydro(data) {
 
         items.push({ name: 'Geotekstil (zaštitni)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
         items.push({ name: 'PVC Folija (za temelje)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji });
-        items.push({ name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
         items.push({ name: 'Čepasta folija', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
     }
     // --- POLIMERCEMENT ---
