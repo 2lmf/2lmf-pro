@@ -6,7 +6,7 @@ const resultsSection = document.getElementById('results-section');
 const resultsContainer = document.getElementById('results-container');
 
 // State
-let currentModule = 'facade';
+let currentModule = null;
 
 // Module HTML Layouts (later we can move these to separate files if needed)
 const templates = {
@@ -965,4 +965,6 @@ if (emailBtnSend) {
 }
 
 // Load default
-loadModule('facade');
+// Load default - Commented out for neutral state
+// loadModule('facade');
+// End of file

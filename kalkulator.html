@@ -28,17 +28,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Chakra+Petch:wght@400;500;600;700&family=Stardos+Stencil:wght@400;700&display=swap"
         rel="stylesheet">
-
-    <!-- Internal styles removed to rely on external CSS -->
 </head>
 
 <body>
     <!-- Tech Background for Calculator -->
-    <div class="tech-background"></div>
-
-    <!-- Global Navigation removed to match standalone design -->
-
-    <!-- Ambient Technical Background -->
     <div class="tech-background"></div>
 
     <header>
@@ -66,7 +59,6 @@
     </header>
 
     <!-- Restored Calculator Title Bar -->
-    <!-- Restored Calculator Title Bar -->
     <div class="main-header">
         <div class="container">
             <h1>2LMF PRO <span class="highlight">Kalkulator</span></h1>
@@ -77,17 +69,17 @@
     <main class="container app-wrapper">
         <!-- Navigation Tabs -->
         <nav class="module-nav">
-            <button class="nav-btn active" data-module="facade">
-                <span class="icon">🧱</span> Fasada
-            </button>
             <button class="nav-btn" data-module="hydro">
                 <span class="icon">💧</span> Hidroizolacija
             </button>
             <button class="nav-btn" data-module="thermal">
                 <span class="icon">🌡️</span> Termoizolacija
             </button>
+            <button class="nav-btn" data-module="facade">
+                <span class="icon">🧱</span> Fasada
+            </button>
             <button class="nav-btn" data-module="fence">
-                <span class="icon">🏡</span> Panel Ograde
+                <span class="icon">🏡</span> Panel Ograda
             </button>
         </nav>
 
@@ -99,10 +91,10 @@
             </div>
         </section>
 
-        <!-- Results Section (Hidden by default) -->
+        <!-- Dynamic Results Area -->
         <section id="results-section" class="results-card hidden">
             <div class="results-header">
-                <h2>Rezultati Izračuna</h2>
+                <h2>Rezultat Izračuna</h2>
                 <div class="results-actions-container">
                     <div class="buttons-row">
                         <button id="pdf-btn" class="action-btn">📄 <span class="btn-text">Spremi PDF</span></button>
