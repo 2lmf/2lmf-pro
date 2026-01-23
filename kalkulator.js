@@ -969,7 +969,7 @@ prices.polymer.cement = 2.00; // 2 EUR/kg
 
 function getXPSPrice(thickness) {
     // Approx 1.40 EUR per cm thickness per m2
-    return thickness * 1.40; 
+    return thickness * 1.40;
 }
 
 function getWoolPrice(thickness) {
@@ -978,5 +978,4 @@ function getWoolPrice(thickness) {
 }
 
 
-// Load default
-loadModule('hydro');
+// Premature call removed
