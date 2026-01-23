@@ -977,3 +977,6 @@ function getWoolPrice(thickness) {
     return thickness * 1.10;
 }
 
+
+// Load default
+loadModule('hydro');
