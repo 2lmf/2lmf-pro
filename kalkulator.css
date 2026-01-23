@@ -801,6 +801,8 @@ body {
     font-weight: 700;
     font-family: 'Chakra Petch', sans-serif;
     margin-bottom: 1rem;
+    margin-top: 1.2rem;
+    /* Revert global reset to match main site default h3 margin */
     letter-spacing: 0.5px;
     border: none;
     padding: 0;
