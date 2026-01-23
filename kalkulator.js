@@ -543,13 +543,17 @@ function calculateFacade(data) {
         let matName = 'Kamena vuna';
         if (data.material === 'eps') matName = 'EPS (Stiropor)'; // Fallback if ever needed
 
-        items.push({ name: `${matName} (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²' });
-        items.push({ name: 'Ljepilo za ljepljenje (cca 5kg/m²)', value: (area * 5).toFixed(1), unit: 'kg' });
-        items.push({ name: 'Ljepilo za armiranje (cca 4kg/m²)', value: (area * 4).toFixed(1), unit: 'kg' });
-        items.push({ name: 'Fasadna mrežica (1.1m/m²)', value: (area * 1.1).toFixed(2), unit: 'm²' });
-        items.push({ name: 'Tiple (6 kom/m²)', value: Math.ceil(area * 6), unit: 'kom' });
-        items.push({ name: 'Primer (0.2L/m²)', value: (area * 0.2).toFixed(1), unit: 'L' });
-        items.push({ name: 'Završna žbuka (2.5kg/m²)', value: (area * 2.5).toFixed(1), unit: 'kg' });
+        const thickness = parseInt(data.thickness);
+        // Assuming the user's stone wool prices apply to ETICS
+        const matPrice = getWoolPrice(thickness);
+
+        items.push({ name: `${matName} (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: matPrice });
+        items.push({ name: 'Ljepilo za ljepljenje (cca 5kg/m²)', value: (area * 5).toFixed(1), unit: 'kg', price: 0 });
+        items.push({ name: 'Ljepilo za armiranje (cca 4kg/m²)', value: (area * 4).toFixed(1), unit: 'kg', price: 0 });
+        items.push({ name: 'Fasadna mrežica (1.1m/m²)', value: (area * 1.1).toFixed(2), unit: 'm²', price: 0 });
+        items.push({ name: 'Tiple (6 kom/m²)', value: Math.ceil(area * 6), unit: 'kom', price: 0 });
+        items.push({ name: 'Primer (0.2L/m²)', value: (area * 0.2).toFixed(1), unit: 'L', price: 0 });
+        items.push({ name: 'Završna žbuka (2.5kg/m²)', value: (area * 2.5).toFixed(1), unit: 'kg', price: 0 });
 
     } else {
         // Ventilated Logic
@@ -634,10 +638,11 @@ function calculateHydro(data) {
         // 4. Membrana (TPO or PVC)
         if (mat === 'tpo') {
             const tpoThick = data.tpoThickness || '1.5';
-            const tpoPrice = prices.membranes.tpo[tpoThick] || 0;
+            const tpoKey = 'tpo_' + tpoThick.replace('.', '');
+            const tpoPrice = prices.membranes[tpoKey] || 0;
             items.push({ name: `TPO Folija (${tpoThick}mm)`, value: (area * 1.08).toFixed(2), unit: 'm²', price: tpoPrice });
         } else {
-            items.push({ name: 'PVC Folija (1.5mm)', value: (area * 1.08).toFixed(2), unit: 'm²', price: prices.membranes.pvc });
+            items.push({ name: 'PVC Folija (1.5mm)', value: (area * 1.08).toFixed(2), unit: 'm²', price: prices.membranes.pvc_krov });
         }
 
     }
@@ -647,7 +652,7 @@ function calculateHydro(data) {
         const xpsPrice = getXPSPrice(thickness);
 
         items.push({ name: 'Geotekstil (zaštitni)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
-        items.push({ name: 'PVC Folija (za temelje)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.pvc });
+        items.push({ name: 'PVC Folija (za temelje)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji });
         items.push({ name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
         items.push({ name: 'Čepasta folija', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
     }

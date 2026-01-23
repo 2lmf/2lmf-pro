@@ -33,7 +33,8 @@ const prices = {
         tpo_20: 12.15, // FLAG TPO 2.0mm
         pvc_temelji: 6.24, // FLAG BSL 1.5mm
         pvc_krov: 9.11,    // FLAG SR 1.5mm
-        cepasta: 1.60      // Čepasta folija
+        cepasta: 1.60,      // Čepasta folija
+        geotextile: 1.20   // Geotekstil (Placeholder)
     },
 
     bitumen: {
