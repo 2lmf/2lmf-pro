@@ -886,19 +886,29 @@ if (pdfBtn) {
     pdfBtn.addEventListener('click', () => {
         const element = document.getElementById('results-section');
         const opt = {
-            margin: 10,
+            margin: [10, 10], // Top/Bottom margin
             filename: `izracun_${currentModule}_${new Date().toISOString().split('T')[0]}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                scrollY: 0,
+                backgroundColor: '#ffffff' // Force white background
+            },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-        // Temporarily hide buttons for clean PDF
+
         // Temporarily hide buttons for clean PDF
         const btns = document.querySelector('.results-actions-container');
         if (btns) btns.style.display = 'none';
 
+        // Ensure background is opaque white during render
+        const originalBg = element.style.backgroundColor;
+        element.style.backgroundColor = '#ffffff';
+
         html2pdf().set(opt).from(element).save().then(() => {
             if (btns) btns.style.display = 'block'; // Restore buttons
+            element.style.backgroundColor = originalBg; // Restore background
         });
     });
 }
