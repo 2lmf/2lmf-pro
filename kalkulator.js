@@ -939,23 +939,30 @@ if (emailBtnSend) {
         emailBtnSend.innerHTML = '⏳ Šaljem...';
         emailBtnSend.disabled = true;
 
-        fetch("https://formspree.io/f/xvgzgekb", {
+        const formData = new FormData();
+        formData.append('email', emailTo);
+        formData.append('subject', `Izračun 2LMF - ${currentModule.toUpperCase()}`);
+        formData.append('message', body);
+
+        fetch("https://formspree.io/f/mwvlndlq", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Accept": "application/json"
             },
-            body: JSON.stringify({
-                email: emailTo,
-                subject: `Izračun 2LMF - ${currentModule.toUpperCase()}`,
-                message: body
-            })
+            body: formData
         })
             .then(response => {
                 if (response.ok) {
                     alert("Izračun je uspješno poslan na vaš email!");
                     emailInput.value = '';
                 } else {
-                    alert("Došlo je do greške. Molimo pokušajte ponovno.");
+                    return response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            alert(data["errors"].map(error => error["message"]).join(", "))
+                        } else {
+                            alert("Došlo je do greške. Molimo pokušajte ponovno.");
+                        }
+                    })
                 }
             })
             .catch(error => {
