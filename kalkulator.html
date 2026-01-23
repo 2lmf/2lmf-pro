@@ -61,15 +61,15 @@
         </nav>
     </header>
 
-    <!-- Hero, Services, and Why Us sections removed to isolate calculator -->
+    <!-- Ambient Technical Background -->
+    <div class="tech-background"></div>
 
-    <!-- CALCULATOR START -->
-    <div id="calculator-header" class="main-header">
+    <header class="main-header">
         <div class="container">
-            <h1>2LMF PRO <span class="highlight">KALKULATOR</span></h1>
+            <h1>2LMF PRO <span class="highlight">Kalkulator</span></h1>
             <p class="subtitle">Informativni kalkulator za fasade, izolacije i ograde</p>
         </div>
-    </div>
+    </header>
 
     <main class="container app-wrapper">
         <!-- Navigation Tabs -->
@@ -179,15 +179,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT REFERENCES -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('appear'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
-        });
-    </script>
     <script src="items_data.js"></script>
     <script src="kalkulator.js"></script>
 </body>
