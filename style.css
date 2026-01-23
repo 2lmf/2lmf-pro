@@ -181,12 +181,13 @@ nav a:hover {
 }
 
 .service-card {
-    background: #fff;
+    background: #FAE5D3;
+    /* Calculator Light Orange */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     padding: 25px;
     text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
     min-height: 240px;
     display: flex;
     flex-direction: column;
@@ -197,19 +198,32 @@ nav a:hover {
 .service-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background-color: #000;
+    /* Black on hover */
 }
 
 .service-card h2 {
     color: #e67e22;
     margin-bottom: 10px;
     font-size: 1.3rem;
+    transition: color 0.3s;
 }
 
 .service-card p {
     font-size: 0.95rem;
-    color: #666;
+    color: #333;
     margin: 0;
     line-height: 1.4;
+    transition: color 0.3s;
+}
+
+.service-card:hover h2 {
+    color: #e67e22;
+}
+
+.service-card:hover p {
+    color: #e67e22;
+    /* Orange text on hover */
 }
 
 /* ZAŠTO MI? + MISIJA (HOMEPAGE) */
