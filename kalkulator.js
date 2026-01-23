@@ -880,7 +880,7 @@ function displayResults(items) {
     footerNote.className = 'calc-footer-note';
     footerNote.innerHTML = `
         <p>
-            <span class="note-brand">2LMF PRO</span> 
+            © 2026 <span class="note-brand">2LMF PRO</span> 
             <span class="note-calc">Kalkulator</span>
         </p>
         <p class="small-note">Svi izračuni su informativnog karaktera</p>
@@ -931,7 +931,28 @@ if (pdfBtn) {
             headerClone.style.boxShadow = 'none';
 
             element.insertBefore(headerClone, element.firstChild);
-            element.insertBefore(headerClone, element.firstChild);
+
+            // Fix PDF Alignment for Header
+            const h1 = headerClone.querySelector('h1');
+            if (h1) {
+                h1.style.display = 'block'; // Remove flex for PDF
+                h1.style.textAlign = 'center';
+                const spans = h1.querySelectorAll('span');
+                spans.forEach(s => {
+                    s.style.display = 'inline-block';
+                    s.style.verticalAlign = 'middle';
+                });
+            }
+
+            // Fix PDF Alignment for Footer Note (Disclaimer)
+            const footerNoteClone = element.querySelector('.calc-footer-note');
+            if (footerNoteClone) {
+                const spans = footerNoteClone.querySelectorAll('span');
+                spans.forEach(s => {
+                    s.style.display = 'inline-block';
+                    s.style.verticalAlign = 'middle';
+                });
+            }
         }
 
         // Create Orange Footer Bar for PDF
@@ -947,8 +968,10 @@ if (pdfBtn) {
         pdfFooter.style.fontFamily = 'sans-serif';
         pdfFooter.style.fontSize = '0.9rem';
         pdfFooter.style.fontWeight = '700';
+        pdfFooter.style.lineHeight = '1.6'; // Spacing for 2 lines
         pdfFooter.innerHTML = `
-            Email: 2lmf.info@gmail.com &nbsp;|&nbsp; Mob: +385 95 311 5007 &nbsp;|&nbsp; OIB: 29766043828 &nbsp;|&nbsp; IBAN: HR312340009111121324
+            Email: 2lmf.info@gmail.com &nbsp;|&nbsp; Mob: +385 95 311 5007<br>
+            OIB: 29766043828 &nbsp;|&nbsp; IBAN: HR312340009111121324
         `;
         element.appendChild(pdfFooter);
 
