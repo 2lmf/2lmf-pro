@@ -893,11 +893,12 @@ if (pdfBtn) {
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         // Temporarily hide buttons for clean PDF
-        const btns = document.querySelector('.action-buttons');
-        btns.style.display = 'none';
+        // Temporarily hide buttons for clean PDF
+        const btns = document.querySelector('.results-actions-container');
+        if (btns) btns.style.display = 'none';
 
         html2pdf().set(opt).from(element).save().then(() => {
-            btns.style.display = 'flex'; // Restore buttons
+            if (btns) btns.style.display = 'block'; // Restore buttons
         });
     });
 }
