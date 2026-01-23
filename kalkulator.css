@@ -26,7 +26,8 @@
     /* Typography */
     --font-header: 'Chakra Petch', sans-serif;
     --font-brand: 'Stencil', 'Stardos Stencil', serif;
-    --font-ui: 'Barlow', sans-serif;
+    --font-ui: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* MATCH MAIN SITE */
 
     /* Metrics */
     --radius-sm: 2px;
@@ -41,6 +42,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html {
+    font-size: 16px;
+    /* FORCE BASE SIZE */
 }
 
 body {
