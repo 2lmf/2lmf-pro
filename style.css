@@ -96,8 +96,8 @@ nav a:hover {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #fdf2e9;
-    /* Light Orange */
+    background-color: #FAE5D3;
+    /* Calculator Light Orange */
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1001;
@@ -113,7 +113,8 @@ nav a:hover {
     text-decoration: none;
     display: block;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 700;
+    /* Bold */
     text-align: left;
     margin: 0;
 }
