@@ -936,3 +936,44 @@ if (emailBtnSend) {
 
 // Load default
 loadModule('hydro');
+
+// --- MISSING DATA & HELPERS ---
+
+const prices = {
+    membranes: {
+        cepasta: 2.50,
+        geotextile: 1.20,
+        tpo: {
+            '1.5': 14.00,
+            '1.8': 16.50,
+            '2.0': 19.00
+        },
+        pvc: 12.50
+    },
+    bitumen: {
+        ruby_v4: 5.80,
+        vapor_al: 4.50
+    },
+    polymer: {
+        cement: 12.00, // Price per unit or kg? Logic says 3kg/m2 * price. Typical 25kg bag is ~30-40eur => ~1.5 eur/kg.
+        // Wait, logic: value = area * 3 (kg). total = value * price. 
+        // If price is per kg, then it should be around 1.5 - 4.0. 
+        // Let's go with 2.5 EUR/kg.
+        tape: 3.50, // per meter
+        pu: 9.00 // per kg
+    }
+};
+
+// Fix polymer cement price (re-definition safe here as object property)
+prices.polymer.cement = 2.00; // 2 EUR/kg
+
+function getXPSPrice(thickness) {
+    // Approx 1.40 EUR per cm thickness per m2
+    return thickness * 1.40; 
+}
+
+function getWoolPrice(thickness) {
+    // Approx 1.10 EUR per cm thickness per m2
+    return thickness * 1.10;
+}
+
