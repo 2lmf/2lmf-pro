@@ -96,7 +96,8 @@ nav a:hover {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #fff;
+    background-color: #fdf2e9;
+    /* Light Orange */
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1001;
@@ -106,7 +107,8 @@ nav a:hover {
 }
 
 .dropdown-content a {
-    color: #333;
+    color: #000;
+    /* Black text */
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -117,8 +119,10 @@ nav a:hover {
 }
 
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: #000;
+    /* Black background on hover */
     color: #e67e22;
+    /* Orange text on hover */
 }
 
 .dropdown:hover .dropdown-content {
