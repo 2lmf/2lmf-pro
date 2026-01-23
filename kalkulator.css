@@ -990,48 +990,48 @@ nav a:hover {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
+}
 
-    /* --- Calculator Title Bar (Restored & Compact) --- */
-    .calculator-header {
-        background: var(--primary);
-        border-bottom: 4px solid rgba(0, 0, 0, 0.1);
-        padding: 1rem 0;
-        /* Reduced padding for height */
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
-    }
+/* --- Calculator Title Bar (Restored & Compact) --- */
+.main-header {
+    background: var(--primary);
+    border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 0;
+    /* Reduced padding for height */
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 20px rgba(230, 126, 34, 0.4);
+    position: relative;
+    z-index: 99;
+}
 
-    .calculator-header .container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.main-header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-    .calculator-header h1 {
-        font-family: var(--font-brand);
-        font-weight: 700;
-        font-size: 2.5rem;
-        /* Font size unchanged */
-        color: black;
-        text-shadow: none;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin: 0;
-        line-height: 1.2;
-    }
+.main-header h1 {
+    font-family: var(--font-brand);
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: black;
+    text-shadow: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
 
-    .calculator-header .highlight {
-        color: white;
-        font-family: var(--font-header);
-        font-weight: 600;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
+.main-header .highlight {
+    color: white;
+    font-family: var(--font-header);
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 
-    .calculator-header .subtitle {
-        color: black;
-        font-size: 1.3rem;
-        /* Font size unchanged */
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        margin-top: 0.2rem;
-    }
+.main-header .subtitle {
+    color: black;
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+}
