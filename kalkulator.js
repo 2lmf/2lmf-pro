@@ -19,7 +19,7 @@ const templates = {
             <div class="form-group">
                 <label for="facade-type">Tip fasade</label>
                 <select id="facade-type" name="type" onchange="toggleSubOptions()">
-                    <option value="etics">Kamena</option>
+                    <option value="etics">ETICS (kontaktna - kamena vuna)</option>
                     <option value="ventilated">Ventilirana</option>
                 </select>
             </div>
