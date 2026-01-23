@@ -612,7 +612,8 @@ nav a:hover {
 .grand-total {
     background: var(--primary);
     /* Solid Orange */
-    border: 1px solid var(--primary-dim);
+    border: 4px solid #D35400;
+    /* Darker orange thick border */
     margin-top: 1.5rem;
     color: black;
     /* Black Text */
@@ -629,6 +630,14 @@ nav a:hover {
     background: rgba(230, 126, 34, 0.25);
     /* Light orange on hover */
     cursor: default;
+}
+
+.note-copyright {
+    font-family: var(--font-header);
+    color: black;
+    font-weight: 700;
+    font-size: 1.3rem;
+    /* Match note-brand/calc size */
 }
 
 .grand-total .col-total {

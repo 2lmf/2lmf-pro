@@ -880,7 +880,8 @@ function displayResults(items) {
     footerNote.className = 'calc-footer-note';
     footerNote.innerHTML = `
         <p>
-            © 2026 <span class="note-brand">2LMF PRO</span> 
+            <span class="note-copyright">© 2026</span> 
+            <span class="note-brand">2LMF PRO</span> 
             <span class="note-calc">Kalkulator</span>
         </p>
         <p class="small-note">Svi izračuni su informativnog karaktera</p>
@@ -941,6 +942,10 @@ if (pdfBtn) {
                 spans.forEach(s => {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
+                    // Compensate for Stencil font rendering lower
+                    if (s.classList.contains('brand-name')) {
+                        s.style.transform = 'translateY(-4px)';
+                    }
                 });
             }
 
@@ -951,6 +956,10 @@ if (pdfBtn) {
                 spans.forEach(s => {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
+                    // Compensate for Stencil font rendering lower
+                    if (s.classList.contains('note-brand')) {
+                        s.style.transform = 'translateY(-4px)';
+                    }
                 });
             }
         }
