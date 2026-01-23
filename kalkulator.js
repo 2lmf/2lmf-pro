@@ -934,9 +934,6 @@ if (emailBtnSend) {
     });
 }
 
-// Load default
-loadModule('hydro');
-
 // --- MISSING DATA & HELPERS ---
 
 const prices = {
@@ -979,3 +976,6 @@ function getWoolPrice(thickness) {
 
 
 // Premature call removed
+
+// Load default properly at the end
+loadModule('hydro');
