@@ -1022,6 +1022,13 @@ nav a:hover {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0;
+
+    /* Flex alignment fix */
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    /* Changed to start */
+    gap: 0.7rem;
 }
 
 .main-header .highlight {
@@ -1029,14 +1036,14 @@ nav a:hover {
     font-family: var(--font-header);
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    display: inline-block;
-    /* Allow transform */
-    transform: translateY(3px);
-    /* Push down slightly to align with Stencil */
 }
 
 .main-header .subtitle {
     color: black;
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-top: 5px;
 }
 
 /* --- Calculation Footer Note --- */
@@ -1045,17 +1052,29 @@ nav a:hover {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
     border-top: 1px dashed rgba(0, 0, 0, 0.1);
-    color: var(--text-main);
 }
 
-.calc-footer-note p {
-    margin: 0;
+.note-brand {
+    font-family: var(--font-brand);
+    color: var(--primary);
+    /* Orange */
     font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.note-calc {
+    font-family: var(--font-header);
+    color: black;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
 }
 
 .calc-footer-note .small-note {
-    font-size: 0.8rem;
-    color: var(--text-muted);
+    font-size: 0.85rem;
+    color: black;
+    margin-top: 0.3rem;
+    font-weight: 600;
 }
 
 font-size: 1.3rem;

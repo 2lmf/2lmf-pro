@@ -879,7 +879,10 @@ function displayResults(items) {
     const footerNote = document.createElement('div');
     footerNote.className = 'calc-footer-note';
     footerNote.innerHTML = `
-        <p>© 2026 2LMF PRO Kalkulator</p>
+        <p>
+            <span class="note-brand">2LMF PRO</span> 
+            <span class="note-calc">Kalkulator</span>
+        </p>
         <p class="small-note">Svi izračuni su informativnog karaktera</p>
     `;
     resultsContainer.appendChild(footerNote);
