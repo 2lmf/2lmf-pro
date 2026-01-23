@@ -104,6 +104,8 @@ header {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid black;
+    /* Added black separator line */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -995,7 +997,8 @@ nav a:hover {
 /* --- Calculator Title Bar (Restored & Compact) --- */
 .main-header {
     background: var(--primary);
-    border-bottom: 4px solid black;
+    border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+    /* Reverted to original */
     padding: 1.5rem 0;
     /* Reduced padding for height */
     margin-bottom: 3rem;
