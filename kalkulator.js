@@ -48,7 +48,7 @@ const templates = {
                     <label for="cladding-type">Vrsta obloge</label>
                     <select id="cladding-type" name="cladding">
                         <option value="hpl">HPL ploče</option>
-                        <option value="alu">Aluminijski kompozit (alucobond)</option>
+                        <option value="alu">Aluminijski kompozit</option>
                         <option value="fiber">Vlaknocementne ploče</option>
                     </select>
                 </div>
