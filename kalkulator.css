@@ -995,7 +995,7 @@ nav a:hover {
 /* --- Calculator Title Bar (Restored & Compact) --- */
 .main-header {
     background: var(--primary);
-    border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid black;
     padding: 1.5rem 0;
     /* Reduced padding for height */
     margin-bottom: 3rem;
