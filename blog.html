@@ -144,10 +144,63 @@
         </main>
     </div>
 
-    <footer>
-        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
-        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
+    <footer class="main-footer" id="kontakt">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Column 1: Brand & Info -->
+                <div class="footer-column">
+                    <div class="footer-brand">2LMF PRO</div>
+                    <p class="footer-desc">
+                        Vaš partner za hidro i termo izolaciju, ventilirane fasade i panelne ograde.
+                    </p>
+                    <div class="company-details">
+                        <p>OIB: 29766043828</p>
+                        <p>MBS: 081477933</p>
+                        <p>IBAN: HR312340009111121324</p>
+                    </div>
+                </div>
+
+                <!-- Column 2: Contact -->
+                <div class="footer-column">
+                    <h3 class="footer-heading">KONTAKT</h3>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📍</span> Adresa:</span>
+                        <p>Orešje 7, 10090 Zagreb</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📞</span> Telefon:</span>
+                        <p>+385 95 311 5007</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📧</span> Email:</span>
+                        <p>2lmf.info@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Column 3: Contact Form -->
+                <div class="footer-column">
+                    <h3 class="footer-heading">POŠALJITE UPIT</h3>
+                    <form class="footer-form" action="https://formspree.io/f/xvgzgekb" method="POST">
+                        <input type="text" name="ime" placeholder="Ime i Prezime" aria-label="Ime i Prezime" required>
+                        <input type="email" name="email" placeholder="Vaš Email" aria-label="Vaš Email" required>
+                        <textarea name="poruka" placeholder="Vaša poruka..." aria-label="Vaša poruka" rows="3"
+                            required></textarea>
+                        <button type="submit" class="footer-btn">POŠALJI</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <!-- Bottom Orange Copyright Bar -->
+    <div class="footer-bottom-bar">
+        <div class="container">
+            © 2026 2LMF PRO j.d.o.o. | Vaš partner za hidro i termo izolaciju i ventilirane fasade
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
