@@ -906,9 +906,27 @@ if (pdfBtn) {
         const originalBg = element.style.backgroundColor;
         element.style.backgroundColor = '#ffffff';
 
+        // Clone Header for PDF
+        const headerEl = document.querySelector('.main-header');
+        let headerClone = null;
+        if (headerEl) {
+            headerClone = headerEl.cloneNode(true);
+            // Adjust styles for PDF context
+            headerClone.style.marginBottom = '2rem';
+            headerClone.style.marginTop = '-1rem'; // Offset padding
+            headerClone.style.width = 'calc(100% + 5rem)'; // Counteract parent padding (2.5rem * 2)
+            headerClone.style.marginLeft = '-2.5rem';
+            headerClone.style.boxShadow = 'none';
+
+            element.insertBefore(headerClone, element.firstChild);
+        }
+
         html2pdf().set(opt).from(element).save().then(() => {
             if (btns) btns.style.display = 'block'; // Restore buttons
             element.style.backgroundColor = originalBg; // Restore background
+
+            // Remove cloned header
+            if (headerClone) headerClone.remove();
         });
     });
 }
