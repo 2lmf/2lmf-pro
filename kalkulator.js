@@ -915,7 +915,13 @@ if (emailBtnSend) {
         }
 
         const items = document.querySelectorAll('.result-item:not(.result-header-row)');
-        let body = `Poštovani,\n\nOvo je izračun materijala za kategoriju: ${currentModule.toUpperCase()}\n\n`;
+
+        // Prepare FormData
+        const formData = new FormData();
+        formData.append('email', emailTo);
+        formData.append('A_Naslov', `Izračun materijala: ${currentModule.toUpperCase()}`);
+
+        let index = 1;
 
         items.forEach(item => {
             const name = item.querySelector('.col-name').innerText;
@@ -923,26 +929,27 @@ if (emailBtnSend) {
             const price = item.querySelector('.col-price').innerText;
             const total = item.querySelector('.col-total').innerText;
 
-            body += `${name} | ${qty} | ${price} | ${total}\n`;
+            // Simple formatting: Name as Key, Details as Value
+            // Adding number prefix to force order
+            const key = `${index < 10 ? '0' + index : index}. ${name}`;
+            const value = `${qty} | ${price} | ${total}`;
+            formData.append(key, value);
+            index++;
         });
 
-        // Add Grand Total logic if present in text
+        // Add Grand Total logic
         const grandTotal = document.querySelector('.grand-total .col-total');
         if (grandTotal) {
-            body += `\nSVEUKUPNO (stavke s cijenom): ${grandTotal.innerText}`;
+            formData.append('99_SVEUKUPNO', grandTotal.innerText);
         }
 
-        body += `\n\nLijep pozdrav,\n2LMF Kalkulator`;
+        // Add Contact Info footer equivalent
+        formData.append('Z_Napomena', 'Ovo je informativni izračun sa 2LMF PRO kalkulatora.');
 
         // Send via AJAX to Formspree
         const originalText = emailBtnSend.innerHTML;
         emailBtnSend.innerHTML = '⏳ Šaljem...';
         emailBtnSend.disabled = true;
-
-        const formData = new FormData();
-        formData.append('email', emailTo);
-        formData.append('subject', `Izračun 2LMF - ${currentModule.toUpperCase()}`);
-        formData.append('message', body);
 
         fetch("https://formspree.io/f/mwvlndlq", {
             method: "POST",
