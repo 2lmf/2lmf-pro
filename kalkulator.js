@@ -19,7 +19,7 @@ const templates = {
             <div class="form-group">
                 <label for="facade-type">Tip fasade</label>
                 <select id="facade-type" name="type" onchange="toggleSubOptions()">
-                    <option value="etics">ETICS (kontaktna - vuna)</option>
+                    <option value="etics">Kamena</option>
                     <option value="ventilated">Ventilirana</option>
                 </select>
             </div>
@@ -33,7 +33,7 @@ const templates = {
             <div id="etics-options">
                 <div class="form-group">
                     <label>Vrsta izolacije</label>
-                    <input type="text" value="Kamena vuna" readonly style="background-color: #EFEFEF; color: #555; border: 1px solid #ccc; cursor: not-allowed;">
+                    <input type="text" value="Kamena vuna" readonly>
                     <input type="hidden" id="insulation-type" name="material" value="wool">
                 </div>
                 <div class="form-group">
