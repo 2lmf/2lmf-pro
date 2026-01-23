@@ -19,7 +19,7 @@ const templates = {
             <div class="form-group">
                 <label for="facade-type">Tip fasade</label>
                 <select id="facade-type" name="type" onchange="toggleSubOptions()">
-                    <option value="etics">ETICS (kontaktna - stiropor/vuna)</option>
+                    <option value="etics">ETICS (kontaktna - vuna)</option>
                     <option value="ventilated">Ventilirana</option>
                 </select>
             </div>
@@ -32,11 +32,9 @@ const templates = {
             <!-- ETICS Options -->
             <div id="etics-options">
                 <div class="form-group">
-                    <label for="insulation-type">Vrsta izolacije</label>
-                    <select id="insulation-type" name="material">
-                        <option value="eps">EPS (stiropor)</option>
-                        <option value="wool">Kamena vuna</option>
-                    </select>
+                    <label>Vrsta izolacije</label>
+                    <input type="text" value="Kamena vuna" readonly style="background-color: #EFEFEF; color: #555; border: 1px solid #ccc; cursor: not-allowed;">
+                    <input type="hidden" id="insulation-type" name="material" value="wool">
                 </div>
                 <div class="form-group">
                     <label for="thickness">Debljina izolacije (cm)</label>
@@ -54,7 +52,7 @@ const templates = {
                         <option value="fiber">Vlaknocementne ploče</option>
                     </select>
                 </div>
-                 <div class="form-group">
+                  <div class="form-group">
                     <label for="vent-insulation">Debljina vune (cm)</label>
                     <input type="number" id="vent-insulation" name="vent-thickness" value="10" min="1">
                 </div>
@@ -94,8 +92,8 @@ const templates = {
             <div class="form-group">
                 <label for="thermal-type">Primjena</label>
                 <select id="thermal-type" name="type">
-                    <option value="xps">XPS (podovi, temelji, podrum)</option>
-                    <option value="roof">Kosi krov (staklena/kamena vuna)</option>
+                    <option value="xps">XPS (podovi, temelji)</option>
+                    <option value="roof">Kosi krov (kamena vuna)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -103,8 +101,8 @@ const templates = {
                 <input type="text" inputmode="decimal" id="area" name="area" placeholder="npr. 50,5" required>
             </div>
             <div class="form-group">
-                <label for="thickness">Debljina (cm)</label>
-                <input type="number" id="thickness" name="thickness" value="5">
+                <label for="thickness">Debljina (cm) (min. 2cm)</label>
+                <input type="number" id="thickness" name="thickness" value="2" min="2">
             </div>
             </div>
 
@@ -541,7 +539,11 @@ function calculateFacade(data) {
 
     if (data.type === 'etics') {
         // ETICS Logic
-        items.push({ name: `${data.material.toUpperCase()} izolacijske ploče (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²' });
+        // Mat is always 'wool' now, but let's be clean
+        let matName = 'Kamena vuna';
+        if (data.material === 'eps') matName = 'EPS (Stiropor)'; // Fallback if ever needed
+
+        items.push({ name: `${matName} (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²' });
         items.push({ name: 'Ljepilo za ljepljenje (cca 5kg/m²)', value: (area * 5).toFixed(1), unit: 'kg' });
         items.push({ name: 'Ljepilo za armiranje (cca 4kg/m²)', value: (area * 4).toFixed(1), unit: 'kg' });
         items.push({ name: 'Fasadna mrežica (1.1m/m²)', value: (area * 1.1).toFixed(2), unit: 'm²' });
@@ -580,7 +582,8 @@ function calculateThermal(data) {
         const thickness = parseInt(data.thickness);
         const woolPrice = getWoolPrice(thickness);
 
-        items.push({ name: `Mineralna vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
+        // Changed from 'Mineralna vuna' to 'Kamena vuna' per request to exclude glass wool
+        items.push({ name: `Kamena vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
         items.push({ name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al });
     }
     return items;
