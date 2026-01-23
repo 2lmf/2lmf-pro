@@ -1,0 +1,751 @@
+/* Main styles imported from style.css */
+
+/* --- Tech Background --- */
+.tech-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    width: 100%;
+    height: 100%;
+    z-index: -9999;
+    /* Force behind everything */
+    background-color: #F4F4F4;
+    /* Light Grey */
+
+    /* Subtle Grey Grid + Technical Drawings */
+    background-image:
+        url('assets/background-pattern.svg'),
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 800px 800px, 50px 50px, 50px 50px;
+    background-position: center top, 0 0, 0 0;
+    opacity: 0.6;
+    /* Slight fade for the whole background layer if needed, or controlled in SVG */
+}
+
+/* --- Layout --- */
+/* Container style removed, using main style.css container */
+
+/* --- Header Header --- */
+/* Main Header styles handled by main style.css */
+
+.highlight {
+    color: white;
+    /* Kalkulator in White */
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+    color: black;
+    /* Requested Black */
+    font-size: 1.3rem;
+    /* Increased size */
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+}
+
+/* --- Navigation --- */
+.module-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    background: #FFFFFF;
+    /* White for unselected */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: 2px;
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    color: black;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 10;
+    /* Block background */
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #E67E22;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #F5CBA7;
+    /* Solid darker orange for hover */
+    color: black;
+    border-color: #E67E22;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn:hover::before {
+    transform: scaleY(1);
+}
+
+.nav-btn.active {
+    background: #FAE5D3;
+    /* Active = Light Orange */
+    color: black;
+    border-color: #E67E22;
+    box-shadow: 0 0 10px rgba(230, 126, 34, 0.3);
+    text-shadow: none;
+}
+
+.nav-btn.active::before {
+    transform: scaleY(1);
+}
+
+/* --- Cards & Panels --- */
+.calculator-card,
+.results-card {
+    background: #FFFFFF;
+    /* Ensure solid white opacity */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+    /* Ensure cards sit above background */
+}
+
+/* "Technical markings" on corners */
+.calculator-card::after,
+.results-card::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid #E67E22;
+    border-right: 2px solid #E67E22;
+}
+
+.calculator-card::before,
+.results-card::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    width: 20px;
+    height: 20px;
+    border-bottom: 2px solid #E67E22;
+    border-left: 2px solid #E67E22;
+}
+
+/* --- Forms --- */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748B;
+    font-weight: 700;
+    /* Bold labels */
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    background: #FAE5D3;
+    /* Solid Light Orange (No Transparency) */
+    /* Light orange like email input */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    /* Bold inputs */
+    color: black;
+    /* Black Text */
+    transition: all 0.2s;
+}
+
+.form-group select option {
+    font-weight: 700;
+    background: white;
+    /* Optional: keeps dropdown clean */
+    color: black;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #E67E22;
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.15);
+}
+
+/* --- Buttons --- */
+/* --- Buttons --- */
+.calculate-btn {
+    width: 100%;
+    background: rgba(230, 126, 34, 0.15);
+    /* Light orange background */
+    color: black;
+    /* Black text */
+    padding: 1.2rem;
+    border: 3px solid var(--primary);
+    /* Thick orange border */
+    border-radius: var(--radius-sm);
+    font-family: var(--font-header);
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    position: relative;
+    /* clip-path removed as requested */
+}
+
+.calculate-btn:hover {
+    background: var(--primary);
+    /* Solid Orange on hover */
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 1px solid var(--text-muted);
+    padding: 0.8rem 1.6rem;
+    /* Increased padding */
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    /* Increased font size */
+    font-weight: 600;
+    /* Slightly bolder */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(230, 126, 34, 0.05);
+}
+
+/* --- Results --- */
+.hidden {
+    display: none;
+}
+
+.results-header {
+    display: flex;
+    flex-direction: column;
+    /* Stack vertically */
+    justify-content: center;
+    align-items: center;
+    /* Center align */
+    gap: 1.5rem;
+    /* Space between title and buttons */
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.action-buttons,
+.buttons-row {
+    display: flex;
+    justify-content: space-between;
+    /* Spread buttons */
+    width: 100%;
+    /* Full width */
+    gap: 1rem;
+    /* Gap between buttons */
+}
+
+.action-btn {
+    width: 120px;
+    /* Narrower width */
+    flex: 0 0 auto;
+    background: var(--primary);
+    /* Orange Background */
+    border: 3px solid var(--primary-dim);
+    /* Thick Border */
+    padding: 0.5rem 0.2rem;
+    /* Reduced padding */
+    border-radius: var(--radius-sm);
+    color: black;
+    /* Black Text */
+    font-family: var(--font-ui);
+    font-size: 1.5rem;
+    /* Larger icon */
+    font-weight: 700;
+    /* Bold */
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.action-btn .btn-text {
+    font-size: 0.7rem;
+    /* Smaller text */
+    line-height: 1.1;
+    margin-top: 2px;
+}
+
+.action-btn:hover {
+    background: var(--primary-dim);
+    border-color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
+}
+
+.results-actions-container {
+    width: 100%;
+}
+
+.email-row {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.email-row .email-input {
+    width: 100%;
+    max-width: 220px;
+    /* Wider to span gaps */
+    text-align: center;
+    border: 3px solid black;
+    /* Black thick border */
+    /* Thick border */
+    padding: 0.5rem;
+    /* Kept reduced padding */
+    border-radius: var(--radius-sm);
+    background: rgba(230, 126, 34, 0.15);
+    /* Discrete light orange */
+    color: black;
+    font-family: var(--font-ui);
+    /* Match button font type */
+    font-size: 0.9rem;
+    /* Reverted to 0.9rem */
+    font-weight: 700;
+}
+
+.email-row .email-input::placeholder {
+    color: black;
+    opacity: 1;
+    /* Firefox */
+}
+
+.results-header h2 {
+    font-family: var(--font-header);
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+}
+
+.result-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-light);
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.result-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.result-header-row {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    font-family: var(--font-header);
+    font-size: 0.85rem;
+    font-weight: 700;
+    /* Bold Header */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.result-label {
+    color: var(--text-main);
+    font-weight: 700;
+    /* Bold Label */
+}
+
+.col-qty,
+.col-price,
+.col-total {
+    font-family: 'Courier New', monospace;
+    color: var(--text-muted);
+    font-weight: 700;
+    /* Bold Data */
+}
+
+.col-qty {
+    text-align: center;
+}
+
+.col-price,
+.col-total {
+    text-align: right;
+}
+
+.grand-total {
+    background: var(--primary);
+    /* Solid Orange */
+    border: 1px solid var(--primary-dim);
+    margin-top: 1.5rem;
+    color: black;
+    /* Black Text */
+    font-weight: 700;
+    /* Bold Text */
+    padding: 1.5rem;
+    /* Ensure padding matches previous */
+    border-radius: var(--radius-md);
+    /* Smooth corners */
+    transition: background 0.2s;
+}
+
+.grand-total:hover {
+    background: rgba(230, 126, 34, 0.25);
+    /* Light orange on hover */
+    cursor: default;
+}
+
+.grand-total .col-total {
+    color: black;
+    /* Override previous color */
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* --- Footer --- */
+/* --- Footer --- */
+/* .main-footer moved to bottom for specific override/grouping */
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .module-nav {
+        flex-direction: column;
+    }
+
+    .nav-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .result-item {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .col-price {
+        display: none;
+    }
+
+    /* Simplify on mobile */
+    .col-total {
+        text-align: right;
+    }
+}
+
+/* --- Color Selection Buttons --- */
+.color-selection-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+}
+
+.color-btn {
+    flex: 1;
+    /* Grow to fill space equally */
+    min-width: 0;
+    /* Allow flex item to shrink below content size if needed */
+    padding: 1rem 1rem;
+    /* Reduced padding for height */
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-header);
+    font-weight: 700;
+    font-size: 1.1rem;
+    /* Larger font (V2 style) */
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    /* Keep on one line */
+}
+
+.color-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.color-btn.active {
+    border-color: var(--primary);
+    /* Orange border for selection */
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.4);
+    transform: scale(1.02);
+    z-index: 2;
+}
+
+/* RAL 7016 - Antracit siva */
+.btn-ral-7016 {
+    background-color: #383E42;
+}
+
+/* RAL 6005 - Mahovina zelena */
+.btn-ral-6005 {
+    background-color: #0B3D2E;
+}
+
+/* --- User Details Grid --- */
+.user-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.user-details-grid input::placeholder {
+    color: black;
+    opacity: 1;
+    /* Firefox adds a lower opacity by default */
+}
+
+@media (max-width: 600px) {
+    .user-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Layout Selection Buttons (Fence) --- */
+.layout-btn {
+    flex: 1;
+    /* Equal width */
+    min-width: 0;
+    /* Allow shrink */
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    /* Inactive: White */
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.layout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.layout-btn.active {
+    border-color: var(--primary);
+    /* Orange border */
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.4);
+    transform: scale(1.02);
+    z-index: 2;
+    background: rgba(230, 126, 34, 0.15);
+    /* Active: Light Orange */
+}
+
+.layout-btn-text {
+    width: 100%;
+    padding: 1rem;
+    font-family: var(--font-header);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: black;
+    text-align: center;
+}
+
+.layout-btn input {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    text-align: center;
+    font-family: var(--font-header);
+    font-weight: 700;
+    font-size: 1rem;
+    color: black;
+    outline: none;
+    text-transform: uppercase;
+}
+
+.layout-btn input::placeholder {
+    color: black;
+    /* Changed to Black as requested */
+    font-size: 0.8rem;
+    text-transform: none;
+    opacity: 1;
+    /* Firefox fix */
+}
+
+/* --- Footer Brand Font --- */
+.footer-brand {
+    font-family: var(--font-brand);
+    /* Stencil font */
+    font-weight: 700;
+    text-transform: uppercase;
+    color: black;
+    /* Darker grey/black for 2LMF PRO */
+    letter-spacing: 0.5px;
+}
+
+.footer-highlight {
+    color: var(--primary);
+    /* Orange */
+    font-family: var(--font-header);
+    /* Technical font (Chakra Petch) */
+    font-weight: 600;
+}
+
+/* Footer styles moved to style.css or handled by main-footer class */
+
+.company-details p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+.footer-heading {
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: var(--font-header);
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 0;
+}
+
+.contact-block {
+    margin-bottom: 1rem;
+}
+
+.contact-label {
+    display: block;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+}
+
+.contact-label .icon {
+    color: var(--primary);
+    margin-right: 0.5rem;
+}
+
+.contact-block p {
+    margin: 0;
+    color: #ccc;
+    font-size: 1rem;
+}
+
+/* --- Footer Form --- */
+.footer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-form input,
+.footer-form textarea {
+    background-color: #333;
+    border: 1px solid #444;
+    padding: 0.8rem 1rem;
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.footer-form input::placeholder,
+.footer-form textarea::placeholder {
+    color: #888;
+}
+
+.footer-form textarea {
+    resize: vertical;
+}
+
+.footer-form button {
+    background-color: var(--primary);
+    /* Orange */
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.footer-form button:hover {
+    background-color: #d35400;
+    /* Darker Orange */
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}

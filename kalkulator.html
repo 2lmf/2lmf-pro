@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46VSK431N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-M46VSK431N');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2LMF PRO | Hidroizolacija, Termoizolacija i Ventilirane Fasade Zagreb</title>
+
+    <link rel="canonical" href="https://www.2lmf-pro.hr/" />
+
+    <meta name="description"
+        content="Vaš partner za hidro i termo izolaciju u Zagrebu. Nudimo najpovoljnije cijene za TPO folije, kamenu vunu, HPL ploče i projektiranje fasada.">
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Calculator Styles & Fonts -->
+    <link rel="stylesheet" href="style.css?v=42">
+    <!-- Google Fonts: Chakra Petch (Tech), Barlow (UI), Stardos Stencil (Fallback for 'Stencil') -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Chakra+Petch:wght@400;500;600;700&family=Stardos+Stencil:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* ANIMACIJE */
+        .animate-block {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-block.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* HEADER */
+        header {
+            background: #e67e22;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            max-height: 75px;
+            width: auto;
+            display: block;
+        }
+
+        .header-tagline {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #000;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        /* NAVIGACIJA - BEZ DROPDOWNA */
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav>a {
+            color: #000;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        /* HERO */
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('index.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #333;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* USLUGE */
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 60px 20px;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-link {
+            text-decoration: none;
+            color: inherit;
+            width: 220px;
+            display: block;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card h2 {
+            color: #e67e22;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* ZAŠTO MI? + MISIJA */
+        .why-us {
+            background-image: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            max-width: 1300px;
+            margin: 40px auto;
+        }
+
+        .why-item h3 {
+            color: #e67e22;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Stil za misiju unutar why-us sekcije */
+        .mission-inline {
+            max-width: 900px;
+            margin: 60px auto 0;
+            /* Razmak od gornjeg dijela */
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            /* Diskretna crta */
+        }
+
+        .mission-inline h3 {
+            color: #e67e22;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .mission-inline p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        /* KONTAKT SEKCIJA */
+        /* Contact section removed to be replaced by Calculator */
+
+        .hashtags {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            padding: 40px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Original footer removed */
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo-container {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            nav>a {
+                margin: 5px 10px;
+            }
+
+            /* Malo više mjesta na mobitelu */
+            .service-link {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .why-us {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Tech Background for Calculator -->
+    <div class="tech-background"></div>
+
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="2lmf_logo.png" alt="2LMF PRO Logo" class="logo">
+            </a>
+            <span class="header-tagline">Vaš partner za hidro i termo izolaciju</span>
+        </div>
+        <nav>
+            <a href="index.html">Početna</a>
+            <a href="hidroizolacija.html">Hidroizolacija</a>
+            <a href="termoizolacija.html">Termoizolacija</a>
+            <a href="ostalo.html">Ostalo</a>
+            <a href="arhitektura.html">Arhitektura</a>
+            <a href="blog.html">Blog</a>
+            <a href="#calculator-header">Kalkulator</a>
+        </nav>
+    </header>
+
+    <section class="hero animate-block">
+        <h1>Vrhunska izolacija za vaš dom</h1>
+        <p>Specijalizirani smo za hidroizolaciju, termoizolaciju i moderne sustave ventiliranih fasada. Osigurajte
+            trajnu zaštitu i uštedu energije uz vrhunsku kvalitetu materijala.</p>
+    </section>
+
+    <section class="services">
+        <a href="hidroizolacija.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Hidroizolacija</h2>
+                <p>TPO folije, bitumen i polimercementni premazi za krovove i temelje.</p>
+            </div>
+        </a>
+        <a href="termoizolacija.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Termoizolacija</h2>
+                <p>Kamena vuna i aluminijska izolacija za vrhunsku energetsku učinkovitost.</p>
+            </div>
+        </a>
+        <a href="arhitektura.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Arhitektura</h2>
+                <p>Projektiranje i savjetovanje s fokusom na uštedu kroz izvedbene projekte.</p>
+            </div>
+        </a>
+        <a href="ostalo.html" class="service-link animate-block">
+            <div class="service-card">
+                <h2>Ostalo</h2>
+                <p>Ploče za ventilirane fasade, zvučna izolacija, panelne ograde i vrata i ostali materijali</p>
+            </div>
+        </a>
+    </section>
+
+    <section class="why-us animate-block">
+        <h2>Zašto odabrati 2LMF PRO?</h2>
+        <div class="why-grid">
+            <div class="why-item">
+                <h3>Vrhunska kvaliteta</h3>
+                <p>Nudimo isključivo certificirane materijale vodećih svjetskih proizvođača za trajnu sigurnost vašeg
+                    objekta.</p>
+            </div>
+            <div class="why-item">
+                <h3>Stručna podrška</h3>
+                <p>Naš tim inženjera i projektanata vodi vas kroz cijeli proces odabira i projektiranja izolacije u
+                    Zagrebu i cijeloj Hrvatskoj.</p>
+            </div>
+            <div class="why-item">
+                <h3>Najbolje cijene</h3>
+                <p>Pokažite nam najbolju ponudu, a mi ćemo vam dati još bolju.</p>
+                <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">Napomena: nismo u sustavu PDV-a, pa PDV ne
+                    možemo iskazati na računu.</p>
+            </div>
+        </div>
+
+        <div class="mission-inline">
+            <h3>Naša misija</h3>
+            <p>Naš cilj je jednostavan: pružiti rješenja koja traju generacijama, bez kompromisa na vašem budžetu.
+                Temelj našeg poslovanja počiva na tri ključna stupa: <strong>najboljim cijenama</strong> na tržištu koje
+                osiguravaju maksimalnu vrijednost za vašu investiciju, <strong>vrhunskoj kvaliteti</strong> materijala
+                koja garantira dugotrajnost, te <strong>brzoj isporuci</strong> i poštivanju rokova jer cijenimo vaše
+                vrijeme. Vaše povjerenje gradimo stručnošću, transparentnošću i efikasnošću.</p>
+        </div>
+    </section>
+
+    <!-- CALCULATOR START -->
+    <div id="calculator-header" class="main-header"
+        style="position: relative; margin-top: 0; box-shadow: none; border-bottom: none; background: transparent; padding-top: 4rem;">
+        <div class="container">
+            <h1>2LMF PRO <span class="highlight" style="color: #e67e22; text-shadow: none;">Kalkulator</span></h1>
+            <p class="subtitle">Informativni kalkulator za fasade, izolacije i ograde</p>
+        </div>
+    </div>
+
+    <main class="container app-wrapper">
+        <!-- Navigation Tabs -->
+        <nav class="module-nav">
+            <button class="nav-btn active" data-module="facade">
+                <span class="icon">🧱</span> Fasada
+            </button>
+            <button class="nav-btn" data-module="hydro">
+                <span class="icon">💧</span> Hidroizolacija
+            </button>
+            <button class="nav-btn" data-module="thermal">
+                <span class="icon">🌡️</span> Termoizolacija
+            </button>
+            <button class="nav-btn" data-module="fence">
+                <span class="icon">🏡</span> Panel Ograde
+            </button>
+        </nav>
+
+        <!-- Dynamic Content Area -->
+        <section id="calculator-content" class="calculator-card">
+            <!-- Content will be injected here by JS -->
+            <div class="placeholder-state">
+                <p>Odaberite kategoriju za početak izračuna.</p>
+            </div>
+        </section>
+
+        <!-- Results Section (Hidden by default) -->
+        <section id="results-section" class="results-card hidden">
+            <div class="results-header">
+                <h2>Rezultati Izračuna</h2>
+                <div class="results-actions-container">
+                    <div class="buttons-row">
+                        <button id="pdf-btn" class="action-btn">📄 <span class="btn-text">Spremi PDF</span></button>
+                        <button id="email-btn-send" class="action-btn">📧 <span class="btn-text">Pošalji</span></button>
+                        <button id="print-btn" class="action-btn" onclick="window.print()">🖨️ <span
+                                class="btn-text">Isprintaj</span></button>
+                    </div>
+
+                </div>
+            </div>
+            <div id="results-container" class="results-grid">
+                <!-- Results injected here -->
+            </div>
+        </section>
+        <!-- Copyright Line on Tech Background -->
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Column 1: Brand & Info -->
+                <div class="footer-column">
+                    <div class="footer-brand">2LMF PRO</div>
+                    <p class="footer-desc">
+                        Vaš partner za hidro i termo izolaciju, ventilirane fasade i panelne ograde.
+                    </p>
+                    <div class="company-details">
+                        <p>OIB: 29766043828</p>
+                        <p>MBS: 081477933</p>
+                        <p>IBAN: HR1234567890123456789</p>
+                    </div>
+                </div>
+
+                <!-- Column 2: Contact -->
+                <div class="footer-column">
+                    <h3 class="footer-heading">KONTAKT</h3>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📍</span> Adresa:</span>
+                        <p>Orešje 7, 10090 Zagreb</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📞</span> Telefon:</span>
+                        <p>+385 95 311 5007</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📧</span> Email:</span>
+                        <p>2lmf.info@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Column 3: Contact Form -->
+                <div class="footer-column">
+                    <h3 class="footer-heading">POŠALJITE UPIT</h3>
+                    <form class="footer-form">
+                        <input type="text" placeholder="Ime i Prezime" aria-label="Ime i Prezime">
+                        <input type="email" placeholder="Vaš Email" aria-label="Vaš Email">
+                        <textarea placeholder="Vaša poruka..." rows="3" aria-label="Vaša poruka"></textarea>
+                        <button type="submit">POŠALJI</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+    </footer>
+
+    <!-- Bottom Orange Copyright Bar -->
+    <div class="footer-bottom-bar"
+        style="background-color: #E67E22; color: #000; padding: 2rem 0; text-align: center; font-weight: 700; font-family: 'Barlow', sans-serif; font-size: 0.95rem; margin-top: 0; display: flex; align-items: center; justify-content: center;">
+        <div class="container">
+            © 2026 2LMF PRO j.d.o.o. | Vaš partner za hidro i termo izolaciju i ventilirane fasade
+        </div>
+    </div>
+
+    <!-- SCRIPT REFERENCES -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('appear'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
+        });
+    </script>
+    <script src="items_data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
