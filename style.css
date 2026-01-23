@@ -215,6 +215,8 @@ nav a:hover {
     margin: 0;
     line-height: 1.4;
     transition: color 0.3s;
+    font-weight: 700;
+    /* Bold */
 }
 
 .service-card:hover h2 {
