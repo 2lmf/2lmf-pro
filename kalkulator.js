@@ -934,8 +934,38 @@ if (emailBtnSend) {
 
         body += `\n\nLijep pozdrav,\n2LMF Kalkulator`;
 
-        // Open mail client addressed TO the input email
-        window.location.href = `mailto:${emailTo}?subject=Izracun 2LMF - ${currentModule.toUpperCase()}&body=${encodeURIComponent(body)}`;
+        // Send via AJAX to Formspree
+        const originalText = emailBtnSend.innerHTML;
+        emailBtnSend.innerHTML = '⏳ Šaljem...';
+        emailBtnSend.disabled = true;
+
+        fetch("https://formspree.io/f/xvgzgekb", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: emailTo,
+                subject: `Izračun 2LMF - ${currentModule.toUpperCase()}`,
+                message: body
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Izračun je uspješno poslan na vaš email!");
+                    emailInput.value = '';
+                } else {
+                    alert("Došlo je do greške. Molimo pokušajte ponovno.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Došlo je do greške prilikom slanja.");
+            })
+            .finally(() => {
+                emailBtnSend.innerHTML = originalText;
+                emailBtnSend.disabled = false;
+            });
     });
 }
 
