@@ -738,8 +738,9 @@ body {
 }
 
 .main-footer .container {
-    max-width: 1264px;
-    /* Compensating for border-box (1200 + 64px padding) */
+    box-sizing: content-box;
+    /* Force match with main site's default model */
+    max-width: 1200px;
     padding: 0 2rem;
     margin: 0 auto;
 }
