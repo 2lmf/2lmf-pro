@@ -21,7 +21,8 @@
     <link rel="icon" type="image/png" href="favicon.png">
 
     <!-- Calculator Styles & Fonts -->
-    <link rel="stylesheet" href="style.css?v=42">
+    <link rel="stylesheet" href="style.css?v=43">
+    <link rel="stylesheet" href="kalkulator.css?v=1">
     <!-- Google Fonts: Chakra Petch (Tech), Barlow (UI), Stardos Stencil (Fallback for 'Stencil') -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,12 +46,18 @@
         </div>
         <nav>
             <a href="index.html">Početna</a>
-            <a href="hidroizolacija.html">Hidroizolacija</a>
-            <a href="termoizolacija.html">Termoizolacija</a>
-            <a href="ostalo.html">Ostalo</a>
+            <div class="dropdown">
+                <button class="dropdown-btn">Ponuda materijala ▼</button>
+                <div class="dropdown-content">
+                    <a href="hidroizolacija.html">Hidroizolacija</a>
+                    <a href="termoizolacija.html">Termoizolacija</a>
+                    <a href="ostalo.html">Fasade i ostalo</a>
+                </div>
+            </div>
             <a href="arhitektura.html">Arhitektura</a>
             <a href="blog.html">Blog</a>
-            <a href="#calculator-header">Kalkulator</a>
+            <a href="kalkulator.html" class="nav-calculator">Kalkulator</a>
+            <a href="index.html#kontakt">Kontakt</a>
         </nav>
     </header>
 
