@@ -875,6 +875,15 @@ function displayResults(items) {
 
     resultsContainer.appendChild(totalDiv);
 
+    // Add Persistent Footer Note (Web & PDF)
+    const footerNote = document.createElement('div');
+    footerNote.className = 'calc-footer-note';
+    footerNote.innerHTML = `
+        <p>© 2026 2LMF PRO Kalkulator</p>
+        <p class="small-note">Svi izračuni su informativnog karaktera</p>
+    `;
+    resultsContainer.appendChild(footerNote);
+
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -919,14 +928,34 @@ if (pdfBtn) {
             headerClone.style.boxShadow = 'none';
 
             element.insertBefore(headerClone, element.firstChild);
+            element.insertBefore(headerClone, element.firstChild);
         }
+
+        // Create Orange Footer Bar for PDF
+        const pdfFooter = document.createElement('div');
+        pdfFooter.style.backgroundColor = '#E67E22';
+        pdfFooter.style.color = '#000';
+        pdfFooter.style.padding = '1.5rem';
+        pdfFooter.style.marginTop = '2rem';
+        pdfFooter.style.marginBottom = '-2.5rem'; // Extend to bottom
+        pdfFooter.style.marginLeft = '-2.5rem';
+        pdfFooter.style.width = 'calc(100% + 5rem)';
+        pdfFooter.style.textAlign = 'center';
+        pdfFooter.style.fontFamily = 'sans-serif';
+        pdfFooter.style.fontSize = '0.9rem';
+        pdfFooter.style.fontWeight = '700';
+        pdfFooter.innerHTML = `
+            Email: 2lmf.info@gmail.com &nbsp;|&nbsp; Mob: +385 95 311 5007 &nbsp;|&nbsp; OIB: 29766043828 &nbsp;|&nbsp; IBAN: HR312340009111121324
+        `;
+        element.appendChild(pdfFooter);
 
         html2pdf().set(opt).from(element).save().then(() => {
             if (btns) btns.style.display = 'block'; // Restore buttons
             element.style.backgroundColor = originalBg; // Restore background
 
-            // Remove cloned header
+            // Remove cloned elements
             if (headerClone) headerClone.remove();
+            if (pdfFooter) pdfFooter.remove();
         });
     });
 }

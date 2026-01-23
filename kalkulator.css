@@ -1029,12 +1029,37 @@ nav a:hover {
     font-family: var(--font-header);
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    /* Allow transform */
+    transform: translateY(3px);
+    /* Push down slightly to align with Stencil */
 }
 
 .main-header .subtitle {
     color: black;
-    font-size: 1.3rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    margin-top: 0.5rem;
+}
+
+/* --- Calculation Footer Note --- */
+.calc-footer-note {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    color: var(--text-main);
+}
+
+.calc-footer-note p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.calc-footer-note .small-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+font-size: 1.3rem;
+font-weight: 500;
+letter-spacing: 0.5px;
+margin-top: 0.5rem;
 }
