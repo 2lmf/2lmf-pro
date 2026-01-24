@@ -1135,9 +1135,9 @@ if (pdfBtn) {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
                     if (s.classList.contains('note-brand')) {
-                        // PDF Specific: User says "too low" at +4px, "too high" at -4px. 
-                        // Resetting to near zero (1px down).
-                        s.style.transform = 'translateY(1px)';
+                        // PDF Specific: CSS top: -5px handles the main shift.
+                        // Setting transform to 0 to avoid interference.
+                        s.style.transform = 'translateY(0px)';
                     }
                 });
             }
