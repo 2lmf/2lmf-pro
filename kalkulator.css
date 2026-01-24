@@ -1063,16 +1063,22 @@ nav a:hover {
     border-top: 1px dashed rgba(0, 0, 0, 0.1);
 }
 
+.note-flex-container {
+    display: flex;
+    align-items: center;
+    /* Perfect vertical centering */
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    line-height: 1;
+}
+
 .note-brand {
     font-family: var(--font-brand);
     color: var(--primary);
     /* Orange */
     font-weight: 700;
     font-size: 1.3rem;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
-    margin-bottom: 2px;
 }
 
 .note-calc {
@@ -1081,9 +1087,6 @@ nav a:hover {
     font-weight: 700;
     font-size: 1.3rem;
     text-transform: uppercase;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
 }
 
 .note-copyright {
@@ -1091,9 +1094,6 @@ nav a:hover {
     color: black;
     font-weight: 700;
     font-size: 1.3rem;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
 }
 
 .calc-footer-note .small-note {
@@ -1101,8 +1101,4 @@ nav a:hover {
     color: black;
     margin-top: 0.3rem;
     font-weight: 600;
-}
-
-letter-spacing: 0.5px;
-margin-top: 0.5rem;
 }

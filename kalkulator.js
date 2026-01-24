@@ -632,7 +632,8 @@ function calculateHydro(data) {
 
         // 2. XPS (Thermal)
         // 2. XPS (Thermal)
-        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm) (termika)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        // 2. XPS (Thermal)
+        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
 
         // 3. Geotekstil (iznad XPS-a, ispod folije)
         items.push({ name: 'Geotekstil (zaštitni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
@@ -878,14 +879,16 @@ function displayResults(items) {
     resultsContainer.appendChild(totalDiv);
 
     // Add Persistent Footer Note (Web & PDF)
+    // Add Persistent Footer Note (Web & PDF)
     const footerNote = document.createElement('div');
     footerNote.className = 'calc-footer-note';
+    // Use Flexbox container for perfect alignment
     footerNote.innerHTML = `
-        <p>
+        <div class="note-flex-container">
             <span class="note-copyright">© 2026</span> 
             <span class="note-brand">2LMF PRO</span> 
             <span class="note-calc">Kalkulator</span>
-        </p>
+        </div>
         <p class="small-note">Svi izračuni su informativnog karaktera</p>
     `;
     resultsContainer.appendChild(footerNote);
@@ -944,9 +947,9 @@ if (pdfBtn) {
                 spans.forEach(s => {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
-                    // Compensate for Stencil font rendering lower in PDF
+                    // Header: "Calculator is higher" -> Raise Brand (2LMF) more
                     if (s.classList.contains('brand-name')) {
-                        s.style.transform = 'translateY(-6px)'; // Increased offset
+                        s.style.transform = 'translateY(-9px)';
                     }
                 });
             }
