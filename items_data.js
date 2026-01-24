@@ -95,7 +95,16 @@ const prices = {
         set_spojnica: 1.50, // Vijak + Spojnica
         anker_vijci: 0.80,   // Po komadu
         montaza_plate: 25.00, // Cijena po metru (s pločicom)
-        montaza_concrete: 40.00 // Cijena po metru (betoniranje)
+        montaza_concrete: 40.00, // Cijena po metru (betoniranje)
+
+        // Pješačka vrata (Dimenzija -> [Pločica, Beton])
+        gate_prices: {
+            '1000x1000': { plate: 250, concrete: 300 },
+            '1000x1200': { plate: 270, concrete: 350 },
+            '1000x1500': { plate: 310, concrete: 420 },
+            '1000x1700': { plate: 360, concrete: 450 },
+            '1000x2000': { plate: 400, concrete: 520 }
+        }
     },
 
     chemicals: {

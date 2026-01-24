@@ -308,26 +308,43 @@ const templates = {
 
             <!-- Gate Size Selection -->
             <div id="gate-options" class="hidden" style="margin-top: 1rem;">
-                <label style="display:block; margin-bottom:0.5rem; font-weight:700;">Odaberite dimenzije (Š x V, mm)</label>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem;">
-                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1000', this)">
-                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1000</div>
+                <div class="form-group">
+                    <label>Odaberite dimenzije (Š x V, mm)</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem;">
+                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1000', this)">
+                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1000</div>
+                        </div>
+                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1200', this)">
+                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1200</div>
+                        </div>
+                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1500', this)">
+                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1500</div>
+                        </div>
+                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1700', this)">
+                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1700</div>
+                        </div>
+                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x2000', this)">
+                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x2000</div>
+                        </div>
                     </div>
-                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1200', this)">
-                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1200</div>
-                    </div>
-                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1500', this)">
-                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1500</div>
-                    </div>
-                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1700', this)">
-                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1700</div>
-                    </div>
-                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x2000', this)">
-                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x2000</div>
+                    <input type="hidden" id="gate-dimension" name="gateDimension" value="">
+                </div>
+
+                <!-- Gate Post Type Selection -->
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Vrsta stupova vrata</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="hidden" id="gate-post-type" name="gatePostType" value="plate">
+                        <div class="layout-btn active" id="gate-post-plate" onclick="selectGatePost('plate')">
+                            <div class="layout-btn-text">Stupovi sa pločicom</div>
+                        </div>
+                        <div class="layout-btn" id="gate-post-concrete" onclick="selectGatePost('concrete')">
+                            <div class="layout-btn-text">Stupovi za betoniranje</div>
+                        </div>
                     </div>
                 </div>
-                <input type="hidden" id="gate-dimension" name="gateDimension" value="">
-                <p style="font-size: 0.85rem; color: #666; margin-top: 0.8rem; font-style: italic;">
+
+                <p style="font-size: 0.9rem; color: black; font-weight: 700; margin-top: 1.5rem; margin-bottom: 2rem;">
                     * Napomena: stupovi na pločici sa pantima, sidro vijci, brava, kvaka i ključ su u cijeni.
                 </p>
             </div>
@@ -484,6 +501,22 @@ window.selectGateSize = function (size, btn) {
     // UI
     document.querySelectorAll('.gate-size-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+}
+
+window.selectGatePost = function (val) {
+    const btnPlate = document.getElementById('gate-post-plate');
+    const btnConcrete = document.getElementById('gate-post-concrete');
+    const input = document.getElementById('gate-post-type');
+
+    input.value = val;
+
+    if (val === 'plate') {
+        btnPlate.classList.add('active');
+        btnConcrete.classList.remove('active');
+    } else {
+        btnConcrete.classList.add('active');
+        btnPlate.classList.remove('active');
+    }
 }
 
 window.toggleFenceOptions = function () {
@@ -759,6 +792,7 @@ function calculateFence(data) {
     const installation = data.fenceInstallation === 'yes';
     const gateNeeded = data.fenceGate === 'yes';
     const gateDim = data.gateDimension;
+    const gatePostType = data.gatePostType; // 'plate' or 'concrete'
 
     let items = [];
 
@@ -830,15 +864,19 @@ function calculateFence(data) {
 
     // 5. Gate (Pješačka vrata)
     if (gateNeeded && gateDim) {
-        // Placeholder prices logic
-        let gatePrice = 250;
-        if (gateDim === '1000x1200') gatePrice = 270;
-        if (gateDim === '1000x1500') gatePrice = 300;
-        if (gateDim === '1000x1700') gatePrice = 330;
-        if (gateDim === '1000x2000') gatePrice = 360;
+        // Price logic from matrix
+        let gatePrice = 0;
+        const pricesObj = prices.fence.gate_prices[gateDim];
+        if (pricesObj) {
+            gatePrice = gatePostType === 'concrete' ? pricesObj.concrete : pricesObj.plate;
+        }
+
+        // Expanded name for PDF visualization with note
+        // "izbaci komplet, a umjesto toga napiši napomenu"
+        const gateName = `Pješačka vrata jednokrilna ${gateDim}mm<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(sidro vijci, brava, kvaka i ključ uključeni)</small>`;
 
         items.push({
-            name: `Pješačka vrata jednokrilna ${gateDim}mm (Komplet)`,
+            name: gateName,
             value: 1,
             unit: 'kpl',
             price: gatePrice
@@ -871,20 +909,14 @@ function calculateFence(data) {
         // Gate installation extra? Probably. Let's add a fixed amount for gate install if selected.
         let totalInstallPrice = length * installPrice;
         if (gateNeeded) {
-            const gateInstallPrice = 60; // Fixed price for gate install
+            const gateInstallPrice = 120; // Updated fixed price
             totalInstallPrice += gateInstallPrice;
-            installName += ` + Montaža vrata`;
+            // Remove "+ Montaža vrata" string as requested
+            // "kod stavke 'Montaža ograde (ključ u ruke) izbaci '+ Montaža vrata'"
         }
 
         items.push({
             name: installName,
-            value: 1, // Changed to 1 paušal or keep length but adjust unit price?
-            // To keep logic simple: Value is Length, but if gate is added, the math gets tricky if we just multiply.
-            // Better: "Montaža ograde" line + "Montaža vrata" line?
-            // User requested: "Below gate buttons note: ... included in price". This refers to the gate KIT price.
-            // For installation, I will assume it's linear.
-            // Let's stick to linear for fence, and maybe add specific line for gate install if robust.
-            // For now, I'll just keep the linear calculation for fence and add separate item for gate install to be clear.
             value: length.toFixed(2),
             unit: 'm',
             price: installPrice
@@ -895,7 +927,7 @@ function calculateFence(data) {
                 name: 'Montaža pješačkih vrata',
                 value: 1,
                 unit: 'kom',
-                price: 60 // Placeholder
+                price: 120
             });
         }
     }
