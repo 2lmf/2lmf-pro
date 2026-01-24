@@ -439,18 +439,50 @@ nav a:hover {
 }
 
 .blog-cta {
-    background: #fdf2e9;
-    padding: 15px;
-    border-radius: 5px;
     margin-top: 20px;
     text-align: center;
-    font-weight: bold;
+    background: transparent;
+    /* Remove container bg */
+    padding: 0;
 }
 
 .blog-cta a {
-    color: #e67e22;
+    display: inline-block;
+    background-color: #e67e22;
+    color: #000;
+    font-weight: 700;
     text-decoration: none;
-    border-bottom: 2px solid #e67e22;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    border-bottom: none;
+    /* Remove previous border */
+}
+
+.blog-cta a:hover {
+    background-color: #d35400;
+    color: #fff;
+}
+
+/* Ensure back-btn matches */
+.back-btn {
+    display: inline-block;
+    background: #e67e22 !important;
+    /* Force Orange */
+    color: #000 !important;
+    /* Force Black */
+    font-weight: 700;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    border: none;
+    text-align: center;
+}
+
+.back-btn:hover {
+    background: #d35400 !important;
+    color: #fff !important;
 }
 
 /* FOOTER (Dark Theme V2 Refined) */
@@ -633,7 +665,8 @@ nav a:hover {
 
 .hashtags {
     color: #7f8c8d;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    /* Smaller font as requested */
     margin-top: 25px;
     font-style: italic;
     line-height: 1.4;

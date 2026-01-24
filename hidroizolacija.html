@@ -20,87 +20,18 @@
         content="Nudimo vrhunska rješenja za hidroizolaciju u Zagrebu. XPS stirodur, TPO i PVC folije, bitumenske ljepenke i PU premazi po najpovoljnijim cijenama.">
 
     <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Fontovi i Style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Chakra+Petch:wght@600;700&family=Stardos+Stencil:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Note: Linked external CSS (style.css) handles common styles. 
+         Keeping page-specific overrides if needed, but relying on global CSS for buttons/anims. -->
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-            overflow-x: hidden;
-        }
-
-        /* ANIMACIJE */
-        .animate-block {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .animate-block.appear {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .delay-1 {
-            transition-delay: 0.2s;
-        }
-
-        /* HEADER */
-        header {
-            background: #e67e22;
-            color: #fff;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 1000;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            max-height: 75px;
-            width: auto;
-            display: block;
-        }
-
-        .header-tagline {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #000;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 0;
-        }
-
-        nav>a {
-            color: #000;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            padding: 10px 0;
-        }
-
-        nav a:hover {
-            color: #fff;
-        }
-
-        /* HERO SEKCIJA */
+        /* Page Specific Overrides that might not be in style.css yet or specific to this layout */
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hidroizolacija_xps_stirodur.jpg');
             background-size: cover;
@@ -123,7 +54,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
-        /* SADRŽAJ */
         .page-content {
             max-width: 900px;
             margin: 40px auto;
@@ -158,20 +88,6 @@
             font-size: 1.1rem;
         }
 
-        .back-btn {
-            display: inline-block;
-            background: #34495e;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 20px;
-        }
-
-        .back-btn:hover {
-            background: #2c3e50;
-        }
-
         .cta-box {
             background: #fdf2e9;
             padding: 20px;
@@ -179,53 +95,7 @@
             margin-top: 30px;
         }
 
-        .hashtags {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-top: 40px;
-            font-style: italic;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        /* FOOTER */
-        footer {
-            background: #e67e22;
-            color: #000;
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 60px;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                padding: 1rem;
-                text-align: center;
-            }
-
-            .logo-container {
-                flex-direction: column;
-                margin-bottom: 15px;
-            }
-
-            .header-tagline {
-                white-space: normal;
-                text-align: center;
-                margin-top: 5px;
-            }
-
-            nav {
-                margin-top: 5px;
-                justify-content: center;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-        }
+        /* Hashtags sourced from style.css mostly, but ensure override if needed */
     </style>
 </head>
 
@@ -286,24 +156,81 @@
             <h3>Trebate stručan savjet ili ponudu?</h3>
             <p>Bez obzira gradite li kuću ili sanirate ravan krov, tu smo da vam ponudimo najbolje materijale uz
                 zajamčenu uštedu kroz naše izvedbene projekte.</p>
-            <a href="index.html#kontakt" class="back-btn" style="background: #e67e22;">Pošalji upit za ponudu</a>
+            <!-- Button styled via CSS (.back-btn) to be Orange/Black/Bold -->
+            <a href="index.html#kontakt" class="back-btn">Pošalji upit za ponudu</a>
         </div>
 
         <p class="hashtags animate-block">
             #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija
             #najpovoljnije #vrhunskakvaliteta #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC
             #bitumen #bitumenskaljepenka #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada
-            #građevinskikalkulator
+            #građevinskikalkulator #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS
+            #stiropor #bentonit #polimercement #vuna #kamenavuna
         </p>
 
         <br>
         <a href="index.html" class="back-btn animate-block">← Povratak na naslovnu</a>
     </div>
 
-    <footer>
-        <p>Email: 2lmf.info@gmail.com | Tel: +385 95 311 5007</p>
-        <p>&copy; 2026 2LMF PRO j.d.o.o.</p>
+    <!-- Full Footer from Index -->
+    <footer class="main-footer" id="kontakt">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Column 1: Brand & Info -->
+                <div class="footer-column">
+                    <div class="footer-brand">2LMF PRO</div>
+                    <p class="footer-desc">
+                        Vaš partner za hidro i termo izolaciju, ventilirane fasade i panelne ograde.
+                    </p>
+                    <div class="company-details">
+                        <p>OIB: 29766043828</p>
+                        <p>MBS: 081477933</p>
+                        <p>IBAN: HR312340009111121324</p>
+                    </div>
+                </div>
+
+                <!-- Column 2: Contact -->
+                <div class="footer-column">
+                    <h3 class="footer-heading">KONTAKT</h3>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📍</span> Adresa:</span>
+                        <p>Orešje 7, 10090 Zagreb</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📞</span> Telefon:</span>
+                        <p>+385 95 311 5007</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <span class="contact-label"><span class="icon">📧</span> Email:</span>
+                        <p>2lmf.info@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Column 3: Contact Form -->
+                <div class="footer-column">
+                    <h3 class="footer-heading">POŠALJITE UPIT</h3>
+                    <form class="footer-form" action="https://formspree.io/f/mwvlndlq" method="POST">
+                        <input type="text" name="ime" placeholder="Ime i Prezime" aria-label="Ime i Prezime" required>
+                        <input type="email" name="email" placeholder="Vaš Email" aria-label="Vaš Email" required>
+                        <input type="text" name="naslov" placeholder="Predmet" aria-label="Predmet">
+                        <textarea name="poruka" placeholder="Vaša poruka..." rows="3" aria-label="Vaša poruka"
+                            required></textarea>
+                        <button type="submit">POŠALJI</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <!-- Bottom Orange Copyright Bar -->
+    <div class="footer-bottom-bar">
+        <div class="container">
+            © 2026 2LMF PRO j.d.o.o. | Vaš partner za hidro i termo izolaciju i ventilirane fasade
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
