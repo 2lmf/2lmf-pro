@@ -1135,9 +1135,8 @@ if (pdfBtn) {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
                     if (s.classList.contains('note-brand')) {
-                        // PDF Specific: User says it is BELOW (low). We need to RAISE it.
-                        // We will set explicit style here + use pdfStyle injection below.
-                        s.style.transform = 'translateY(-6px)';
+                        // PDF Specific: User says it is HIGHER. We need to LOWER it (Push Down).
+                        s.style.transform = 'translateY(4px)';
                     }
                 });
             }
@@ -1164,7 +1163,7 @@ if (pdfBtn) {
             /* Explicitly target brand in PDF if inline styles behave weirdly */
             .note-brand {
                 position: relative;
-                top: -4px !important; 
+                top: 4px !important; 
             }
         `;
         element.appendChild(pdfStyle);
@@ -1284,7 +1283,7 @@ if (emailBtnSend) {
         });
 
         // Add Grand Total logic
-        const grandTotal = document.querySelector('.grand-total .col-total');
+        const grandTotal = document.querySelector('.result-total-row .col-total');
         if (grandTotal) {
             messageBody += "--------------------------------------------------\n";
             messageBody += "SVEUKUPNO: " + grandTotal.innerText + "\n";
@@ -1315,7 +1314,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v5)");
+                    alert("Izračun je uspješno poslan na vaš email! (v6)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
