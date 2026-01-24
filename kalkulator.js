@@ -1164,7 +1164,7 @@ if (pdfBtn) {
             /* Explicitly target brand in PDF if inline styles behave weirdly */
             .note-brand {
                 position: relative;
-                top: -2.5px !important; 
+                top: -3.5px !important; 
             }
         `;
         element.appendChild(pdfStyle);
@@ -1222,8 +1222,7 @@ if (emailBtnSend) {
 
         // Prepare FormData
         const formData = new FormData();
-        // Use _replyto to set Reply-To header and often hide 'email' from body
-        formData.append('_replyto', emailTo);
+        formData.append('email', emailTo);
         // Try to send copy to user via _cc or similar if supported, or rely on Formspree settings.
         // Adding _cc field (works on some Formspree plans, harmless if not)
         formData.append('_cc', emailTo);
@@ -1298,8 +1297,7 @@ if (emailBtnSend) {
         messageBody += "Email: 2lmf.info@gmail.com\n";
 
         // Inject compiled message
-        // Use 'Specifikacija' key instead of 'message' or 'Izračun' to look professional in Formspree list
-        formData.append('Specifikacija', messageBody);
+        formData.append('message', messageBody);
 
         // Send via AJAX to Formspree
         const originalText = emailBtnSend.innerHTML;
@@ -1315,7 +1313,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v8)");
+                    alert("Izračun je uspješno poslan na vaš email! (v9)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
