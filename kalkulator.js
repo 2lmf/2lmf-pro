@@ -1164,7 +1164,7 @@ if (pdfBtn) {
             /* Explicitly target brand in PDF if inline styles behave weirdly */
             .note-brand {
                 position: relative;
-                top: -3.5px !important; 
+                top: -5px !important; 
             }
         `;
         element.appendChild(pdfStyle);
@@ -1313,7 +1313,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v9)");
+                    alert("Izračun je uspješno poslan na vaš email! (v10)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
