@@ -1059,7 +1059,7 @@ function displayResults(items) {
     footerNote.innerHTML = `
         <div class="note-flex-container">
             <span class="note-copyright">© 2026</span> 
-            <span class="note-brand">2LMF PRO</span> 
+            <span class="note-brand" style="position: relative; top: 4px;">2LMF PRO</span> 
             <span class="note-calc">Kalkulator</span>
         </div>
         <p class="small-note">Svi izračuni su informativnog karaktera</p>
@@ -1145,8 +1145,8 @@ if (pdfBtn) {
         const pdfStyle = document.createElement('style');
         pdfStyle.innerHTML = `
             #results-section .result-item { 
-                grid-template-columns: 2.8fr 0.9fr 0.8fr 1fr !important; /* Widened Quantity column */
-                gap: 0.5rem !important;
+                grid-template-columns: 2.5fr 1.2fr 1.2fr 1.4fr !important; /* Widened Quantity/Price columns */
+                gap: 1rem !important;
             }
             #results-section .col-name { 
                 font-size: 0.75rem !important;
@@ -1306,7 +1306,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v3)");
+                    alert("Izračun je uspješno poslan na vaš email! (v4)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
