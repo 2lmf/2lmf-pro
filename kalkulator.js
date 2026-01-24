@@ -825,10 +825,42 @@ function calculateFence(data) {
         price: panelPrice
     });
 
-    // 2. Posts
+    // 2. Posts & 3. Clamps Logic
+    // Logic based on Panel Height (cm)
+    // Table Data:
+    // Panel | Clamps | Plate Post | Concrete Post
+    // 83    | 2      | 85         | 155
+    // 103   | 2      | 105        | 155
+    // 123   | 3      | 125        | 175
+    // 143(2D)| 3     | 155        | 205 (Interpolated/From 2D table)
+    // 153   | 3      | 155        | 205
+    // 163(2D)| 4     | 175        | 225
+    // 173   | 4      | 175        | 225
+    // 183(2D)| 4     | 205        | 250
+    // 203   | 4      | 205        | 250/255 (Using 250 for consistency or 255 for 3D? User table for 3D says 255, 2D says 250. Let's strict map.)
+
+    let specs = { plate: height, concrete: height + 50, clamps: 2 }; // Default fallback
+
+    if (panelType === '2d') {
+        if (height <= 103) specs = { plate: height + 2, concrete: 155, clamps: 2 };
+        else if (height <= 123) specs = { plate: 125, concrete: 175, clamps: 3 };
+        else if (height <= 143) specs = { plate: 155, concrete: 205, clamps: 3 };
+        else if (height <= 163) specs = { plate: 175, concrete: 225, clamps: 4 };
+        else if (height <= 183) specs = { plate: 205, concrete: 250, clamps: 4 };
+        else specs = { plate: 205, concrete: 250, clamps: 4 }; // 203+
+    } else {
+        // 3D
+        if (height <= 83) specs = { plate: 85, concrete: 155, clamps: 2 };
+        else if (height <= 103) specs = { plate: 105, concrete: 155, clamps: 2 };
+        else if (height <= 123) specs = { plate: 125, concrete: 175, clamps: 3 };
+        else if (height <= 153) specs = { plate: 155, concrete: 205, clamps: 3 };
+        else if (height <= 173) specs = { plate: 175, concrete: 225, clamps: 4 };
+        else specs = { plate: 205, concrete: 255, clamps: 4 }; // 203+
+    }
+
     // Number of posts = Number of Panels + 1 + Corners (extra post per corner)
     const numPosts = numPanels + 1 + corners;
-    const postHeight = postType === 'concrete' ? height + 50 : height; // If concrete, needs to be longer
+    const postHeight = postType === 'concrete' ? specs.concrete : specs.plate;
 
     items.push({
         name: `Stup 60x60mm (v${postHeight}cm) ${postType === 'plate' ? 's pločicom' : 'za beton.'}`,
@@ -838,12 +870,7 @@ function calculateFence(data) {
     });
 
     // 3. Mounting Sets (Spojnice)
-    // Usually 2 or 3 per post based on height
-    let clampsPerPost = 2;
-    if (height > 123) clampsPerPost = 3;
-    if (height > 173) clampsPerPost = 4;
-
-    const totalClamps = numPosts * clampsPerPost;
+    const totalClamps = numPosts * specs.clamps;
     items.push({
         name: 'Spojnice (kompleti)<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(spojnica + samourezni vijak)</small>',
         value: totalClamps,
@@ -1186,7 +1213,13 @@ if (emailBtnSend) {
         formData.append('_subject', `Izračun materijala: ${currentModule.toUpperCase()}`);
 
         // Construct Rich Message Body
-        let messageBody = "Poštovani,\n\nhvala Vam na upitu.\nKratki informativni izračun nalazi se niže u mailu.\n\n";
+        // Intro Text
+        let messageBody = "Napomena: Ovo je informativni izračun sa 2LMF PRO kalkulatora.\n";
+        messageBody += "Lijepi pozdrav!\n\n";
+        messageBody += "Vaš 2LMF PRO\n";
+        messageBody += "+385 95 311 5007\n";
+        messageBody += "2lmf.info@gmail.com\n\n";
+
         messageBody += "--------------------------------------------------\n";
 
         let index = 1;
@@ -1199,11 +1232,22 @@ if (emailBtnSend) {
             const total = item.querySelector('.col-total').innerText.replace(/\n/g, '').trim();
 
             // Format: 
-            // 01. Item Name
-            // Qty | Price | Total
+            // 04. Pješačka vrata 1000x1200mm (sidro vijci...)
+            // količina | jed. cijena | ukupno
+            // 1 kpl    | 270,00 €    | 270,00 €
+
             const idxStr = index < 10 ? '0' + index : index;
             messageBody += `${idxStr}. ${name}\n`;
-            messageBody += `${qty} | ${price} | ${total}\n\n`;
+
+            // Header for this item
+            messageBody += `količina     | jed. cijena  | ukupno\n`;
+
+            // Values aligned
+            // Assuming qty ~10 chars, price ~12 chars, total remainder
+            const qtyPad = qty.padEnd(12); // "10 kom      "
+            const pricePad = price.padEnd(12); // "29,00 €     "
+
+            messageBody += `${qtyPad} | ${pricePad} | ${total}\n\n`;
 
             index++;
         });
@@ -1216,12 +1260,7 @@ if (emailBtnSend) {
             messageBody += "--------------------------------------------------\n";
         }
 
-        messageBody += "\nNapomena: Ovo je informativni izračun sa 2LMF PRO kalkulatora.\n";
-
-        // Signature
-        messageBody += "\nVaš 2LMF PRO\n";
-        messageBody += "+385 95 311 5007\n";
-        messageBody += "2lmf.info@gmail.com\n";
+        // No footer note here, it was moved to top intro
 
         // Inject compiled message
         formData.append('message', messageBody);
