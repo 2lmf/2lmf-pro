@@ -944,9 +944,9 @@ if (pdfBtn) {
                 spans.forEach(s => {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
-                    // Compensate for Stencil font rendering lower
+                    // Compensate for Stencil font rendering lower in PDF
                     if (s.classList.contains('brand-name')) {
-                        s.style.transform = 'translateY(-4px)';
+                        s.style.transform = 'translateY(-6px)'; // Increased offset
                     }
                 });
             }
@@ -958,13 +958,33 @@ if (pdfBtn) {
                 spans.forEach(s => {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
-                    // Compensate for Stencil font rendering lower
                     if (s.classList.contains('note-brand')) {
                         s.style.transform = 'translateY(-4px)';
                     }
                 });
             }
         }
+
+        // Inject Styles for PDF layout (prevent wrapping)
+        const pdfStyle = document.createElement('style');
+        pdfStyle.innerHTML = `
+            #results-section .result-item { 
+                grid-template-columns: 3fr 0.6fr 0.8fr 1.1fr !important;
+                gap: 0.5rem !important;
+            }
+            #results-section .col-name { 
+                font-size: 0.75rem !important;
+            }
+            #results-section .col-total { 
+                white-space: nowrap !important;
+                font-size: 0.85rem !important;
+            }
+            #results-section .col-qty, 
+            #results-section .col-price {
+                font-size: 0.80rem !important;
+            }
+        `;
+        element.appendChild(pdfStyle);
 
         // Create Orange Footer Bar for PDF
         const pdfFooter = document.createElement('div');
@@ -993,6 +1013,7 @@ if (pdfBtn) {
             // Remove cloned elements
             if (headerClone) headerClone.remove();
             if (pdfFooter) pdfFooter.remove();
+            if (pdfStyle) pdfStyle.remove();
         });
     });
 }

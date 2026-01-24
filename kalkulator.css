@@ -1070,9 +1070,9 @@ nav a:hover {
     font-weight: 700;
     font-size: 1.3rem;
     display: inline-block;
-    vertical-align: baseline;
-    transform: translateY(2px);
-    /* Push DOWN on web as requested (2LMF is above) */
+    vertical-align: middle;
+    line-height: 1;
+    margin-bottom: 2px;
 }
 
 .note-calc {
@@ -1082,7 +1082,8 @@ nav a:hover {
     font-size: 1.3rem;
     text-transform: uppercase;
     display: inline-block;
-    vertical-align: baseline;
+    vertical-align: middle;
+    line-height: 1;
 }
 
 .note-copyright {
@@ -1091,7 +1092,8 @@ nav a:hover {
     font-weight: 700;
     font-size: 1.3rem;
     display: inline-block;
-    vertical-align: baseline;
+    vertical-align: middle;
+    line-height: 1;
 }
 
 .calc-footer-note .small-note {
