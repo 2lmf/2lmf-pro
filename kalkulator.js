@@ -279,6 +279,7 @@ const templates = {
             </div>
 
             <!-- Layout Options -->
+            <!-- Layout Options -->
              <div class="form-group">
                 <label>Izgled ograde</label>
                 <div style="display: flex; gap: 1rem;">
@@ -289,6 +290,46 @@ const templates = {
                         <input type="number" id="fence-corners" name="fenceCorners" placeholder="Broj kuteva ograde" min="0" onfocus="selectLayout('corners')">
                     </div>
                 </div>
+            </div>
+
+            <!-- Gate Option -->
+            <div class="form-group">
+                <label>Trebate pješačka vrata?</label>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="layout-btn" id="gate-yes" onclick="selectGate('yes')">
+                        <div class="layout-btn-text">DA</div>
+                    </div>
+                    <div class="layout-btn active" id="gate-no" onclick="selectGate('no')">
+                        <div class="layout-btn-text">NE</div>
+                    </div>
+                </div>
+                <input type="hidden" id="fence-gate" name="fenceGate" value="no">
+            </div>
+
+            <!-- Gate Size Selection -->
+            <div id="gate-options" class="hidden" style="margin-top: 1rem;">
+                <label style="display:block; margin-bottom:0.5rem; font-weight:700;">Odaberite dimenzije (Š x V, mm)</label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem;">
+                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1000', this)">
+                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1000</div>
+                    </div>
+                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1200', this)">
+                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1200</div>
+                    </div>
+                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1500', this)">
+                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1500</div>
+                    </div>
+                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1700', this)">
+                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1700</div>
+                    </div>
+                    <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x2000', this)">
+                       <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x2000</div>
+                    </div>
+                </div>
+                <input type="hidden" id="gate-dimension" name="gateDimension" value="">
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.8rem; font-style: italic;">
+                    * Napomena: stupovi na pločici sa pantima, sidro vijci, brava, kvaka i ključ su u cijeni.
+                </p>
             </div>
 
             <!-- Installation Option -->
@@ -412,6 +453,37 @@ window.selectInstallation = function (val) {
         btnNo.classList.add('active');
         btnYes.classList.remove('active');
     }
+}
+
+window.selectGate = function (val) {
+    const btnYes = document.getElementById('gate-yes');
+    const btnNo = document.getElementById('gate-no');
+    const input = document.getElementById('fence-gate');
+    const gateOptions = document.getElementById('gate-options');
+
+    input.value = val;
+
+    if (val === 'yes') {
+        btnYes.classList.add('active');
+        btnNo.classList.remove('active');
+        gateOptions.classList.remove('hidden');
+    } else {
+        btnNo.classList.add('active');
+        btnYes.classList.remove('active');
+        gateOptions.classList.add('hidden');
+        // Reset selection
+        document.getElementById('gate-dimension').value = '';
+        document.querySelectorAll('.gate-size-btn').forEach(b => b.classList.remove('active'));
+    }
+}
+
+window.selectGateSize = function (size, btn) {
+    const input = document.getElementById('gate-dimension');
+    input.value = size;
+
+    // UI
+    document.querySelectorAll('.gate-size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 }
 
 window.toggleFenceOptions = function () {
@@ -631,8 +703,6 @@ function calculateHydro(data) {
         items.push({ name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
 
         // 2. XPS (Thermal)
-        // 2. XPS (Thermal)
-        // 2. XPS (Thermal)
         items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
 
         // 3. Geotekstil (iznad XPS-a, ispod folije)
@@ -687,6 +757,8 @@ function calculateFence(data) {
     const corners = parseInt(data.fenceCorners) || 0;
     const color = data.fenceColor; // '7016' or '6005'
     const installation = data.fenceInstallation === 'yes';
+    const gateNeeded = data.fenceGate === 'yes';
+    const gateDim = data.gateDimension;
 
     let items = [];
 
@@ -753,9 +825,27 @@ function calculateFence(data) {
             unit: 'kom',
             price: 0.5
         });
+
     }
 
-    // 5. Corners (Additional posts/material logic could go here)
+    // 5. Gate (Pješačka vrata)
+    if (gateNeeded && gateDim) {
+        // Placeholder prices logic
+        let gatePrice = 250;
+        if (gateDim === '1000x1200') gatePrice = 270;
+        if (gateDim === '1000x1500') gatePrice = 300;
+        if (gateDim === '1000x1700') gatePrice = 330;
+        if (gateDim === '1000x2000') gatePrice = 360;
+
+        items.push({
+            name: `Pješačka vrata jednokrilna ${gateDim}mm (Komplet)`,
+            value: 1,
+            unit: 'kpl',
+            price: gatePrice
+        });
+    }
+
+    // 6. Corners (Additional posts/material logic could go here)
     if (corners > 0) {
         // Maybe added cost for corner clamps or specific solution
         items.push({
@@ -778,12 +868,36 @@ function calculateFence(data) {
             installName += '<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(iskop i beton uključen u cijenu montaže)</small>';
         }
 
+        // Gate installation extra? Probably. Let's add a fixed amount for gate install if selected.
+        let totalInstallPrice = length * installPrice;
+        if (gateNeeded) {
+            const gateInstallPrice = 60; // Fixed price for gate install
+            totalInstallPrice += gateInstallPrice;
+            installName += ` + Montaža vrata`;
+        }
+
         items.push({
             name: installName,
+            value: 1, // Changed to 1 paušal or keep length but adjust unit price?
+            // To keep logic simple: Value is Length, but if gate is added, the math gets tricky if we just multiply.
+            // Better: "Montaža ograde" line + "Montaža vrata" line?
+            // User requested: "Below gate buttons note: ... included in price". This refers to the gate KIT price.
+            // For installation, I will assume it's linear.
+            // Let's stick to linear for fence, and maybe add specific line for gate install if robust.
+            // For now, I'll just keep the linear calculation for fence and add separate item for gate install to be clear.
             value: length.toFixed(2),
             unit: 'm',
             price: installPrice
         });
+
+        if (gateNeeded) {
+            items.push({
+                name: 'Montaža pješačkih vrata',
+                value: 1,
+                unit: 'kom',
+                price: 60 // Placeholder
+            });
+        }
     }
 
     return items;
@@ -972,7 +1086,7 @@ if (pdfBtn) {
         const pdfStyle = document.createElement('style');
         pdfStyle.innerHTML = `
             #results-section .result-item { 
-                grid-template-columns: 3fr 0.6fr 0.8fr 1.1fr !important;
+                grid-template-columns: 2.8fr 0.9fr 0.8fr 1fr !important; /* Widened Quantity column */
                 gap: 0.5rem !important;
             }
             #results-section .col-name { 
