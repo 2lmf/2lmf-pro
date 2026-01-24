@@ -929,6 +929,9 @@ function calculateFence(data) {
             installName += '<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(iskop i beton uključen u cijenu montaže)</small>';
         }
 
+        // Add general disclaimer note for installation (Request: user wants it on web and PDF)
+        installName += '<br><span style="display: block; color: #dc3545; font-size: 0.85em; margin-top: 2px;">* Iznos montaže je informativnog karaktera i vrijedi za Zagreb i okolicu do 20km.</span>';
+
         // Gate installation extra? Probably. Let's add a fixed amount for gate install if selected.
         let totalInstallPrice = length * installPrice;
         if (gateNeeded) {
@@ -1195,14 +1198,19 @@ const emailBtnSend = document.getElementById('email-btn-send');
 if (emailBtnSend) {
     emailBtnSend.addEventListener('click', () => {
         const emailInput = document.getElementById('user-email');
+        const nameInput = document.getElementById('user-name');
+        const phoneInput = document.getElementById('user-phone');
+
         const emailTo = emailInput.value.trim();
+        const userName = nameInput ? nameInput.value.trim() : '';
+        const userPhone = phoneInput ? phoneInput.value.trim() : '';
 
         if (!emailTo) {
             alert("Molim vas upišite email adresu.");
             return;
         }
 
-        const items = document.querySelectorAll('.result-item:not(.result-header-row)');
+        const items = document.querySelectorAll('.result-item:not(.result-header-row):not(.grand-total)');
 
         // Prepare FormData
         const formData = new FormData();
@@ -1214,40 +1222,54 @@ if (emailBtnSend) {
 
         // Construct Rich Message Body
         // Intro Text
-        let messageBody = "Napomena: Ovo je informativni izračun sa 2LMF PRO kalkulatora.\n";
-        messageBody += "Lijepi pozdrav!\n\n";
-        messageBody += "Vaš 2LMF PRO\n";
-        messageBody += "+385 95 311 5007\n";
-        messageBody += "2lmf.info@gmail.com\n\n";
+        // Construct Rich Message Body
 
-        messageBody += "--------------------------------------------------\n";
+        // 1. Customer Contacts (First, per 2LMF request)
+        let messageBody = "";
+        if (emailTo) {
+            messageBody += "--------------------------------------------------\n";
+            messageBody += "Podaci o kupcu:\n";
+            if (userName) messageBody += `Ime i prezime: ${userName}\n`;
+            if (userPhone) messageBody += `Telefon: ${userPhone}\n`;
+            messageBody += `Email: ${emailTo}\n`;
+            messageBody += "--------------------------------------------------\n\n";
+        }
+
+        // 2. Greeting (for Customer)
+        messageBody += "Poštovani,\n\n";
+        messageBody += "Hvala Vam na upitu.\n";
+        messageBody += "Kratki informativni izračun nalazi se niže u mailu.\n\n";
 
         let index = 1;
         items.forEach(item => {
             // Clean up name (remove HTML tags for email text)
             let name = item.querySelector('.col-name').innerText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
 
+            // Format numbers nicely
             const qty = item.querySelector('.col-qty').innerText.replace(/\n/g, '').trim();
             const price = item.querySelector('.col-price').innerText.replace(/\n/g, '').trim();
             const total = item.querySelector('.col-total').innerText.replace(/\n/g, '').trim();
 
             // Format: 
             // 04. Pješačka vrata 1000x1200mm (sidro vijci...)
-            // količina | jed. cijena | ukupno
-            // 1 kpl    | 270,00 €    | 270,00 €
+            //      količina |   jed. cijena |    ukupno
+            //        10 kom |       29,00 € | 290,00 €
 
             const idxStr = index < 10 ? '0' + index : index;
             messageBody += `${idxStr}. ${name}\n`;
 
-            // Header for this item
-            messageBody += `količina     | jed. cijena  | ukupno\n`;
+            // Header for this item (Right Aligned)
+            const colWidth = 18;
+            const hQty = "količina".padStart(colWidth); // "       količina"
+            const hPrice = "jed. cijena".padStart(colWidth); // "    jed. cijena"
+
+            messageBody += `${hQty} | ${hPrice} | ukupno\n`;
 
             // Values aligned
-            // Assuming qty ~10 chars, price ~12 chars, total remainder
-            const qtyPad = qty.padEnd(12); // "10 kom      "
-            const pricePad = price.padEnd(12); // "29,00 €     "
+            const vQty = qty.padStart(colWidth);
+            const vPrice = price.padStart(colWidth);
 
-            messageBody += `${qtyPad} | ${pricePad} | ${total}\n\n`;
+            messageBody += `${vQty} | ${vPrice} | ${total}\n\n`;
 
             index++;
         });
@@ -1260,7 +1282,11 @@ if (emailBtnSend) {
             messageBody += "--------------------------------------------------\n";
         }
 
-        // No footer note here, it was moved to top intro
+        // 4. Signature (at the end)
+        messageBody += "\nLijepi pozdrav!\n\n";
+        messageBody += "Vaš 2LMF PRO\n";
+        messageBody += "Mob: +385 95 311 5007\n";
+        messageBody += "Email: 2lmf.info@gmail.com\n";
 
         // Inject compiled message
         formData.append('message', messageBody);
@@ -1279,7 +1305,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email!");
+                    alert("Izračun je uspješno poslan na vaš email! (v2)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
