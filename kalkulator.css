@@ -113,7 +113,7 @@ header {
 
 .logo-container {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 6px;
     /* Tighter gap */
 }
@@ -1152,6 +1152,7 @@ nav a:hover {
     margin-top: 0.3rem;
     font-weight: 600;
 }
+
 /* Hashtags Style */
 .hashtags {
     color: #7f8c8d;
