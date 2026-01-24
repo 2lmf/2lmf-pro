@@ -930,7 +930,8 @@ function calculateFence(data) {
         }
 
         // Add general disclaimer note for installation (Request: user wants it on web and PDF)
-        installName += '<br><span style="display: block; color: #dc3545; font-size: 0.85em; margin-top: 2px;">* Iznos montaže je informativnog karaktera i vrijedi za Zagreb i okolicu do 20km.</span>';
+        // Add general disclaimer note for installation (Request: user wants it on web and PDF)
+        installName += '<br><span style="display: block; color: #000; font-size: 11px; margin-top: 2px;">* Iznos montaže je informativnog karaktera i vrijedi za Zagreb i okolicu do 20km.</span>';
 
         // Gate installation extra? Probably. Let's add a fixed amount for gate install if selected.
         let totalInstallPrice = length * installPrice;
@@ -1003,7 +1004,7 @@ function displayResults(items) {
 
     // Grand Total Row
     const totalDiv = document.createElement('div');
-    totalDiv.className = 'result-item grand-total';
+    totalDiv.className = 'result-total-row'; // Unique class to prevent email loop iteration
     const fmtGrandTotal = grandTotal.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     // Conditional Styling for Fence Module
@@ -1305,7 +1306,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v2)");
+                    alert("Izračun je uspješno poslan na vaš email! (v3)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
