@@ -1059,7 +1059,7 @@ function displayResults(items) {
     footerNote.innerHTML = `
         <div class="note-flex-container">
             <span class="note-copyright">© 2026</span> 
-            <span class="note-brand" style="position: relative; top: 4px;">2LMF PRO</span> 
+            <span class="note-brand">2LMF PRO</span> 
             <span class="note-calc">Kalkulator</span>
         </div>
         <p class="small-note">Svi izračuni su informativnog karaktera</p>
@@ -1135,7 +1135,9 @@ if (pdfBtn) {
                     s.style.display = 'inline-block';
                     s.style.verticalAlign = 'middle';
                     if (s.classList.contains('note-brand')) {
-                        s.style.transform = 'translateY(-4px)';
+                        // PDF Specific: User says it is BELOW (low). We need to RAISE it.
+                        // We will set explicit style here + use pdfStyle injection below.
+                        s.style.transform = 'translateY(-6px)';
                     }
                 });
             }
@@ -1158,6 +1160,11 @@ if (pdfBtn) {
             #results-section .col-qty, 
             #results-section .col-price {
                 font-size: 0.80rem !important;
+            }
+            /* Explicitly target brand in PDF if inline styles behave weirdly */
+            .note-brand {
+                position: relative;
+                top: -4px !important; 
             }
         `;
         element.appendChild(pdfStyle);
@@ -1215,7 +1222,8 @@ if (emailBtnSend) {
 
         // Prepare FormData
         const formData = new FormData();
-        formData.append('email', emailTo);
+        // Use _replyto to set Reply-To header and often hide 'email' from body
+        formData.append('_replyto', emailTo);
         // Try to send copy to user via _cc or similar if supported, or rely on Formspree settings.
         // Adding _cc field (works on some Formspree plans, harmless if not)
         formData.append('_cc', emailTo);
@@ -1290,7 +1298,8 @@ if (emailBtnSend) {
         messageBody += "Email: 2lmf.info@gmail.com\n";
 
         // Inject compiled message
-        formData.append('message', messageBody);
+        // Use 'Specifikacija' key instead of 'message' or 'Izračun' to look professional in Formspree list
+        formData.append('Specifikacija', messageBody);
 
         // Send via AJAX to Formspree
         const originalText = emailBtnSend.innerHTML;
@@ -1306,7 +1315,7 @@ if (emailBtnSend) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v4)");
+                    alert("Izračun je uspješno poslan na vaš email! (v5)");
                     emailInput.value = '';
                 } else {
                     return response.json().then(data => {
