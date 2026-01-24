@@ -826,8 +826,8 @@ function calculateFence(data) {
     });
 
     // 2. Posts
-    // Number of posts = Number of Panels + 1
-    const numPosts = numPanels + 1;
+    // Number of posts = Number of Panels + 1 + Corners (extra post per corner)
+    const numPosts = numPanels + 1 + corners;
     const postHeight = postType === 'concrete' ? height + 50 : height; // If concrete, needs to be longer
 
     items.push({
@@ -873,7 +873,7 @@ function calculateFence(data) {
 
         // Expanded name for PDF visualization with note
         // "izbaci komplet, a umjesto toga napiši napomenu"
-        const gateName = `Pješačka vrata jednokrilna ${gateDim}mm<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(sidro vijci, brava, kvaka i ključ uključeni)</small>`;
+        const gateName = `Pješačka vrata ${gateDim}mm<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(sidro vijci, brava, kvaka i ključ uključeni)</small>`;
 
         items.push({
             name: gateName,
@@ -883,16 +883,8 @@ function calculateFence(data) {
         });
     }
 
-    // 6. Corners (Additional posts/material logic could go here)
-    if (corners > 0) {
-        // Maybe added cost for corner clamps or specific solution
-        items.push({
-            name: 'Kutni setovi (dodatno)',
-            value: corners,
-            unit: 'kom',
-            price: 5
-        });
-    }
+    // 6. Corners (Logic handled in Post count)
+    // Removed "Kutni setovi" item as requested.
 
     // 6. Installation
     if (installation) {
