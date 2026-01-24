@@ -854,7 +854,7 @@ function calculateFence(data) {
     // 4. Anchors (if plate)
     if (postType === 'plate') {
         items.push({
-            name: 'Sidreni vijci (4 po stupu)',
+            name: 'Sidreni vijci, M10 (4 po stupu)',
             value: numPosts * 4,
             unit: 'kom',
             price: prices.fence.anker_vijci
@@ -1188,32 +1188,40 @@ if (emailBtnSend) {
         // Construct Rich Message Body
         let messageBody = "Poštovani,\n\nhvala Vam na upitu.\nKratki informativni izračun nalazi se niže u mailu.\n\n";
         messageBody += "--------------------------------------------------\n";
-        messageBody += String("Materijal").padEnd(30) + " | " + String("Količina").padEnd(10) + " | " + String("Cijena").padEnd(10) + " | " + "Ukupno\n";
-        messageBody += "--------------------------------------------------\n";
 
+        let index = 1;
         items.forEach(item => {
             // Clean up name (remove HTML tags for email text)
             let name = item.querySelector('.col-name').innerText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-            // Truncate name if too long for simple table
-            if (name.length > 28) name = name.substring(0, 25) + '...';
 
             const qty = item.querySelector('.col-qty').innerText.replace(/\n/g, '').trim();
             const price = item.querySelector('.col-price').innerText.replace(/\n/g, '').trim();
             const total = item.querySelector('.col-total').innerText.replace(/\n/g, '').trim();
 
-            messageBody += String(name).padEnd(30) + " | " + String(qty).padEnd(10) + " | " + String(price).padEnd(10) + " | " + total + "\n";
+            // Format: 
+            // 01. Item Name
+            // Qty | Price | Total
+            const idxStr = index < 10 ? '0' + index : index;
+            messageBody += `${idxStr}. ${name}\n`;
+            messageBody += `${qty} | ${price} | ${total}\n\n`;
+
+            index++;
         });
 
         // Add Grand Total logic
         const grandTotal = document.querySelector('.grand-total .col-total');
         if (grandTotal) {
             messageBody += "--------------------------------------------------\n";
-            messageBody += String("SVEUKUPNO").padEnd(56) + " | " + grandTotal.innerText + "\n";
+            messageBody += "SVEUKUPNO: " + grandTotal.innerText + "\n";
             messageBody += "--------------------------------------------------\n";
         }
 
         messageBody += "\nNapomena: Ovo je informativni izračun sa 2LMF PRO kalkulatora.\n";
-        messageBody += "Za službenu ponudu molimo odgovorite na ovaj mail ili nas kontaktirajte telefonski.\n";
+
+        // Signature
+        messageBody += "\nVaš 2LMF PRO\n";
+        messageBody += "+385 95 311 5007\n";
+        messageBody += "2lmf.info@gmail.com\n";
 
         // Inject compiled message
         formData.append('message', messageBody);
