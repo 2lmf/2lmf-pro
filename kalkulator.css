@@ -1152,3 +1152,13 @@ nav a:hover {
     margin-top: 0.3rem;
     font-weight: 600;
 }
+/* Hashtags Style */
+.hashtags {
+    color: #7f8c8d;
+    font-size: 0.75rem;
+    margin-top: 25px;
+    font-style: italic;
+    line-height: 1.4;
+    text-align: center;
+    padding-bottom: 20px;
+}
