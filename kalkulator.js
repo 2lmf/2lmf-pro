@@ -845,10 +845,10 @@ function calculateFence(data) {
 
     const totalClamps = numPosts * clampsPerPost;
     items.push({
-        name: 'Spojnice (kompleti)',
+        name: 'Spojnice (kompleti)<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(spojnica + samourezni vijak)</small>',
         value: totalClamps,
         unit: 'kom',
-        price: 1.5
+        price: prices.fence.set_spojnica
     });
 
     // 4. Anchors (if plate)
@@ -857,9 +857,8 @@ function calculateFence(data) {
             name: 'Sidreni vijci (4 po stupu)',
             value: numPosts * 4,
             unit: 'kom',
-            price: 0.5
+            price: prices.fence.anker_vijci
         });
-
     }
 
     // 5. Gate (Pješačka vrata)
@@ -888,13 +887,18 @@ function calculateFence(data) {
 
     // 6. Installation
     if (installation) {
-        let installPrice = 16; // Base price per m
-        // simple logic: higher fence = more expensive?
-        if (height > 153) installPrice = 18;
-        if (postType === 'concrete') installPrice += 5; // Concrete work is harder
+        let installPrice = 16; // Fallback
+
+        // "ako je stup na pločici - montaža je 25 eur/m (izbaci napomenu iskop)"
+        // "ako su stupovi za betoniranje - montaža je 40 eur/m (ostavi napomenu)"
 
         let installName = 'Montaža ograde (ključ u ruke)';
-        if (postType === 'concrete') {
+
+        if (postType === 'plate') {
+            installPrice = prices.fence.montaza_plate || 25;
+            // No note for plate
+        } else {
+            installPrice = prices.fence.montaza_concrete || 40;
             installName += '<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(iskop i beton uključen u cijenu montaže)</small>';
         }
 
@@ -1176,32 +1180,43 @@ if (emailBtnSend) {
         // Prepare FormData
         const formData = new FormData();
         formData.append('email', emailTo);
-        formData.append('A_Naslov', `Izračun materijala: ${currentModule.toUpperCase()}`);
+        // Try to send copy to user via _cc or similar if supported, or rely on Formspree settings.
+        // Adding _cc field (works on some Formspree plans, harmless if not)
+        formData.append('_cc', emailTo);
+        formData.append('_subject', `Izračun materijala: ${currentModule.toUpperCase()}`);
 
-        let index = 1;
+        // Construct Rich Message Body
+        let messageBody = "Poštovani,\n\nhvala Vam na upitu.\nKratki informativni izračun nalazi se niže u mailu.\n\n";
+        messageBody += "--------------------------------------------------\n";
+        messageBody += String("Materijal").padEnd(30) + " | " + String("Količina").padEnd(10) + " | " + String("Cijena").padEnd(10) + " | " + "Ukupno\n";
+        messageBody += "--------------------------------------------------\n";
 
         items.forEach(item => {
-            const name = item.querySelector('.col-name').innerText;
-            const qty = item.querySelector('.col-qty').innerText;
-            const price = item.querySelector('.col-price').innerText;
-            const total = item.querySelector('.col-total').innerText;
+            // Clean up name (remove HTML tags for email text)
+            let name = item.querySelector('.col-name').innerText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+            // Truncate name if too long for simple table
+            if (name.length > 28) name = name.substring(0, 25) + '...';
 
-            // Simple formatting: Name as Key, Details as Value
-            // Adding number prefix to force order
-            const key = `${index < 10 ? '0' + index : index}. ${name}`;
-            const value = `${qty} | ${price} | ${total}`;
-            formData.append(key, value);
-            index++;
+            const qty = item.querySelector('.col-qty').innerText.replace(/\n/g, '').trim();
+            const price = item.querySelector('.col-price').innerText.replace(/\n/g, '').trim();
+            const total = item.querySelector('.col-total').innerText.replace(/\n/g, '').trim();
+
+            messageBody += String(name).padEnd(30) + " | " + String(qty).padEnd(10) + " | " + String(price).padEnd(10) + " | " + total + "\n";
         });
 
         // Add Grand Total logic
         const grandTotal = document.querySelector('.grand-total .col-total');
         if (grandTotal) {
-            formData.append('99_SVEUKUPNO', grandTotal.innerText);
+            messageBody += "--------------------------------------------------\n";
+            messageBody += String("SVEUKUPNO").padEnd(56) + " | " + grandTotal.innerText + "\n";
+            messageBody += "--------------------------------------------------\n";
         }
 
-        // Add Contact Info footer equivalent
-        formData.append('Z_Napomena', 'Ovo je informativni izračun sa 2LMF PRO kalkulatora.');
+        messageBody += "\nNapomena: Ovo je informativni izračun sa 2LMF PRO kalkulatora.\n";
+        messageBody += "Za službenu ponudu molimo odgovorite na ovaj mail ili nas kontaktirajte telefonski.\n";
+
+        // Inject compiled message
+        formData.append('message', messageBody);
 
         // Send via AJAX to Formspree
         const originalText = emailBtnSend.innerHTML;

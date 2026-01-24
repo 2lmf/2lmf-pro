@@ -92,8 +92,8 @@ const prices = {
         post_265: 33.00,
 
         // Pribor
-        set_spojnica: 1.50, // Vijak + Spojnica
-        anker_vijci: 0.80,   // Po komadu
+        set_spojnica: 0.55, // Spojnica + samourezni vijak
+        anker_vijci: 0.55,   // Po komadu
         montaza_plate: 25.00, // Cijena po metru (s pločicom)
         montaza_concrete: 40.00, // Cijena po metru (betoniranje)
 
