@@ -348,12 +348,9 @@ const templates = {
                     * Napomena: stupovi na pločici ili bez sa pantima, sidro vijci, brava, kvaka i ključ su u cijeni.
                 </p>
 
-                <!-- Hashtags with Separator -->
-                <hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin: 30px 0 15px 0;">
-                <p class="hashtags" style="font-family: var(--font-ui); text-align: center;">
-                    #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija #najpovoljnije #vrhunskakvaliteta #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen #bitumenskaljepenka #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada #građevinskikalkulator #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS #stiropor #bentonit #polimercement #vuna #kamenavuna
-                </p>
-                <div style="height: 20px;"></div> <!-- Spacer -->
+            </div>
+
+            <!-- Installation Option -->
             </div>
 
             <!-- Installation Option -->
