@@ -332,7 +332,7 @@ const templates = {
 
                 <!-- Gate Post Type Selection -->
                 <div class="form-group" style="margin-top: 1.5rem;">
-                    <label>Vrsta stupova vrata</label>
+                    <label>Vrsta stupova za vrata</label>
                     <div style="display: flex; gap: 1rem;">
                         <input type="hidden" id="gate-post-type" name="gatePostType" value="plate">
                         <div class="layout-btn active" id="gate-post-plate" onclick="selectGatePost('plate')">
@@ -345,7 +345,7 @@ const templates = {
                 </div>
 
                 <p style="font-size: 0.9rem; color: black; font-weight: 700; margin-top: 1.5rem; margin-bottom: 2rem;">
-                    * Napomena: stupovi na pločici sa pantima, sidro vijci, brava, kvaka i ključ su u cijeni.
+                    * Napomena: stupovi na pločici ili bez sa pantima, sidro vijci, brava, kvaka i ključ su u cijeni.
                 </p>
             </div>
 
