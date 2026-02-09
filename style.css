@@ -913,17 +913,25 @@ nav a:hover {
     @keyframes blink-promo {
 
         0%,
-        50% {
-            background: rgba(0, 0, 0, 0.9);
+        45% {
+            background: #000000;
             color: #00f3ff;
             border-color: #00f3ff;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
         }
 
-        51%,
-        100% {
+        50%,
+        95% {
             background: #00f3ff;
             color: #000000;
             border-color: #000000;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.8);
+        }
+
+        100% {
+            background: #000000;
+            color: #00f3ff;
+            border-color: #00f3ff;
         }
     }
 
