@@ -720,28 +720,37 @@ function handleCalculation(e) {
         } else if (currentModule === 'fence') {
             results = calculateFence(data);
         }
+
+        console.log("Calculation results:", results);
+
+        if (results && results.length > 0) {
+            displayResults(results);
+            resultsSection.classList.remove('hidden');
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+            // 5. Send Data (Instant Logic) & Alert
+            sendInstantData(results, data);
+
+            setTimeout(() => {
+                alert("Hvala na upitu! Vaš izračun je spreman ispod.\n(Kopija upita je poslana našem timu.)");
+            }, 500);
+        } else {
+            console.warn("No results returned from calculation engine.");
+            alert("Molimo provjerite unesene podatke.");
+        }
+
     } catch (err) {
         console.error("Calculation Error:", err);
         alert("Greška u izračunu: " + err.message);
-        return;
     }
 
-    displayResults(results);
-
-    // UI Feedback for User
-    // Use a small toast/snackbar instead of blocking alert if possible, but alert is requested
-    // "Hvala na upitu! (čidto kao obavjest za kupca ,da je upit poslan)"
-    // We only show this if it's a manual trigger, but handleCalculation is the main entry.
-    // Let's us a non-blocking notification or simple alert.
-    // User asked for: "sustav izbaci poruku: Hvala na upitu!"
-    // We will use a standard alert for ensuring visibility as requested.
-
-    // DELAY ALERT slightly to allow UI to update
-    setTimeout(() => {
-        alert("Hvala na upitu! Vaš izračun je spreman ispod.\n(Kopija upita je poslana našem timu.)");
-    }, 100);
-
-    sendInstantData(results, data); // Instant capture RESTORED
+    // Reset Button State
+    if (btn) {
+        btn.innerHTML = "Izračunaj";
+        btn.disabled = false;
+    }
+    isSubmitting = false;
 }
 
 // --- CALCULATION ENGINES ---
