@@ -695,135 +695,136 @@ nav a:hover {
 }
 
 .footer-form button:hover {
-    background-color: #d35400;
-}
-
-/* Footer Bottom Bar */
-.footer-bottom-bar {
-    background-color: #E67E22;
-    color: #000;
-    padding: 2rem 0;
-    text-align: center;
-    font-weight: 700;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.95rem;
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hashtags {
-    color: #7f8c8d;
-    font-size: 0.75rem !important;
-    /* Enforce small size */
-    margin-top: 25px;
-    font-style: italic;
-    line-height: 1.4;
-    text-align: center;
-}
-
-
-/* Media Queries */
-@media (max-width: 900px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-    }
-}
-
-@media (max-width: 992px) {
-    .blog-container {
-        flex-direction: column;
+    #cookie-banner button:hover {
+        background-color: #d35400;
     }
 
-    .blog-sidebar {
-        width: 100%;
-        position: relative;
-    }
-}
-
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 1rem;
+    /* Footer Bottom Bar */
+    .footer-bottom-bar {
+        background-color: #E67E22;
+        color: #000;
+        padding: 2rem 0;
         text-align: center;
-    }
-
-    .logo-container {
-        flex-direction: column;
-        margin-bottom: 15px;
-    }
-
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-
-    .hero p {
-        font-size: 1.1rem;
-    }
-
-    nav {
+        font-weight: 700;
+        font-family: 'Barlow', sans-serif;
+        font-size: 0.95rem;
+        margin-top: 0;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
 
-    nav>a {
-        margin: 5px 10px;
+    .hashtags {
+        color: #7f8c8d;
+        font-size: 0.75rem !important;
+        /* Enforce small size */
+        margin-top: 25px;
+        font-style: italic;
+        line-height: 1.4;
+        text-align: center;
     }
 
-    .service-link {
+
+    /* Media Queries */
+    @media (max-width: 900px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .blog-container {
+            flex-direction: column;
+        }
+
+        .blog-sidebar {
+            width: 100%;
+            position: relative;
+        }
+    }
+
+    @media (max-width: 768px) {
+        header {
+            flex-direction: column;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .logo-container {
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+        }
+
+        nav {
+            justify-content: center;
+        }
+
+        nav>a {
+            margin: 5px 10px;
+        }
+
+        .service-link {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .why-us {
+            background-attachment: scroll;
+        }
+
+        .comparison-table {
+            font-size: 0.85rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 5px;
+        }
+    }
+
+    /* COOKIE BANNER */
+    #cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
         width: 100%;
-        max-width: 300px;
+        background-color: #2c2c2c;
+        color: #fff;
+        text-align: center;
+        padding: 15px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        display: none;
+        /* Hidden by default, shown via JS */
+        font-size: 0.9rem;
     }
 
-    .why-us {
-        background-attachment: scroll;
+    #cookie-banner p {
+        display: inline-block;
+        margin: 0 20px 0 0;
     }
 
-    .comparison-table {
-        font-size: 0.85rem;
+    #cookie-banner button {
+        background-color: #e67e22;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background 0.3s;
     }
 
-    .comparison-table th,
-    .comparison-table td {
-        padding: 5px;
-    }
-}
-
-/* COOKIE BANNER */
-#cookie-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #2c2c2c;
-    color: #fff;
-    text-align: center;
-    padding: 15px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-    z-index: 10000;
-    display: none;
-    /* Hidden by default, shown via JS */
-    font-size: 0.9rem;
-}
-
-#cookie-banner p {
-    display: inline-block;
-    margin: 0 20px 0 0;
-}
-
-#cookie-banner button {
-    background-color: #e67e22;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: background 0.3s;
-}
-
-background-color: #d35400;
+    background-color: #d35400;
 }
 
 /* Agency Float Button (Sharpshark) */
