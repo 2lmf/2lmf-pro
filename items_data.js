@@ -156,8 +156,33 @@ function getXPSPrice(thickness) {
     if (prices.xps[thickness]) return prices.xps[thickness].price;
     return 0;
 }
-
-function getWoolPrice(thickness) {
-    if (prices.wool_facade[thickness]) return prices.wool_facade[thickness].price;
-    return 0;
-}
+// --- NABAVNE CIJENE (COSTS) ---
+// Potrebno za izračun marže
+const costs = {
+    facade_etics: {
+        glue_eps: 0,
+        glue_wool: 0,
+        glue_armor: 0,
+        mesh: 0,
+        grund: 0,
+        plaster_silicat: 0,
+        dowel: 0,
+        profile_pvc: 0,
+        profile_alu: 0,
+        eps_base_cm: 0
+    },
+    xps: {},
+    wool_facade: {},
+    membranes: {},
+    bitumen: {},
+    fence: {
+        panel_2d: {},
+        panel_3d_5: {},
+        panel_3d_4: {},
+        posts: {},
+        posts_concrete: {},
+        gates: {}
+    },
+    chemicals: {},
+    others: {}
+};
