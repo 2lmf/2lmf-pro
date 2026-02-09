@@ -28,110 +28,79 @@ const MATERIAL_CONFIG = {
 // --- CONFIGURATION ---
 var SCRIPT_PROP = PropertiesService.getScriptProperties();
 
-// --- 1. SETUP SYSTEM (Run this once or via Menu!) ---
-// (Funkcija onOpen spojena je s donjom radi izbjegavanja konflikta)
-
+// --- 1. SETUP SYSTEM (Run this once!) ---
 function setupCRM() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  // If run from scratch without sheet
-  if(!ss) ss = SpreadsheetApp.create("2LMF_Upiti_i_Ponude");
+  // CONFIG: Existing Sheet ID
+  var EXISTING_ID = "1YmRZMeomWxAmfi6rsLN6qKrHrrAeHOnGVbnfsZXP3w4";
   
-  var id = ss.getId();
-  SCRIPT_PROP.setProperty("SHEET_ID", id);
+  // Link to existing sheet
+  var ss = SpreadsheetApp.openById(EXISTING_ID);
   
-  // Setup "Upiti" (Inquiry Log)
+  // Store ID in Script Properties so other functions can find it
+  var SCRIPT_PROP = PropertiesService.getScriptProperties();
+  SCRIPT_PROP.setProperty("SHEET_ID", EXISTING_ID);
+  
+  // Setup "Upiti" (Inquiry Log) if not exists
   var sheetLog = ss.getSheetByName("Upiti");
   if (!sheetLog) {
       sheetLog = ss.insertSheet("Upiti");
       sheetLog.appendRow(["Datum", "ID", "Ime", "Email", "Telefon", "Modul", "Iznos (€)", "Status", "JSON_Data"]);
       sheetLog.setFrozenRows(1);
-      sheetLog.setColumnWidth(9, 50);
+      sheetLog.setColumnWidth(9, 50); 
   }
   
-  // Setup "Generator"
+  // Setup "Generator" (Offer Maker) if not exists
   var sheetGen = ss.getSheetByName("Generator Ponuda");
   if (!sheetGen) {
       sheetGen = ss.insertSheet("Generator Ponuda");
       setupGeneratorLayout(sheetGen);
+  } else {
+      // Optional: Refresh layout
+      setupGeneratorLayout(sheetGen);
   }
-
-  // Setup "CJENIK" (New)
-  setupPriceSheet();
   
-  console.log("✅ SUSTAV USPJEŠNO POSTAVLJEN!");
-  console.log("ID: " + id);
-}
-
-function setupPriceSheet() {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("CJENIK");
-    if (!sheet) {
-        sheet = ss.insertSheet("CJENIK");
-        // Headers requested: Šifra, Naziv, Nabavna bez PDV, Nabavna sa PDV, Prodajna, Marža
-        // Internal keys: sku, name, cost_net, cost_gross, price_gross, margin
-        sheet.appendRow(["Šifra", "Naziv Proizvoda", "Nabavna (BEZ PDV)", "Nabavna (SA PDV)", "Prodajna Cijena (SA PDV)", "Marža (%)"]);
-        sheet.setFrozenRows(1);
-        sheet.getRange("A1:F1").setBackground("#4cd964").setFontColor("white").setFontWeight("bold");
-        
-        // Add some dummy examples or formula hints
-        sheet.getRange("F2:F100").setNumberFormat("0.00%");
-        
-        // Auto-calc formulas for Cost w/ VAT and Margin logic?
-        // Let's keep it simple data entry for now, maybe add formula for Cost VAT
-        // User asked for specific columns, implying they might paste data.
-    }
-}
-
-function flushCache() {
-    // Just a dummy function to 'wake up' the script or update timestamp property
-    SCRIPT_PROP.setProperty("LAST_UPDATE", new Date().toString());
-    SpreadsheetApp.getUi().alert("Sustav je osvježen! Promjene će biti vidljive na webu za 1-2 min.");
+  console.log("✅ SUSTAV USPJEŠNO POVEZAN SA STAROM TABLICOM!");
+  console.log("ID Tablice: " + EXISTING_ID);
+  console.log("LINK NA TABLICU: " + ss.getUrl());
 }
 
 function setupGeneratorLayout(sheet) {
   sheet.clear();
-  // ... (Keep existing generator layout)
+  // Header Info
   sheet.getRange("A1").setValue("GENERATOR PONUDA").setFontWeight("bold").setFontSize(16);
-  // ...
+  sheet.getRange("A3").setValue("Unesi ID Upita:");
+  sheet.getRange("B3").setBackground("#FFF2CC").setBorder(true, true, true, true, null, null);
+  
+  sheet.getRange("D3").setValue("Status:");
+  sheet.getRange("E3").setFormula('=VLOOKUP(B3; Upiti!B:H; 7; FALSE)'); // Auto-status check
+  
+  // Customer Info Block
+  sheet.getRange("A5").setValue("Podaci o Kupcu (Učitano)");
+  sheet.getRange("A6").setValue("Ime:");
+  sheet.getRange("A7").setValue("Email:");
+  sheet.getRange("A8").setValue("Tel:");
+  
+  // Item Table Header
+  sheet.getRange("A10:F10").setValues([["RB", "Šifra", "Opis Stavke", "Količina", "Jed. Mj.", "Cijena (€)"]]);
+  sheet.getRange("A10:F10").setBackground("#E67E22").setFontColor("black").setFontWeight("bold");
+  
+  // Instructions & Mobile Controls
+  sheet.getRange("H3").setValue("UPRAVLJANJE (MOBITEL):").setFontWeight("bold");
+  sheet.getRange("H4").setValue("👇 1. Klikni za Učitavanje");
+  sheet.getRange("H5").insertCheckboxes();
+  sheet.getRange("H6").setValue("(Status učitavanja)");
+
+  sheet.getRange("H7").setValue("👇 2. Klikni za Slanje");
+  sheet.getRange("H8").insertCheckboxes();
+  sheet.getRange("H9").setValue("(Status slanja)");
 }
 
 // --- 2. WEB APP HANDLER ---
 function doGet(e) {
-  var params = e.parameter;
-  
-  // ACTION: GET PRICES (JSON)
-  if (params.action === 'get_prices') {
-      return getPricesJSON();
-  }
-
   return ContentService.createTextOutput(JSON.stringify({ 
     'status': 'online', 
     'message': '2LMF Calculator API is running.' 
   })).setMimeType(ContentService.MimeType.JSON);
-}
-
-function getPricesJSON() {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("CJENIK");
-    if (!sheet) return ContentService.createTextOutput(JSON.stringify({error: "No Price Sheet"})).setMimeType(ContentService.MimeType.JSON);
-    
-    var data = sheet.getDataRange().getValues();
-    var headers = data[0];
-    var products = {};
-    
-    // Skip header => Row 1
-    for (var i = 1; i < data.length; i++) {
-        var row = data[i];
-        var sku = row[0];
-        // 0:Sku, 1:Name, 2:CostNet, 3:CostGross, 4:PriceGross, 5:Margin
-        var price = row[4]; 
-        
-        if (sku && price) {
-            products[sku] = parseFloat(price);
-        }
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify(products)).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
@@ -155,8 +124,8 @@ function doPost(e) {
     var adminHtml = generateAdminHtml(items, name, email, phone, subject, customerHtml); // For Admin
     
     // Notify Customer (Instant Auto-Reply)
-    // Only send if NOT silent (Manual "Send Email" button)
-    if (params.silent !== 'true') {
+    // Only send if NOT silent (Manual "Send Email" button) or if type is silent explicitly
+    if (params.type !== 'silent' && params.silent !== 'true') {
         MailApp.sendEmail({
             to: email,
             subject: subject,
@@ -187,7 +156,13 @@ function doPost(e) {
         }
         var total = items.reduce((sum, i) => sum + (i.qty * i.price_sell), 0);
         sheetLog.appendRow([new Date(), inquiryId, name, email, phone, subject, total, "NOVO", itemsJson]);
-        if(!ss.getSheetByName("Generator Ponuda")) { setupGeneratorLayout(ss.insertSheet("Generator Ponuda")); }
+        
+        // Ensure Generator sheet exists in opened sheet
+        if(!ss.getSheetByName("Generator Ponuda")) { 
+            setupGeneratorLayout(ss.insertSheet("Generator Ponuda")); 
+        }
+      } else {
+        console.log("SHEET_ID not found in props!");
       }
     } catch (err) {
       console.log("CRM Log failed: " + err);
@@ -204,16 +179,6 @@ function doPost(e) {
 
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
-  
-  // Menu 1: ADMIN (Postavke)
-  ui.createMenu('2LMF ADMIN')
-      .addItem('1. Postavi/Ažuriraj Sustav', 'setupCRM')
-      .addItem('2. Kreiraj Tablicu Cjenika', 'setupPriceSheet')
-      .addSeparator()
-      .addItem('🔃 Sinkroniziraj Web (Flush Cache)', 'flushCache')
-      .addToUi();
-
-  // Menu 2: CRM (Svakodnevni rad)
   ui.createMenu('2LMF CRM')
       .addItem('📥 Učitaj podatke (Desktop)', 'importInquiry')
       .addItem('✉️ Pošalji Ponudu (Desktop)', 'sendCustomOffer')
@@ -471,54 +436,78 @@ function generateHtml(items, name, isAutoReply) {
 }
 
 // --- HELPER: ENRICH ITEMS WITH COSTS (Backend Logic) ---
+// This version reads directly from "CJENIK" sheet for accurate costs.
 function enrichItemsWithCosts(items) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("CJENIK");
+  
+  // 1. Build Price list (Array for search + Map for direct lookup)
+  var sheetItems = [];
+  var priceMap = {};
+  
+  if (sheet) {
+      // COL A = SKU (Šifra)
+      // COL B = Name (Naziv)
+      // COL C = Nabavna BEZ PDV (Cost VPC) -> For Supplier
+      // COL D = Nabavna SA PDV (Cost MPC) -> For Profit calc
+      
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+          var data = sheet.getRange(2, 1, lastRow - 1, 4).getValues(); // Get cols A,B,C,D
+          
+          for (var i = 0; i < data.length; i++) {
+              var rowSku = String(data[i][0] || "").trim().toLowerCase();
+              var rowName = String(data[i][1] || "");
+              
+              var rowCostVPC = parseFloat(data[i][2]); // Col C
+              if (isNaN(rowCostVPC)) rowCostVPC = 0;
+
+              var rowCostMPC = parseFloat(data[i][3]); // Col D
+              if (isNaN(rowCostMPC)) rowCostMPC = 0;
+              
+              var priceObj = {
+                  sku: rowSku,
+                  name: rowName, 
+                  cost_vpc: rowCostVPC,
+                  cost_mpc: rowCostMPC,
+                  supplier: "Skladište" 
+              };
+              
+              sheetItems.push(priceObj);
+              if (rowSku) priceMap[rowSku] = priceObj;
+          }
+      }
+  }
+
+  // 2. Map Items
   return items.map(function(item) {
-    // 1. Identify Material Group/Factor
-    var factor = 0.80; // Default margin 20% (Buy = 80% of Sell)
-    var supplier = "-";
+    var itemSku = String(item.sku || "").trim().toLowerCase(); 
+    var matchedData = null;
     
-    // Simple Keyword Matching (since config keys are names like "XPS")
-    // Or use SKU prefixes if defined.
-    for (var key in MATERIAL_CONFIG) {
-        if (item.name.indexOf(key) !== -1 || (item.sku && item.sku.startsWith("04"))) { // Very basic match
-             if(MATERIAL_CONFIG[item.name]) { // Exact match attempt
-                 factor = MATERIAL_CONFIG[item.name].buy_factor;
-                 supplier = MATERIAL_CONFIG[item.name].supplier;
-             } else {
-                 // Fuzzy match
-                 if (item.name.toLowerCase().indexOf("xps") !== -1) { factor = MATERIAL_CONFIG["XPS"].buy_factor; supplier = MATERIAL_CONFIG["XPS"].supplier; }
-                 else if (item.name.toLowerCase().indexOf("vuna") !== -1) { factor = MATERIAL_CONFIG["Kamena vuna"].buy_factor; supplier = MATERIAL_CONFIG["Kamena vuna"].supplier; }
-                 else if (item.name.toLowerCase().indexOf("panel") !== -1) { factor = 0.77; supplier = "Dobavljač Ograde"; }
-                 else if (item.name.toLowerCase().indexOf("stup") !== -1) { factor = 0.77; supplier = "Dobavljač Ograde"; }
-             }
-             break;
-        }
-    }
-    
-    var sellPrice = item.price_sell;
-    
-    // --- UPDATED COST LOGIC ---
-    var buyPriceMPC;
-    
-    if (item.price_buy_mpc) {
-        // USE FRONTEND DATA (Precise Cost)
-        buyPriceMPC = item.price_buy_mpc;
+    // A. Try Exact SKU Match
+    if (itemSku && priceMap[itemSku]) {
+        matchedData = priceMap[itemSku];
     } else {
-        // FALLBACK (Estimate based on factor)
-        buyPriceMPC = sellPrice * factor;
+        // Fallback: Try match by name if exact SKU failed (optional, keeping minimal for now to align with "Standardization")
     }
     
-    // Calculate Buy Price (VPC - without VAT)
-    // Assuming 25% VAT, VPC = MPC / 1.25
-    var buyPriceVPC = buyPriceMPC / 1.25;
-    
-    var profit = sellPrice - buyPriceMPC;
-    
-    item.price_buy_mpc = buyPriceMPC;
-    item.price_buy_vpc = buyPriceVPC;
-    item.profit = profit;
-    item.supplier = supplier;
-    
+    // Apply Data
+    if (matchedData) {
+        item.price_buy_vpc = matchedData.cost_vpc;
+        item.price_buy_mpc = matchedData.cost_mpc; 
+        item.supplier = matchedData.supplier;
+        
+        // Ensure SKU is consistent
+        if (!item.sku && matchedData.sku) item.sku = matchedData.sku.toUpperCase(); 
+    } else {
+        item.price_buy_vpc = 0;
+        item.price_buy_mpc = 0;
+        item.supplier = "Nepoznato";
+    }
+
+    // Profit = Sell Price (MPC) - Buy Price (MPC)
+    // Assuming Frontend price_sell is MPC. 
+    item.profit = item.price_sell - item.price_buy_mpc;
     return item;
   });
 }
@@ -542,21 +531,31 @@ function generateAdminHtml(items, name, email, phone, subject, customerHtml) {
 
              "<h3>💰 Analiza Zarade (Sve cijene su s PDV-om)</h3>" +
              "<table style='width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 30px;'>" +
-             "<tr style='background-color: #E67E22; color: #000000;'><th style='padding:8px;text-align:left;'>Artikl</th><th style='padding:8px;'>KOL.</th><th style='padding:8px;text-align:right;'>MPC Prodajna</th><th style='padding:8px;text-align:right;background:#2ecc71;color:black;'>Nabavna (SA PDV)</th><th style='padding:8px;text-align:right;background:#d35400;color:white;'>ZARADA</th></tr>";
+             "<tr style='background-color: #E67E22; color: #000000;'><th style='padding:8px;text-align:left;'>Artikl</th><th style='padding:8px;'>KOL.</th><th style='padding:8px;text-align:right;'>MPC / kom</th><th style='padding:8px;text-align:right;'>MPC Ukupno</th><th style='padding:8px;text-align:right;background:#2ecc71;color:black;'>Nabavna / kom</th><th style='padding:8px;text-align:right;background:#2ecc71;color:black;'>Nabavna Ukupno</th><th style='padding:8px;text-align:right;background:#d35400;color:white;'>ZARADA</th></tr>";
 
   items.forEach(function(it) {
-    html += "<tr><td style='padding:8px;border:1px solid #ddd;'>" + it.name + "</td><td style='padding:8px;border:1px solid #ddd;text-align:center;'>" + it.qty + " " + it.unit + "</td><td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + (it.qty * it.price_sell).toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td><td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + (it.qty * it.price_buy_mpc).toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td><td style='padding:8px;border:1px solid #ddd;text-align:right;font-weight:bold;'>" + (it.qty * it.profit).toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td></tr>";
+    var u = it.unit || "";
+    html += "<tr>" +
+            "<td style='padding:8px;border:1px solid #ddd;'>" + it.name + "</td>" +
+            "<td style='padding:8px;border:1px solid #ddd;text-align:center;'>" + it.qty + " " + u + "</td>" +
+            "<td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + it.price_sell.toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td>" +
+            "<td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + (it.qty * it.price_sell).toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td>" +
+            "<td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + it.price_buy_mpc.toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td>" +
+            "<td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + (it.qty * it.price_buy_mpc).toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td>" +
+            "<td style='padding:8px;border:1px solid #ddd;text-align:right;font-weight:bold;'>" + (it.qty * it.profit).toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td>" +
+            "</tr>";
   });
 
-  html += "<tr style='font-weight:bold;background:#eee;'><td colspan='4' style='padding:8px;text-align:right;'>UKUPNO ZARADA:</td><td style='padding:8px;text-align:right;color:#d35400;font-size:16px;'>" + totalProfit.toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td></tr></table>" +
+  html += "<tr style='font-weight:bold;background:#eee;'><td colspan='6' style='padding:8px;text-align:right;'>UKUPNO ZARADA:</td><td style='padding:8px;text-align:right;color:#d35400;font-size:16px;'>" + totalProfit.toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €</td></tr></table>" +
 
              "<h3>📦 Lista za Dobavljača (Nabavne cijene BEZ PDV-a)</h3>" +
              "<table style='width: 100%; border-collapse: collapse; font-size: 13px;'>" +
              "<tr style='background-color: #000000; color: #E67E22;'><th style='padding:8px;text-align:left;'>Artikl</th><th style='padding:8px;'>Količina</th><th style='padding:8px;text-align:right;'>Nabavna VPC / kom (bez PDV)</th><th style='padding:8px;text-align:center;'>Provjera</th></tr>";
 
   items.forEach(function(it) {
+    var u = it.unit || "";
     var vpcFmt = it.price_buy_vpc > 0 ? it.price_buy_vpc.toLocaleString('hr-HR',{minimumFractionDigits:2, maximumFractionDigits:2}) + " €" : "-";
-    html += "<tr><td style='padding:8px;border:1px solid #ddd;'>" + it.name + "</td><td style='padding:8px;border:1px solid #ddd;text-align:center;'>" + it.qty + " " + it.unit + "</td><td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + vpcFmt + "</td><td style='padding:8px;border:1px solid #ddd;text-align:center;'>[ ]</td></tr>";
+    html += "<tr><td style='padding:8px;border:1px solid #ddd;'>" + it.name + "</td><td style='padding:8px;border:1px solid #ddd;text-align:center;'>" + it.qty + " " + u + "</td><td style='padding:8px;border:1px solid #ddd;text-align:right;'>" + vpcFmt + "</td><td style='padding:8px;border:1px solid #ddd;text-align:center;'>[ ]</td></tr>";
   });
 
   html += "</table></div>";
