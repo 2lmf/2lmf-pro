@@ -846,12 +846,12 @@ function calculateFacade(data) {
 
         let insulationName = `EPS F izolacijske ploče (${h}cm)`;
         let insulationSku = '4001';
-        let insulationPrice = h * prices.facade_insulation.eps_base;
-        let insulationCost = h * costs.facade_insulation.eps_base;
+        let insulationPrice = h * prices.facade_etics.eps_base_cm.price;
+        let insulationCost = 0;
 
         let glueStickName = 'Ljepilo za EPS (Ljepljenje)';
-        let glueStickPrice = prices.facade_etics.glue_eps;
-        let glueStickCost = costs.facade_etics.glue_eps;
+        let glueStickPrice = prices.facade_etics.glue_eps.price;
+        let glueStickCost = 0;
 
         if (data.material === 'wool') {
             const allowed = [5, 6, 8, 10, 12, 14, 15];
@@ -876,23 +876,23 @@ function calculateFacade(data) {
         items.push({ sku: '4002', name: glueStickName, value: (area * 3.5).toFixed(1), unit: 'kg', price: glueStickPrice, cost_price: glueStickCost });
 
         // 3. Ljepilo za Armiranje (Uniterm)
-        items.push({ sku: '4003', name: 'Uniterm (Ljepilo za armiranje/gletanje)', value: (area * 4.5).toFixed(1), unit: 'kg', price: prices.facade_etics.glue_arm, cost_price: costs.facade_etics.glue_arm });
+        items.push({ sku: '4003', name: 'Uniterm (Ljepilo za armiranje/gletanje)', value: (area * 4.5).toFixed(1), unit: 'kg', price: prices.facade_etics.glue_armor.price, cost_price: 0 });
 
         // 4. Mrežica
-        items.push({ sku: '4004', name: 'Staklena mrežica Primafas', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.facade_etics.mesh, cost_price: costs.facade_etics.mesh });
+        items.push({ sku: '4004', name: 'Staklena mrežica Primafas', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.facade_etics.mesh.price, cost_price: 0 });
 
         // 5. Profili
-        items.push({ sku: '4008', name: 'Profil PVC s mrežicom (kutni)', value: (area * 0.4).toFixed(1), unit: 'm', price: prices.facade_etics.profile_pvc, cost_price: costs.facade_etics.profile_pvc });
-        items.push({ sku: '4009', name: 'Alu Cokl Profil (15cm)', value: (area * 0.2).toFixed(1), unit: 'm', price: prices.facade_etics.profile_cokl, cost_price: costs.facade_etics.profile_cokl });
+        items.push({ sku: '4008', name: 'Profil PVC s mrežicom (kutni)', value: (area * 0.4).toFixed(1), unit: 'm', price: prices.facade_etics.profile_pvc.price, cost_price: 0 });
+        items.push({ sku: '4009', name: 'Alu Cokl Profil (15cm)', value: (area * 0.2).toFixed(1), unit: 'm', price: prices.facade_etics.profile_alu.price, cost_price: 0 });
 
         // 6. Pričvrsnice
-        items.push({ sku: '4005', name: 'Pričvrsnica PSV (Tiple)', value: Math.ceil(area * 6), unit: 'kom', price: prices.facade_etics.anchor, cost_price: costs.facade_etics.anchor });
+        items.push({ sku: '4005', name: 'Pričvrsnica PSV (Tiple)', value: Math.ceil(area * 6), unit: 'kom', price: prices.facade_etics.dowel.price, cost_price: 0 });
 
         // 7. Grund
-        items.push({ sku: '4006', name: 'Mineralkvarc Grund (Primer)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.facade_etics.primer, cost_price: costs.facade_etics.primer });
+        items.push({ sku: '4006', name: 'Mineralkvarc Grund (Primer)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.facade_etics.grund.price, cost_price: 0 });
 
         // 8. Završna žbuka
-        items.push({ sku: '4007', name: 'Silikatna žbuka Z 4000 (1.5mm)', value: (area * 2.5).toFixed(1), unit: 'kg', price: prices.facade_etics.plaster, cost_price: costs.facade_etics.plaster });
+        items.push({ sku: '4007', name: 'Silikatna žbuka Z 4000 (1.5mm)', value: (area * 2.5).toFixed(1), unit: 'kg', price: prices.facade_etics.plaster_silicat.price, cost_price: 0 });
 
     } else {
         // Ventilated
@@ -916,14 +916,15 @@ function calculateThermal(data) {
         const xpsPrice = getXPSPrice(thickness);
 
         items.push({ sku: '3001', name: `XPS ploče (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: xpsPrice });
-        items.push({ sku: '3002', name: 'Ljepilo/Pjena (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik, cost_price: costs.chemicals.insta_stik });
-        items.push({ sku: '3003', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta, cost_price: costs.membranes.cepasta });
+        items.push({ sku: '3002', name: 'Ljepilo/Pjena (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik.price, cost_price: 0 });
+        items.push({ sku: '3003', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta.price, cost_price: 0 });
     } else {
         const thickness = parseInt(data.thickness);
         const woolPrice = getWoolPrice(thickness);
 
         items.push({ sku: '3050', name: `Mineralna vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
-        items.push({ sku: '3051', name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al, cost_price: costs.bitumen.vapor_al });
+        items.push({ sku: '3050', name: `Mineralna vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
+        items.push({ sku: '3051', name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al.price, cost_price: 0 });
     }
     return items;
 }
@@ -939,21 +940,22 @@ function calculateHydro(data) {
         const xpsCost = getXPSCost(thickness);
 
         // 1. Bitumen
-        items.push({ sku: '1001', name: 'Bitumenski premaz (Fimizol/9L)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.bitumen.fimizol, cost_price: costs.bitumen.fimizol });
-        items.push({ sku: '1002', name: 'Bitumenska traka (Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4, cost_price: costs.bitumen.ruby_v4 });
+        items.push({ sku: '1001', name: 'Bitumenski premaz (Fimizol/9L)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.chemicals.fimizol.price, cost_price: 0 });
+        items.push({ sku: '1002', name: 'Bitumenska traka (Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4.price, cost_price: 0 });
 
         // 2. XPS
-        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: xpsCost });
-        items.push({ sku: '1004', name: 'Ljepilo/Pjena za XPS (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik, cost_price: costs.chemicals.insta_stik });
+        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: 0 });
+        items.push({ sku: '1004', name: 'Ljepilo/Pjena za XPS (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik.price, cost_price: 0 });
 
         // 3. Čepasta
-        items.push({ sku: '1005', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta, cost_price: costs.membranes.cepasta });
+        // 3. Čepasta
+        items.push({ sku: '1005', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta.price, cost_price: 0 });
 
     } else if (data.type === 'bitumen-roof') {
-        items.push({ sku: '1001', name: 'Bitumenski premaz (Fimizol/9L)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.bitumen.fimizol, cost_price: costs.bitumen.fimizol });
-        items.push({ sku: '1006', name: 'Bitumenska traka (Diamond P4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4, cost_price: costs.bitumen.diamond_p4 });
-        items.push({ sku: '1007', name: 'Geotekstil', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile, cost_price: costs.membranes.geotextile });
-        items.push({ sku: '1020', name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al, cost_price: costs.bitumen.vapor_al });
+        items.push({ sku: '1001', name: 'Bitumenski premaz (Fimizol/9L)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.chemicals.fimizol.price, cost_price: 0 });
+        items.push({ sku: '1006', name: 'Bitumenska traka (Diamond P4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4.price, cost_price: 0 });
+        items.push({ sku: '1007', name: 'Geotekstil', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile.price, cost_price: 0 });
+        items.push({ sku: '1020', name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al.price, cost_price: 0 });
 
         // --- TPO / PVC ---
         // --- TPO / PVC (ravni krov) ---
@@ -989,16 +991,15 @@ function calculateHydro(data) {
         }
 
         // 1. XPS
-        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: xpsCost });
+        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: 0 });
 
         // 2. Foil
-        items.push({ sku: skuCode, name: `${naziv} (10% preklop)`, value: (area * 1.15).toFixed(2), unit: 'm²', price: folijaPrice, cost_price: folijaCost });
-        items.push({ sku: '1007', name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile, cost_price: costs.membranes.geotextile });
+        items.push({ sku: skuCode, name: `${naziv} (10% preklop)`, value: (area * 1.15).toFixed(2), unit: 'm²', price: folijaPrice && folijaPrice.price !== undefined ? folijaPrice.price : folijaPrice, cost_price: 0 });
+        items.push({ sku: '1007', name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile.price, cost_price: 0 });
 
-        const limPrice = isTPO ? prices.others.tpo_lim : prices.others.pvc_lim;
-        const limCost = isTPO ? costs.others.tpo_lim : costs.others.pvc_lim;
+        const limPrice = isTPO ? prices.others.tpo_lim.price : prices.others.pvc_lim.price;
         const limSku = isTPO ? '1012' : '1013';
-        items.push({ sku: limSku, name: 'Limovi (2x1m) - Procjena', value: 4, unit: 'kom', price: limPrice, cost_price: limCost });
+        items.push({ sku: limSku, name: 'Limovi (2x1m) - Procjena', value: 4, unit: 'kom', price: limPrice, cost_price: 0 });
 
         // --- PVC FOUNDATION ---
     } else if (data.type === 'pvc-foundation') {
@@ -1006,22 +1007,22 @@ function calculateHydro(data) {
         const xpsPrice = getXPSPrice(thickness);
         const xpsCost = getXPSCost(thickness);
 
-        items.push({ sku: '1014', name: 'PVC folija za temelje (BSL 1.5mm)', value: (area * 1.10).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji, cost_price: costs.membranes.pvc_temelji });
-        items.push({ sku: '1007', name: 'Geotekstil (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile, cost_price: costs.membranes.geotextile });
-        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: xpsCost });
-        items.push({ sku: '1004', name: 'Ljepilo/Pjena za XPS (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik, cost_price: costs.chemicals.insta_stik });
-        items.push({ sku: '1005', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta, cost_price: costs.membranes.cepasta });
+        items.push({ sku: '1014', name: 'PVC folija za temelje (BSL 1.5mm)', value: (area * 1.10).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji.price, cost_price: 0 });
+        items.push({ sku: '1007', name: 'Geotekstil (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile.price, cost_price: 0 });
+        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: 0 });
+        items.push({ sku: '1004', name: 'Ljepilo/Pjena za XPS (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik.price, cost_price: 0 });
+        items.push({ sku: '1005', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta.price, cost_price: 0 });
 
     } else if (data.type === 'polymer') {
-        items.push({ sku: '1015', name: 'Polimercement (Aquamat Elastic) 2 sloja', value: (area * 3).toFixed(1), unit: 'kg', price: prices.chemicals.aquamat_elastic, cost_price: costs.chemicals.aquamat_elastic });
+        items.push({ sku: '1015', name: 'Polimercement (Aquamat Elastic) 2 sloja', value: (area * 3).toFixed(1), unit: 'kg', price: prices.chemicals.aquamat_elastic.price, cost_price: 0 });
         items.push({ sku: '1016', name: 'Brtveća traka', value: Math.ceil(Math.sqrt(area) * 4), unit: 'm', price: 0 });
 
         if (data.polymerFinish === 'ceramics') {
-            items.push({ sku: '1017', name: 'Isomat AK-20', value: (area * 3.5).toFixed(1), unit: 'kg', price: prices.chemicals.ak20, cost_price: costs.chemicals.ak20 });
+            items.push({ sku: '1017', name: 'Isomat AK-20', value: (area * 3.5).toFixed(1), unit: 'kg', price: prices.chemicals.ak20.price, cost_price: 0 });
         }
     } else if (data.type === 'isoflex-pu500') {
-        items.push({ sku: '1018', name: 'Primer (Isomat Primer-PU 100)', value: (area * 0.2).toFixed(1), unit: 'kg', price: prices.chemicals.primer_pu, cost_price: costs.chemicals.primer_pu });
-        items.push({ sku: '1019', name: 'Isomat Isoflex PU500 (2 sloja)', value: (area * 1.5).toFixed(1), unit: 'kg', price: prices.chemicals.isoflex_pu500, cost_price: costs.chemicals.isoflex_pu500 });
+        items.push({ sku: '1018', name: 'Primer (Isomat Primer-PU 100)', value: (area * 0.2).toFixed(1), unit: 'kg', price: 0, cost_price: 0 });
+        items.push({ sku: '1019', name: 'Isomat Isoflex PU500 (2 sloja)', value: (area * 1.5).toFixed(1), unit: 'kg', price: prices.chemicals.isoflex_pu500.price, cost_price: 0 });
         items.push({ sku: '1016', name: 'Brtveća traka', value: Math.ceil(Math.sqrt(area) * 4), unit: 'm', price: 0 });
     }
 
