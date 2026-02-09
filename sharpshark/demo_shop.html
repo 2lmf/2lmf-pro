@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Web Shop - SharpShark</title>
+    <!-- Themes -->
+    <link rel="stylesheet" href="shark_theme_v2.css">
+    <link rel="stylesheet" href="cart_style.css">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        /* Compatibility Layer for Cart */
+        :root {
+            --primary: var(--neon-orange);
+            /* Map Cart primary to Theme Orange */
+            --bg-deep: #050510;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gold: var(--neon-cyan);
+            /* Map Gold prices to Cyan for Neon look */
+            --font-head: 'Orbitron', sans-serif;
+        }
+
+        /* Demo Specific Styles */
+        .product-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-family: var(--font-heading);
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--neon-orange);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Quantity Selector */
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            width: fit-content;
+        }
+
+        .qty-btn-ui {
+            background: none;
+            border: none;
+            color: var(--neon-cyan);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.2s;
+        }
+
+        .qty-btn-ui:hover {
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: var(--font-body);
+            font-weight: bold;
+            font-size: 1.1rem;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .add-btn {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 0.8rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: var(--font-heading);
+            font-weight: bold;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .add-btn:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .back-bar {
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="ocean-bg"></div>
+
+    <!-- Top Bar -->
+    <div class="back-bar">
+        <a href="index.html" class="back-link">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            Povratak na Agenciju
+        </a>
+        <div style="margin-left: auto; font-family: var(--font-heading); color: var(--neon-orange);">
+            DEMO PREVIEW
+        </div>
+    </div>
+
+    <!-- Shop Header -->
+    <header style="text-align: center; padding: 3rem 1rem;">
+        <h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0.5rem;">VAŠ WEB SHOP</h1>
+        <p style="color: var(--text-muted);">
+            Ovako izgleda prodaja vaših proizvoda. Jednostavno, brzo, elegantno.
+        </p>
+    </header>
+
+    <!-- Product Grid -->
+    <main class="container">
+        <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+
+            <!-- 1. Vino -->
+            <div class="product-card">
+                <img src="assets/images/wine_red.png" alt="Vrhunsko Crno Vino" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Plavac Mali Premium</h3>
+                    <div class="product-price">25.00 €</div>
+
+                    <div class="qty-selector">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p1', -1)">-</button>
+                        <input type="number" id="qty-p1" class="qty-input" value="1" min="1">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p1', 1)">+</button>
+                    </div>
+
+                    <button class="add-btn" onclick="addToCartQty('p1', 'Plavac Mali Premium', 25.00, 'qty-p1')">
+                        Dodaj u Košaricu
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Pršut -->
+            <div class="product-card">
+                <img src="assets/images/prosciutto_on_board_1769983889002.png" alt="Domaći Pršut" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Drniški Pršut (Narezan)</h3>
+                    <div class="product-price">18.50 €</div>
+
+                    <div class="qty-selector">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p2', -1)">-</button>
+                        <input type="number" id="qty-p2" class="qty-input" value="1" min="1">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p2', 1)">+</button>
+                    </div>
+
+                    <button class="add-btn" onclick="addToCartQty('p2', 'Drniški Pršut 500g', 18.50, 'qty-p2')">
+                        Dodaj u Košaricu
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Sir -->
+            <div class="product-card">
+                <img src="assets/images/cheese_wedge_premium_1769983902757.png" alt="Paški Sir" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Paški Sir (Odležan)</h3>
+                    <div class="product-price">32.00 € / kg</div>
+
+                    <div class="qty-selector">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p3', -1)">-</button>
+                        <input type="number" id="qty-p3" class="qty-input" value="1" min="1">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p3', 1)">+</button>
+                    </div>
+
+                    <button class="add-btn" onclick="addToCartQty('p3', 'Paški Sir - 1kg', 32.00, 'qty-p3')">
+                        Dodaj u Košaricu
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Ulje -->
+            <div class="product-card">
+                <img src="assets/images/olive_oil_bottle_premium_1769983914750.png" alt="Maslinovo Ulje"
+                    class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Zlatno Maslinovo Ulje</h3>
+                    <div class="product-price">16.00 €</div>
+
+                    <div class="qty-selector">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p4', -1)">-</button>
+                        <input type="number" id="qty-p4" class="qty-input" value="1" min="1">
+                        <button class="qty-btn-ui" onclick="changeQty('qty-p4', 1)">+</button>
+                    </div>
+
+                    <button class="add-btn"
+                        onclick="addToCartQty('p4', 'Ekstra Djevičansko Ulje 0.75l', 16.00, 'qty-p4')">
+                        Dodaj u Košaricu
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer
+        style="text-align: center; padding: 2rem; margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
+        <p>Ovo je simulacija web trgovine koju dobivate u paketu "Web Shop Zauvijek".</p>
+    </footer>
+
+    <!-- Cart Script -->
+    <script src="wine_cart.js"></script>
+    <script>
+        // Helper to change local quantity input
+        function changeQty(inputId, delta) {
+            const input = document.getElementById(inputId);
+            let val = parseInt(input.value) || 1;
+            val += delta;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
+
+        // Custom wrapper for AddToCart with quantity
+        function addToCartQty(id, name, price, inputId) {
+            const input = document.getElementById(inputId);
+            const qty = parseInt(input.value) || 1;
+
+            // Call the method on the 'cart' instance (from wine_cart.js)
+            cart.addItem({ id, name, price }, qty);
+
+            // Visual feedback (optional reset to 1)
+            // input.value = 1; 
+        }
+    </script>
+</body>
+
+</html>

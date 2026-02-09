@@ -108,15 +108,15 @@
         <nav>
             <a href="index.html">Početna</a>
             <div class="dropdown">
-                <button class="dropdown-btn">Ponuda materijala ▼</button>
+                <button class="dropdown-btn">Ponuda ▼</button>
                 <div class="dropdown-content">
-                    <a href="hidroizolacija.html">Hidroizolacija</a>
-                    <a href="termoizolacija.html">Termoizolacija</a>
+                    <a href="hidroizolacija.html">Hidro i termo izolacija</a>
                     <a href="fasade.html">Fasade</a>
                     <a href="ograde.html">Ograde</a>
+                    <a href="arhitektura.html">Arhitektura</a>
                 </div>
             </div>
-            <a href="arhitektura.html">Arhitektura</a>
+            <a href="sharpshark/index.html">SharpShark</a>
             <a href="blog.html">Blog</a>
             <a href="kalkulator.html" class="nav-calculator">Kalkulator</a>
             <a href="index.html#kontakt">Kontakt</a>
@@ -137,14 +137,21 @@
                 RAL 6005 i antracit RAL 7016) kao i drugim bojama po narudžbi.</li>
             <li><strong>Vrata i kapije:</strong>
                 <ul style="margin-top: 10px; list-style-type: circle;">
-                    <li>Pješačka vrata (jednokrilna)</li>
-                    <li>Dvokrilna vrata</li>
-                    <li>Klizna vrata (samonosiva ili na šinu)</li>
+                    <li>Pješačka vrata (jednokrilna) - širine 100cm, visine od 100cm do 200cm</li>
+                    <li>Dvokrilna vrata (po upitu)</li>
+                    <li>Klizna vrata (po upitu)</li>
                 </ul>
             </li>
-            <li><strong>Kompletan pribor:</strong> Stupovi s pločom ili za betoniranje, obujmice, poklopci i sav
+            <li><strong>Kompletan pribor:</strong> Stupovi sa pločicom ili za betoniranje, spojnice, poklopci i sav
                 potreban materijal za montažu.</li>
         </ul>
+
+        <!-- NEW GATE SECTION RE-ADDED -->
+        <div class="cta-box animate-block delay-1" style="background:#f0f8ff; border-left: 5px solid #3498db;">
+            <h3>🔑 Trebate i vrata?</h3>
+            <p>U našem kalkulatoru sada možete odabrati i pješačka vrata uz ogradu!</p>
+            <p style="font-size:0.9rem; color:#666;">*Za dvokrilna i klizna vrata molimo pošaljite direktan upit.</p>
+        </div>
 
         <p>Naše ograde odlikuje jednostavna montaža, dugovječnost i otpornost na koroziju zahvaljujući kvalitetnoj
             završnoj obradi (pocinčano + plastificirano).</p>
@@ -161,10 +168,13 @@
         <hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin: 30px 0 15px 0;">
         <p class="hashtags animate-block">
             #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija
-            #najpovoljnije #vrhunskakvaliteta #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC
-            #bitumen #bitumenskaljepenka #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada
-            #građevinskikalkulator #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS
-            #stiropor #bentonit #polimercement #vuna #kamenavuna
+            #najpovoljnije #beznaknade #freehosting #freehostingzauvijek #vrhunskakvaliteta #webshop #freewebshop
+            #sharpshark #sharpsharkdigital #besplatno #besplatniwebshop #3dpanel #2dpanel #panelograda
+            #konfigurator #fiskalizacija #rezervacijasmještaja #channelmanager #webdesign #SEO #konfiguratorograda
+            #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen #bitumenskaljepenka
+            #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada #građevinskikalkulator
+            #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS #stiropor #bentonit
+            #polimercement #vuna #kamenavuna
         </p>
 
         <br>
@@ -225,6 +235,12 @@
         </div>
     </div>
 
+    <!-- Cookie Banner -->
+    <div id="cookie-banner">
+        <p>Koristimo kolačiće za bolje korisničko iskustvo i analitiku.</p>
+        <button id="accept-cookies">Prihvaćam</button>
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             if ('IntersectionObserver' in window) {
@@ -239,6 +255,20 @@
                 document.querySelectorAll('.animate-block').forEach(el => observer.observe(el));
             } else {
                 document.querySelectorAll('.animate-block').forEach(el => el.classList.add('appear'));
+            }
+
+            // Cookie Logic
+            const cookieBanner = document.getElementById('cookie-banner');
+            if (cookieBanner && !localStorage.getItem('cookiesAccepted')) {
+                cookieBanner.style.display = 'block';
+            }
+
+            const acceptBtn = document.getElementById('accept-cookies');
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    cookieBanner.style.display = 'none';
+                });
             }
         });
     </script>

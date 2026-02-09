@@ -108,15 +108,15 @@
         <nav>
             <a href="index.html">Početna</a>
             <div class="dropdown">
-                <button class="dropdown-btn">Ponuda materijala ▼</button>
+                <button class="dropdown-btn">Ponuda ▼</button>
                 <div class="dropdown-content">
-                    <a href="hidroizolacija.html">Hidroizolacija</a>
-                    <a href="termoizolacija.html">Termoizolacija</a>
+                    <a href="hidroizolacija.html">Hidro i termo izolacija</a>
                     <a href="fasade.html">Fasade</a>
                     <a href="ograde.html">Ograde</a>
+                    <a href="arhitektura.html">Arhitektura</a>
                 </div>
             </div>
-            <a href="arhitektura.html">Arhitektura</a>
+            <a href="sharpshark/index.html">SharpShark</a>
             <a href="blog.html">Blog</a>
             <a href="kalkulator.html" class="nav-calculator">Kalkulator</a>
             <a href="index.html#kontakt">Kontakt</a>
@@ -158,10 +158,13 @@
         <hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin: 30px 0 15px 0;">
         <p class="hashtags animate-block">
             #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija
-            #najpovoljnije #vrhunskakvaliteta #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC
-            #bitumen #bitumenskaljepenka #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada
-            #građevinskikalkulator #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS
-            #stiropor #bentonit #polimercement #vuna #kamenavuna
+            #najpovoljnije #beznaknade #freehosting #freehostingzauvijek #vrhunskakvaliteta #webshop #freewebshop
+            #sharpshark #sharpsharkdigital #besplatno #besplatniwebshop #3dpanel #2dpanel #panelograda
+            #konfigurator #fiskalizacija #rezervacijasmještaja #channelmanager #webdesign #SEO #konfiguratorograda
+            #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen #bitumenskaljepenka
+            #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada #građevinskikalkulator
+            #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS #stiropor #bentonit
+            #polimercement #vuna #kamenavuna
         </p>
 
         <br>
@@ -237,6 +240,21 @@
             } else {
                 document.querySelectorAll('.animate-block').forEach(el => el.classList.add('appear'));
             }
+
+            // Cookie Logic
+            const cookieBanner = document.getElementById('cookie-banner');
+            if (cookieBanner && !localStorage.getItem('cookiesAccepted')) {
+                cookieBanner.style.display = 'block';
+            }
+
+            const acceptBtn = document.getElementById('accept-cookies');
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    cookieBanner.style.display = 'none';
+                });
+            }
+
         });
     </script>
 </body>

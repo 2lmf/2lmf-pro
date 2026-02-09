@@ -5,10 +5,171 @@ const contentArea = document.getElementById('calculator-content');
 const resultsSection = document.getElementById('results-section');
 const resultsContainer = document.getElementById('results-container');
 
-// State
-let currentModule = 'hydro';
+function translateModule(mod) {
+    const map = {
+        'facade': 'FASADE',
+        'thermal': 'TERMOIZOLACIJA',
+        'hydro': 'HIDROIZOLACIJA',
+        'fence': 'OGRADE'
+    };
+    return map[mod] || mod.toUpperCase();
+}
 
-// Module HTML Layouts (later we can move these to separate files if needed)
+// State
+// State
+let currentModule = 'facade';
+
+// --- GOOGLE SHEETS SYNC ---
+// PASTE YOUR DEPLOYMENT URL HERE (from Apps Script -> Deploy -> Web App)
+// --- GOOGLE SHEETS SYNC ---
+// UNIFIED API URL (Prices & Emails)
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvD27R4fbc5g61Dl0cGCE73-G75EsZGoEbKuRqzU7-5oqg5ZxALf5W9RyTGiPF_08G/exec';
+
+async function initPriceFetch() {
+    if (!GOOGLE_SCRIPT_URL) {
+        console.log("⚠️ No API URL configured. Using local prices.");
+        return;
+    }
+
+    try {
+        console.log("⏳ Fetching live prices...");
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=get_prices`);
+        const livePrices = await response.json();
+
+        if (livePrices.error) throw new Error(livePrices.error);
+        if (Object.keys(livePrices).length === 0) throw new Error("Empty price list");
+
+        // Sync Logic: Map SKU to our internal structure
+        updateLocalPrices(livePrices);
+        console.log("✅ Live prices active!", livePrices);
+
+        // Show subtle success indicator
+        const ind = document.createElement("div");
+        ind.style.cssText = "position:fixed; bottom:10px; right:10px; background:#4cd964; color:white; padding:5px 10px; border-radius:20px; font-size:12px; opacity:0.8; z-index:9999;";
+        ind.innerText = `⚡ Live Cijene (${Object.keys(livePrices).length})`;
+        document.body.appendChild(ind);
+        setTimeout(() => ind.remove(), 4000);
+
+    } catch (e) {
+        console.error("❌ Price sync failed:", e);
+        // Also show alert
+        const errDiv = document.createElement("div");
+        errDiv.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:red; color:white; padding:20px; z-index:10000; font-size:20px;";
+        errDiv.innerText = "GREŠKA PRI UČITAVANJU: \n" + e.message;
+        document.body.appendChild(errDiv);
+    }
+}
+
+// Map flat SKU list (from Sheet) to our nested 'prices' object
+function updateLocalPrices(rawData) {
+    // 1. Normalize Keys (Trim whitespace from IDs) to avoid " 1034" issues
+    const flatPrices = {};
+    Object.keys(rawData).forEach(k => {
+        flatPrices[k.trim()] = rawData[k];
+    });
+
+    console.log("Normalized Prices:", flatPrices);
+
+    // Helper to safely update if exists (accepts 0 as valid price)
+    // Helper to safely update price within object
+    const update = (obj, key, sku) => {
+        const val = flatPrices[sku];
+        if (val !== undefined && obj) {
+            // Check if target is an object (new structure) or value
+            if (obj[key] && typeof obj[key] === 'object') {
+                obj[key].price = val;
+            } else {
+                obj[key] = val;
+            }
+        }
+    };
+
+    // --- 2D PANELS (1001-1007) ---
+    // User List: 1001-1007 (830mm - 2030mm) -> Keys in CM (83, 103...)
+    update(prices.fence.panel_2d, '83', '1001');
+    update(prices.fence.panel_2d, '103', '1002');
+    update(prices.fence.panel_2d, '123', '1003');
+    update(prices.fence.panel_2d, '143', '1004');
+    update(prices.fence.panel_2d, '163', '1005');
+    update(prices.fence.panel_2d, '183', '1006');
+    update(prices.fence.panel_2d, '203', '1007');
+
+    // --- 3D PANELS 4mm (1008, 1010, 1012, 1014, 1016, 1019) ---
+    update(prices.fence.panel_3d_4, '103', '1008'); // 1030 -> 103
+    update(prices.fence.panel_3d_4, '123', '1010');
+    update(prices.fence.panel_3d_4, '153', '1012');
+    update(prices.fence.panel_3d_4, '173', '1014');
+    update(prices.fence.panel_3d_4, '203', '1016');
+    update(prices.fence.panel_3d_4, '83', '1019');
+
+    // --- 3D PANELS 5mm (1009, 1011, 1013, 1015, 1017, 1018) ---
+    update(prices.fence.panel_3d_5, '103', '1009');
+    update(prices.fence.panel_3d_5, '123', '1011');
+    update(prices.fence.panel_3d_5, '153', '1013');
+    update(prices.fence.panel_3d_5, '173', '1015');
+    update(prices.fence.panel_3d_5, '203', '1017');
+    update(prices.fence.panel_3d_5, '83', '1018');
+
+    // --- STUPOVI S PLOČICOM (1020-1028) ---
+    update(prices.fence.posts, '85', '1020');
+    update(prices.fence.posts, '105', '1021');
+    update(prices.fence.posts, '125', '1022');
+    update(prices.fence.posts, '145', '1023');
+    update(prices.fence.posts, '155', '1024');
+    update(prices.fence.posts, '165', '1025');
+    update(prices.fence.posts, '175', '1026');
+    update(prices.fence.posts, '185', '1027');
+    update(prices.fence.posts, '205', '1028');
+
+    // --- STUPOVI ZA BETON (1029-1033) ---
+    // Note: prices.fence.posts_concrete is initialized empty but we want to fill it with objects if possible, 
+    // BUT items_data.js defines posts_concrete structure? Let's check items_data.js.
+    // items_data.js defines: posts_concrete: { 150: { price: ... } }
+    // So we should NOT reset it to {} if we want to keep names/skus.
+    // prices.fence.posts_concrete = {}; // DELETE THIS RESET if possible, checking logic.
+
+    const updateC = (h, sku) => {
+        // Here we map aliases to the same SKU result. 
+        // We need to ensure the target object exists in prices.fence.posts_concrete if we act like 'update'.
+        // logic:
+        if (flatPrices[sku] !== undefined) {
+            if (prices.fence.posts_concrete[h]) {
+                prices.fence.posts_concrete[h].price = flatPrices[sku];
+            } else {
+                // If it doesn't exist (e.g. alias), create it? 
+                // Or just skip aliases since we only read what's in items_data?
+                // items_data has 150, 175, 200, 230, 250.
+                // We will update those.
+            }
+        }
+    };
+
+    updateC('150', '1029');
+    updateC('175', '1030');
+    updateC('200', '1031');
+    updateC('230', '1032');
+    updateC('250', '1033');
+
+    // Legacy aliases might not be needed if calculation logic matches these keys.
+    // Let's stick to updating what exists in items_data.js for safety.
+
+    // --- GATES (1034-1038) ---
+    if (!prices.fence.gates) prices.fence.gates = {}; // Safety Init
+    update(prices.fence.gates, '1000', '1034');
+    update(prices.fence.gates, '1200', '1035');
+    update(prices.fence.gates, '1500', '1036');
+    update(prices.fence.gates, '1700', '1037');
+    update(prices.fence.gates, '2000', '1038');
+
+    // --- ACCESSORIES ---
+    if (flatPrices['1039'] !== undefined) prices.fence.set_spojnica = flatPrices['1039']; // PVC Spojnica
+    if (flatPrices['1040'] !== undefined) prices.fence.anker_vijci = flatPrices['1040'];
+    if (flatPrices['1043'] !== undefined) prices.fence.montaza_plate = flatPrices['1043'];
+    if (flatPrices['1044'] !== undefined) prices.fence.montaza_concrete = flatPrices['1044'];
+}
+
+// Start fetch
+initPriceFetch();
 const templates = {
     facade: `
         <div class="module-header" style="margin-bottom: 2rem;">
@@ -19,7 +180,7 @@ const templates = {
             <div class="form-group">
                 <label for="facade-type">Tip fasade</label>
                 <select id="facade-type" name="type" onchange="toggleSubOptions()">
-                    <option value="etics">ETICS (kontaktna - kamena vuna)</option>
+                    <option value="etics">ETICS (kontaktna - stiropor/vuna)</option>
                     <option value="ventilated">Ventilirana</option>
                 </select>
             </div>
@@ -32,9 +193,11 @@ const templates = {
             <!-- ETICS Options -->
             <div id="etics-options">
                 <div class="form-group">
-                    <label>Vrsta izolacije</label>
-                    <input type="text" value="Kamena vuna" readonly>
-                    <input type="hidden" id="insulation-type" name="material" value="wool">
+                    <label for="insulation-type">Vrsta izolacije</label>
+                    <select id="insulation-type" name="material">
+                        <option value="eps">EPS (stiropor)</option>
+                        <option value="wool">Kamena vuna</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="thickness">Debljina izolacije (cm)</label>
@@ -48,11 +211,11 @@ const templates = {
                     <label for="cladding-type">Vrsta obloge</label>
                     <select id="cladding-type" name="cladding">
                         <option value="hpl">HPL ploče</option>
-                        <option value="alu">Aluminijski kompozit</option>
+                        <option value="alu">Aluminijski kompozit (alucobond)</option>
                         <option value="fiber">Vlaknocementne ploče</option>
                     </select>
                 </div>
-                  <div class="form-group">
+                 <div class="form-group">
                     <label for="vent-insulation">Debljina vune (cm)</label>
                     <input type="number" id="vent-insulation" name="vent-thickness" value="10" min="1">
                 </div>
@@ -67,12 +230,12 @@ const templates = {
                     <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
                 </div>
                 <div class="form-group">
-                    <label for="user-email">Email</label>
-                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                    <label for="user-phone">Kontakt broj <span style="color:red">*</span></label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-phone">Kontakt broj</label>
-                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                    <label for="user-email">Email <span style="color:red">*</span></label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email" required>
                 </div>
                 <div class="form-group">
                     <label for="user-location">Lokacija</label>
@@ -92,8 +255,8 @@ const templates = {
             <div class="form-group">
                 <label for="thermal-type">Primjena</label>
                 <select id="thermal-type" name="type">
-                    <option value="xps">XPS (podovi, temelji)</option>
-                    <option value="roof">Kosi krov (kamena vuna)</option>
+                    <option value="xps">XPS (podovi, temelji, podrum)</option>
+                    <option value="roof">Kosi krov (staklena/kamena vuna)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -101,8 +264,8 @@ const templates = {
                 <input type="text" inputmode="decimal" id="area" name="area" placeholder="npr. 50,5" required>
             </div>
             <div class="form-group">
-                <label for="thickness">Debljina (cm) (min. 2cm)</label>
-                <input type="number" id="thickness" name="thickness" value="2" min="2">
+                <label for="thickness">Debljina (cm)</label>
+                <input type="number" id="thickness" name="thickness" value="5">
             </div>
             </div>
 
@@ -113,12 +276,12 @@ const templates = {
                     <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
                 </div>
                 <div class="form-group">
-                    <label for="user-email">Email</label>
-                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                    <label for="user-phone">Kontakt broj <span style="color:red">*</span></label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-phone">Kontakt broj</label>
-                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                    <label for="user-email">Email <span style="color:red">*</span></label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email" required>
                 </div>
                 <div class="form-group">
                     <label for="user-location">Lokacija</label>
@@ -197,12 +360,12 @@ const templates = {
                     <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
                 </div>
                 <div class="form-group">
-                    <label for="user-email">Email</label>
-                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                    <label for="user-phone">Kontakt broj <span style="color:red">*</span></label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-phone">Kontakt broj</label>
-                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                    <label for="user-email">Email <span style="color:red">*</span></label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email" required>
                 </div>
                 <div class="form-group">
                     <label for="user-location">Lokacija</label>
@@ -279,7 +442,6 @@ const templates = {
             </div>
 
             <!-- Layout Options -->
-            <!-- Layout Options -->
              <div class="form-group">
                 <label>Izgled ograde</label>
                 <div style="display: flex; gap: 1rem;">
@@ -292,9 +454,10 @@ const templates = {
                 </div>
             </div>
 
-            <!-- Gate Option -->
+            <!-- GATE OPTION (Moved Here) -->
+            <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #ccc;">
             <div class="form-group">
-                <label>Trebate pješačka vrata?</label>
+                <label>Trebate li pješačka vrata?</label>
                 <div style="display: flex; gap: 1rem;">
                     <div class="layout-btn" id="gate-yes" onclick="selectGate('yes')">
                         <div class="layout-btn-text">DA</div>
@@ -303,57 +466,49 @@ const templates = {
                         <div class="layout-btn-text">NE</div>
                     </div>
                 </div>
-                <input type="hidden" id="fence-gate" name="fenceGate" value="no">
+                <input type="hidden" id="gate-needed" name="gateNeeded" value="no">
             </div>
 
-            <!-- Gate Size Selection -->
-            <div id="gate-options" class="hidden" style="margin-top: 1rem;">
+            <!-- GATE SUB-OPTIONS -->
+            <div id="gate-options" class="hidden" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1.5rem;">
                 <div class="form-group">
-                    <label>Odaberite dimenzije (Š x V, mm)</label>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem;">
-                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1000', this)">
-                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1000</div>
+                    <label>Dimenzija vrata (Š x V)</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start;">
+                        <!-- 1000x1000 -->
+                        <div class="layout-btn small-btn active" id="gate-1000" onclick="selectGateSize('1000')" style="flex: 1 1 auto; min-width: 80px;">
+                            <div class="layout-btn-text">1000x1000</div>
                         </div>
-                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1200', this)">
-                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1200</div>
+                        <!-- 1000x1200 -->
+                        <div class="layout-btn small-btn" id="gate-1200" onclick="selectGateSize('1200')" style="flex: 1 1 auto; min-width: 80px;">
+                            <div class="layout-btn-text">1000x1200</div>
                         </div>
-                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1500', this)">
-                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1500</div>
+                        <!-- 1000x1500 -->
+                        <div class="layout-btn small-btn" id="gate-1500" onclick="selectGateSize('1500')" style="flex: 1 1 auto; min-width: 80px;">
+                            <div class="layout-btn-text">1000x1500</div>
                         </div>
-                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x1700', this)">
-                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x1700</div>
+                        <!-- 1000x1700 -->
+                        <div class="layout-btn small-btn" id="gate-1700" onclick="selectGateSize('1700')" style="flex: 1 1 auto; min-width: 80px;">
+                            <div class="layout-btn-text">1000x1700</div>
                         </div>
-                        <div class="layout-btn gate-size-btn" onclick="selectGateSize('1000x2000', this)">
-                           <div class="layout-btn-text" style="font-size: 0.9rem; padding: 0.5rem;">1000x2000</div>
+                        <!-- 1000x2000 -->
+                        <div class="layout-btn small-btn" id="gate-2000" onclick="selectGateSize('2000')" style="flex: 1 1 auto; min-width: 80px;">
+                            <div class="layout-btn-text">1000x2000</div>
                         </div>
                     </div>
-                    <input type="hidden" id="gate-dimension" name="gateDimension" value="">
+                    <input type="hidden" id="gate-size" name="gateSize" value="1000">
                 </div>
 
-                <!-- Gate Post Type Selection -->
-                <div class="form-group" style="margin-top: 1.5rem;">
+                <div class="form-group">
                     <label>Vrsta stupova za vrata</label>
-                    <div style="display: flex; gap: 1rem;">
-                        <input type="hidden" id="gate-post-type" name="gatePostType" value="plate">
-                        <div class="layout-btn active" id="gate-post-plate" onclick="selectGatePost('plate')">
-                            <div class="layout-btn-text">Stupovi sa pločicom</div>
-                        </div>
-                        <div class="layout-btn" id="gate-post-concrete" onclick="selectGatePost('concrete')">
-                            <div class="layout-btn-text">Stupovi za betoniranje</div>
-                        </div>
-                    </div>
+                    <select id="gate-post-type" name="gatePostType">
+                        <option value="plate">Stupovi s pločicom</option>
+                        <option value="concrete">Stupovi za betoniranje</option>
+                    </select>
                 </div>
-
-                <p style="font-size: 0.9rem; color: black; font-weight: 700; margin-top: 1.5rem; margin-bottom: 2rem;">
-                    * Napomena: stupovi na pločici ili bez sa pantima, sidro vijci, brava, kvaka i ključ su u cijeni.
-                </p>
-
             </div>
 
             <!-- Installation Option -->
-            </div>
-
-            <!-- Installation Option -->
+            <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #ccc;">
             <div class="form-group">
                 <label>Trebate montažu?</label>
                 <div style="display: flex; gap: 1rem;">
@@ -379,12 +534,12 @@ const templates = {
                     <input type="text" id="user-name" name="userName" placeholder="Vaše ime">
                 </div>
                 <div class="form-group">
-                    <label for="user-email">Email</label>
-                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email">
+                    <label for="user-phone">Kontakt broj <span style="color:red">*</span></label>
+                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-phone">Kontakt broj</label>
-                    <input type="tel" id="user-phone" name="userPhone" placeholder="Br. telefona">
+                    <label for="user-email">Email <span style="color:red">*</span></label>
+                    <input type="email" id="user-email" name="userEmail" placeholder="Vaš email" required>
                 </div>
                 <div class="form-group">
                     <label for="user-location">Lokacija</label>
@@ -479,48 +634,34 @@ window.selectInstallation = function (val) {
 window.selectGate = function (val) {
     const btnYes = document.getElementById('gate-yes');
     const btnNo = document.getElementById('gate-no');
-    const input = document.getElementById('fence-gate');
-    const gateOptions = document.getElementById('gate-options');
+    const input = document.getElementById('gate-needed');
+    const options = document.getElementById('gate-options');
 
     input.value = val;
 
     if (val === 'yes') {
         btnYes.classList.add('active');
         btnNo.classList.remove('active');
-        gateOptions.classList.remove('hidden');
+        options.classList.remove('hidden');
     } else {
         btnNo.classList.add('active');
         btnYes.classList.remove('active');
-        gateOptions.classList.add('hidden');
-        // Reset selection
-        document.getElementById('gate-dimension').value = '';
-        document.querySelectorAll('.gate-size-btn').forEach(b => b.classList.remove('active'));
+        options.classList.add('hidden');
     }
 }
 
-window.selectGateSize = function (size, btn) {
-    const input = document.getElementById('gate-dimension');
-    input.value = size;
+window.selectGateSize = function (size) {
+    // 1. Update hidden input
+    document.getElementById('gate-size').value = size;
 
-    // UI
-    document.querySelectorAll('.gate-size-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
+    // 2. Update visual buttons
+    // Reset all
+    ['1000', '1200', '1500', '1700', '2000'].forEach(s => {
+        document.getElementById(`gate-${s}`).classList.remove('active');
+    });
 
-window.selectGatePost = function (val) {
-    const btnPlate = document.getElementById('gate-post-plate');
-    const btnConcrete = document.getElementById('gate-post-concrete');
-    const input = document.getElementById('gate-post-type');
-
-    input.value = val;
-
-    if (val === 'plate') {
-        btnPlate.classList.add('active');
-        btnConcrete.classList.remove('active');
-    } else {
-        btnConcrete.classList.add('active');
-        btnPlate.classList.remove('active');
-    }
+    // Set active
+    document.getElementById(`gate-${size}`).classList.add('active');
 }
 
 window.toggleFenceOptions = function () {
@@ -616,10 +757,44 @@ window.toggleMembraneThickness = function () {
 }
 
 // Main Calculator Logic
+// Main Calculator Logic
+let isSubmitting = false;
+
 function handleCalculation(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    if (isSubmitting) return;
+
+    // Find the button and disable it temporarily
+    const btn = document.querySelector('#calc-form .calculate-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = "⏳ Računam...";
+    }
+    isSubmitting = true;
+
+    // Re-enable after delay (prevents double clicks)
+    setTimeout(() => {
+        isSubmitting = false;
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = "Izračunaj";
+        }
+    }, 2000);
+
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+
+    // VALIDATION: Strict check for Email and Phone
+    if (!data.userEmail || !data.userPhone) {
+        alert("Molimo unesite Email i Kontakt broj za izračun.");
+        // Re-enable immediately on validation error
+        isSubmitting = false;
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = "Izračunaj";
+        }
+        return; // Stop calculation
+    }
 
     console.log("Calculating for module:", currentModule, data);
 
@@ -637,6 +812,21 @@ function handleCalculation(e) {
     }
 
     displayResults(results);
+
+    // UI Feedback for User
+    // Use a small toast/snackbar instead of blocking alert if possible, but alert is requested
+    // "Hvala na upitu! (čidto kao obavjest za kupca ,da je upit poslan)"
+    // We only show this if it's a manual trigger, but handleCalculation is the main entry.
+    // Let's us a non-blocking notification or simple alert.
+    // User asked for: "sustav izbaci poruku: Hvala na upitu!"
+    // We will use a standard alert for ensuring visibility as requested.
+
+    // DELAY ALERT slightly to allow UI to update
+    setTimeout(() => {
+        alert("Hvala na upitu! Vaš izračun je spreman ispod.\n(Kopija upita je poslana našem timu.)");
+    }, 100);
+
+    sendInstantData(results, data); // Instant capture RESTORED
 }
 
 // --- CALCULATION ENGINES ---
@@ -646,33 +836,68 @@ function calculateFacade(data) {
     const waste = 1.05; // 5% waste
     let items = [];
 
+    // console.log("Calculating Facade...", data); // Debug
+
     if (data.type === 'etics') {
-        // ETICS Logic
-        // Mat is always 'wool' now, but let's be clean
-        let matName = 'Kamena vuna (Ravatherm SW ETICS)';
-        if (data.material === 'eps') matName = 'EPS (Stiropor)'; // Fallback if ever needed
+        const h = parseInt(data.thickness) || 10;
 
-        const thickness = parseInt(data.thickness);
-        // Assuming the user's stone wool prices apply to ETICS
-        const matPrice = getWoolPrice(thickness);
+        let insulationName = `EPS F izolacijske ploče (${h}cm)`;
+        let insulationSku = '4001';
+        let insulationPrice = h * prices.facade_insulation.eps_base;
+        let insulationCost = h * costs.facade_insulation.eps_base;
 
-        items.push({ name: `${matName} (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: matPrice });
-        items.push({ name: 'Ljepilo za ljepljenje (cca 5kg/m²)', value: (area * 5).toFixed(1), unit: 'kg', price: 0 });
-        items.push({ name: 'Ljepilo za armiranje (cca 4kg/m²)', value: (area * 4).toFixed(1), unit: 'kg', price: 0 });
-        items.push({ name: 'Fasadna mrežica (1.1m/m²)', value: (area * 1.1).toFixed(2), unit: 'm²', price: 0 });
-        items.push({ name: 'Tiple (6 kom/m²)', value: Math.ceil(area * 6), unit: 'kom', price: 0 });
-        items.push({ name: 'Primer (0.2L/m²)', value: (area * 0.2).toFixed(1), unit: 'L', price: 0 });
-        items.push({ name: 'Završna žbuka (2.5kg/m²)', value: (area * 2.5).toFixed(1), unit: 'kg', price: 0 });
+        let glueStickName = 'Ljepilo za EPS (Ljepljenje)';
+        let glueStickPrice = prices.facade_etics.glue_eps;
+        let glueStickCost = costs.facade_etics.glue_eps;
+
+        if (data.material === 'wool') {
+            const allowed = [5, 6, 8, 10, 12, 14, 15];
+            let snapH = h;
+            const found = allowed.find(x => x >= h);
+            if (found) snapH = found; else snapH = 15;
+
+            insulationName = `Fasadna Kamena Vuna (${snapH}cm)`;
+            insulationSku = '4010';
+            insulationPrice = getWoolPrice(snapH);
+            insulationCost = getWoolCost(snapH);
+
+            glueStickName = 'Ljepilo za Vunu (Ljepljenje)';
+            glueStickPrice = prices.facade_etics.glue_wool;
+            glueStickCost = costs.facade_etics.glue_wool;
+        }
+
+        // 1. Izolacija
+        items.push({ sku: insulationSku, name: insulationName, value: (area * waste).toFixed(2), unit: 'm²', price: insulationPrice, cost_price: insulationCost });
+
+        // 2. Ljepilo za Ljepljenje
+        items.push({ sku: '4002', name: glueStickName, value: (area * 3.5).toFixed(1), unit: 'kg', price: glueStickPrice, cost_price: glueStickCost });
+
+        // 3. Ljepilo za Armiranje (Uniterm)
+        items.push({ sku: '4003', name: 'Uniterm (Ljepilo za armiranje/gletanje)', value: (area * 4.5).toFixed(1), unit: 'kg', price: prices.facade_etics.glue_arm, cost_price: costs.facade_etics.glue_arm });
+
+        // 4. Mrežica
+        items.push({ sku: '4004', name: 'Staklena mrežica Primafas', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.facade_etics.mesh, cost_price: costs.facade_etics.mesh });
+
+        // 5. Profili
+        items.push({ sku: '4008', name: 'Profil PVC s mrežicom (kutni)', value: (area * 0.4).toFixed(1), unit: 'm', price: prices.facade_etics.profile_pvc, cost_price: costs.facade_etics.profile_pvc });
+        items.push({ sku: '4009', name: 'Alu Cokl Profil (15cm)', value: (area * 0.2).toFixed(1), unit: 'm', price: prices.facade_etics.profile_cokl, cost_price: costs.facade_etics.profile_cokl });
+
+        // 6. Pričvrsnice
+        items.push({ sku: '4005', name: 'Pričvrsnica PSV (Tiple)', value: Math.ceil(area * 6), unit: 'kom', price: prices.facade_etics.anchor, cost_price: costs.facade_etics.anchor });
+
+        // 7. Grund
+        items.push({ sku: '4006', name: 'Mineralkvarc Grund (Primer)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.facade_etics.primer, cost_price: costs.facade_etics.primer });
+
+        // 8. Završna žbuka
+        items.push({ sku: '4007', name: 'Silikatna žbuka Z 4000 (1.5mm)', value: (area * 2.5).toFixed(1), unit: 'kg', price: prices.facade_etics.plaster, cost_price: costs.facade_etics.plaster });
 
     } else {
-        // Ventilated Logic
-        items.push({ name: 'Kamena vuna s voalom (Ravatherm SW)', value: (area * waste).toFixed(2), unit: 'm²' });
-        items.push({ name: `Fasadna obloga (${data.cladding === 'alu' ? 'Alu-kompozit' : 'HPL (Trespa)'})`, value: (area * waste).toFixed(2), unit: 'm²' });
-
-        // Generic substructure estimation
-        items.push({ name: 'Alu nosači (fiksni + klizni ~2.5/m²)', value: Math.ceil(area * 2.5), unit: 'kom' });
-        items.push({ name: 'Vertikalni profili (L/T ~2.2m/m²)', value: (area * 2.2).toFixed(1), unit: 'm' });
-        items.push({ name: 'Vijci/Zakovice (cca 15/m²)', value: Math.ceil(area * 15), unit: 'kom' });
+        // Ventilated
+        items.push({ sku: '4050', name: 'Kamena vuna s voalom', value: (area * waste).toFixed(2), unit: 'm²' });
+        items.push({ sku: '4051', name: `Fasadna obloga (${data.cladding})`, value: (area * waste).toFixed(2), unit: 'm²' });
+        items.push({ sku: '4052', name: 'Alu nosači', value: Math.ceil(area * 2.5), unit: 'kom' });
+        items.push({ sku: '4053', name: 'Vertikalni profili', value: (area * 2.2).toFixed(1), unit: 'm' });
+        items.push({ sku: '4054', name: 'Vijci', value: Math.ceil(area * 15), unit: 'kom' });
     }
 
     return items;
@@ -687,17 +912,15 @@ function calculateThermal(data) {
         const thickness = parseInt(data.thickness);
         const xpsPrice = getXPSPrice(thickness);
 
-        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: xpsPrice });
-        items.push({ name: 'Ljepilo/Pjena (opcionalno)', value: Math.ceil(area / 10), unit: 'pak', price: 0 });
-        // Čepasta folija za zaštitu temelja
-        items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
+        items.push({ sku: '3001', name: `XPS ploče (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: xpsPrice });
+        items.push({ sku: '3002', name: 'Ljepilo/Pjena (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik, cost_price: costs.chemicals.insta_stik });
+        items.push({ sku: '3003', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta, cost_price: costs.membranes.cepasta });
     } else {
         const thickness = parseInt(data.thickness);
         const woolPrice = getWoolPrice(thickness);
 
-        // Changed from 'Mineralna vuna' to 'Kamena vuna' per request to exclude glass wool
-        items.push({ name: `Kamena vuna (Ravatherm SW) (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
-        items.push({ name: 'Parna brana (RAVAPROOF Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al });
+        items.push({ sku: '3050', name: `Mineralna vuna (${data.thickness}cm)`, value: (area * waste).toFixed(2), unit: 'm²', price: woolPrice });
+        items.push({ sku: '3051', name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al, cost_price: costs.bitumen.vapor_al });
     }
     return items;
 }
@@ -708,259 +931,292 @@ function calculateHydro(data) {
 
     // --- BITUMEN TEMELJI ---
     if (data.type === 'bitumen-foundation') {
-        const thickness = parseInt(data.hydroThickness) || 5; // Default 5cm
-        const xpsPrice = getXPSPrice(thickness);
-
-        // 1. Bitumen (Premaz + Traka)
-        items.push({ name: 'Bitumenski premaz', value: (area * 0.3).toFixed(1), unit: 'L', price: 0 });
-        items.push({ name: 'Bitumenska traka (RAVAPROOF Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4 });
-
-        // 2. XPS
-        // 2. XPS
-        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
-
-        // 3. Čepasta folija
-        items.push({ name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
-
-    }
-    // --- BITUMEN RAVNI KROV ---
-    else if (data.type === 'bitumen-roof') {
-        // Bitumen x 2 layers usually + coating
-        items.push({ name: 'Bitumenski premaz', value: (area * 0.3).toFixed(1), unit: 'L', price: 0 });
-        items.push({ name: 'Bitumenska traka (sloj 1 - RAVAPROOF Diamond P 4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4 });
-        items.push({ name: 'Bitumenska traka (sloj 2 - završna)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4 * 1.2 }); // Approx slightly more
-    }
-    // --- TPO/PVC RAVNI KROV ---
-    else if (data.type === 'membrane-roof') {
-        const mat = data.membraneMaterial || 'tpo';
         const thickness = parseInt(data.hydroThickness) || 5;
         const xpsPrice = getXPSPrice(thickness);
+        const xpsCost = getXPSCost(thickness);
 
-        // 1. Geotekstil (ispod)
-        items.push({ name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
+        // 1. Bitumen
+        items.push({ sku: '1001', name: 'Bitumenski premaz (Fimizol/9L)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.bitumen.fimizol, cost_price: costs.bitumen.fimizol });
+        items.push({ sku: '1002', name: 'Bitumenska traka (Ruby V-4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.ruby_v4, cost_price: costs.bitumen.ruby_v4 });
 
-        // 2. XPS (Thermal)
-        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
+        // 2. XPS
+        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: xpsCost });
+        items.push({ sku: '1004', name: 'Ljepilo/Pjena za XPS (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik, cost_price: costs.chemicals.insta_stik });
 
-        // 3. Geotekstil (iznad XPS-a, ispod folije)
-        items.push({ name: 'Geotekstil (zaštitni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
+        // 3. Čepasta
+        items.push({ sku: '1005', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta, cost_price: costs.membranes.cepasta });
 
-        // 4. Membrana (TPO or PVC)
-        if (mat === 'tpo') {
-            const tpoThick = data.tpoThickness || '1.5';
-            const tpoKey = 'tpo_' + tpoThick.replace('.', '');
-            const tpoPrice = prices.membranes[tpoKey] || 0;
-            items.push({ name: `TPO Folija (Flagon EP/PR) (${tpoThick}mm)`, value: (area * 1.08).toFixed(2), unit: 'm²', price: tpoPrice });
+    } else if (data.type === 'bitumen-roof') {
+        items.push({ sku: '1001', name: 'Bitumenski premaz (Fimizol/9L)', value: (area * 0.3).toFixed(1), unit: 'L', price: prices.bitumen.fimizol, cost_price: costs.bitumen.fimizol });
+        items.push({ sku: '1006', name: 'Bitumenska traka (Diamond P4)', value: (area * 1.15).toFixed(2), unit: 'm²', price: prices.bitumen.diamond_p4, cost_price: costs.bitumen.diamond_p4 });
+        items.push({ sku: '1007', name: 'Geotekstil', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile, cost_price: costs.membranes.geotextile });
+        items.push({ sku: '1020', name: 'Parna brana (Vapor Al-35)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.bitumen.vapor_al, cost_price: costs.bitumen.vapor_al });
+
+        // --- TPO / PVC ---
+        // --- TPO / PVC (ravni krov) ---
+    } else if (data.type === 'membrane-roof' || data.type === 'tpo' || data.type === 'pvc-roof') {
+        const thickness = parseInt(data.hydroThickness) || 5;
+        const xpsPrice = getXPSPrice(thickness);
+        const xpsCost = getXPSCost(thickness);
+
+        // Determine sub-type from membraneMaterial
+        const isTPO = (data.membraneMaterial === 'tpo') || (data.type === 'tpo');
+        const tpoThickness = data.tpoThickness || '1.5';
+
+        let folijaPrice = 0;
+        let folijaCost = 0;
+        let naziv = "";
+        let skuCode = "";
+
+        if (isTPO) {
+            if (tpoThickness === '1.5') {
+                folijaPrice = prices.membranes.tpo_15; folijaCost = costs.membranes.tpo_15; naziv = "TPO folija 1.5mm"; skuCode = "1008";
+            } else if (tpoThickness === '1.8') {
+                folijaPrice = prices.membranes.tpo_18; folijaCost = costs.membranes.tpo_18; naziv = "TPO folija 1.8mm"; skuCode = "1008";
+            } else if (tpoThickness === '2.0') {
+                folijaPrice = prices.membranes.tpo_20; folijaCost = costs.membranes.tpo_20; naziv = "TPO folija 2.0mm"; skuCode = "1009";
+            } else {
+                folijaPrice = prices.membranes.tpo_15; folijaCost = costs.membranes.tpo_15; naziv = "TPO folija 1.5mm"; skuCode = "1010";
+            }
         } else {
-            items.push({ name: 'PVC Folija (1.5mm)', value: (area * 1.08).toFixed(2), unit: 'm²', price: prices.membranes.pvc_krov });
+            folijaPrice = prices.membranes.pvc_krov;
+            folijaCost = costs.membranes.pvc_krov;
+            naziv = "PVC folija (krov)";
+            skuCode = "1011";
         }
 
-    }
-    // --- PVC TEMELJI ---
-    else if (data.type === 'pvc-foundation') {
+        // 1. XPS
+        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: xpsCost });
+
+        // 2. Foil
+        items.push({ sku: skuCode, name: `${naziv} (10% preklop)`, value: (area * 1.15).toFixed(2), unit: 'm²', price: folijaPrice, cost_price: folijaCost });
+        items.push({ sku: '1007', name: 'Geotekstil (razdjelni sloj)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile, cost_price: costs.membranes.geotextile });
+
+        const limPrice = isTPO ? prices.others.tpo_lim : prices.others.pvc_lim;
+        const limCost = isTPO ? costs.others.tpo_lim : costs.others.pvc_lim;
+        const limSku = isTPO ? '1012' : '1013';
+        items.push({ sku: limSku, name: 'Limovi (2x1m) - Procjena', value: 4, unit: 'kom', price: limPrice, cost_price: limCost });
+
+        // --- PVC FOUNDATION ---
+    } else if (data.type === 'pvc-foundation') {
         const thickness = parseInt(data.hydroThickness) || 5;
         const xpsPrice = getXPSPrice(thickness);
+        const xpsCost = getXPSCost(thickness);
 
-        items.push({ name: 'Geotekstil (zaštitni)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile });
-        items.push({ name: 'PVC Folija (za temelje)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji });
-        items.push({ name: `XPS ploče (Ravatherm XPS 300) (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice });
-        items.push({ name: 'Čepasta folija', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta });
-    }
-    // --- POLIMERCEMENT ---
-    else if (data.type === 'polymer') {
-        items.push({ name: 'Polimercement (A+B) (cca 3kg/m²)', value: (area * 3).toFixed(1), unit: 'kg', price: prices.polymer.cement });
-        items.push({ name: 'Brtvena traka (po m² cca 1m)', value: (area).toFixed(1), unit: 'm', price: prices.polymer.tape });
+        items.push({ sku: '1014', name: 'PVC folija za temelje (BSL 1.5mm)', value: (area * 1.10).toFixed(2), unit: 'm²', price: prices.membranes.pvc_temelji, cost_price: costs.membranes.pvc_temelji });
+        items.push({ sku: '1007', name: 'Geotekstil (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.geotextile, cost_price: costs.membranes.geotextile });
+        items.push({ sku: '1003', name: `XPS ploče (${thickness}cm)`, value: (area * 1.05).toFixed(2), unit: 'm²', price: xpsPrice, cost_price: xpsCost });
+        items.push({ sku: '1004', name: 'Ljepilo/Pjena za XPS (Insta Stik)', value: Math.ceil(area / 10), unit: 'pak', price: prices.chemicals.insta_stik, cost_price: costs.chemicals.insta_stik });
+        items.push({ sku: '1005', name: 'Čepasta folija (zaštita)', value: (area * 1.1).toFixed(2), unit: 'm²', price: prices.membranes.cepasta, cost_price: costs.membranes.cepasta });
+
+    } else if (data.type === 'polymer') {
+        items.push({ sku: '1015', name: 'Polimercement (Aquamat Elastic) 2 sloja', value: (area * 3).toFixed(1), unit: 'kg', price: prices.chemicals.aquamat_elastic, cost_price: costs.chemicals.aquamat_elastic });
+        items.push({ sku: '1016', name: 'Brtveća traka', value: Math.ceil(Math.sqrt(area) * 4), unit: 'm', price: 0 });
 
         if (data.polymerFinish === 'ceramics') {
-            items.push({ name: 'Ljepilo za pločice (flex)', value: (area * 4).toFixed(1), unit: 'kg', price: 0 });
+            items.push({ sku: '1017', name: 'Isomat AK-20', value: (area * 3.5).toFixed(1), unit: 'kg', price: prices.chemicals.ak20, cost_price: costs.chemicals.ak20 });
         }
+    } else if (data.type === 'isoflex-pu500') {
+        items.push({ sku: '1018', name: 'Primer (Isomat Primer-PU 100)', value: (area * 0.2).toFixed(1), unit: 'kg', price: prices.chemicals.primer_pu, cost_price: costs.chemicals.primer_pu });
+        items.push({ sku: '1019', name: 'Isomat Isoflex PU500 (2 sloja)', value: (area * 1.5).toFixed(1), unit: 'kg', price: prices.chemicals.isoflex_pu500, cost_price: costs.chemicals.isoflex_pu500 });
+        items.push({ sku: '1016', name: 'Brtveća traka', value: Math.ceil(Math.sqrt(area) * 4), unit: 'm', price: 0 });
     }
-    // --- PU ---
-    else if (data.type === 'isoflex-pu500') {
-        items.push({ name: 'PU Primer (cca 0.2kg/m²)', value: (area * 0.2).toFixed(1), unit: 'kg', price: 0 });
-        items.push({ name: 'PU Premaz (sivi/bijeli) (1.5kg/m²)', value: (area * 1.5).toFixed(1), unit: 'kg', price: prices.polymer.pu });
-        items.push({ name: 'PU završni lak (UV zaštita)', value: (area * 0.15).toFixed(1), unit: 'kg', price: 0 });
-    }
-
 
     return items;
 }
 
+// Color Selection Logic
+window.selectColor = function (ral, btn) {
+    // Update hidden input
+    document.getElementById('fence-color').value = ral;
+
+    // Update UI
+    const btns = document.querySelectorAll('.color-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
 function calculateFence(data) {
     const length = parseFloat(data.length.replace(',', '.'));
-    const panelType = data.panelType; // '2d' or '3d'
-    const height = parseInt(data.height); // cm
-    const postType = data.postType; // 'plate' or 'concrete'
-    const corners = parseInt(data.fenceCorners) || 0;
-    const color = data.fenceColor; // '7016' or '6005'
-    const installation = data.fenceInstallation === 'yes';
-    const gateNeeded = data.fenceGate === 'yes';
-    const gateDim = data.gateDimension;
-    const gatePostType = data.gatePostType; // 'plate' or 'concrete'
+    const height = parseInt(data.height); // "103", "123" (cm)
+    const type = data.panelType; // "2d" or "3d"
+    const color = data.fenceColor === '6005' ? 'Zelena (RAL 6005)' : 'Antracit (RAL 7016)';
+
+    // KEY FIX: Data is matchign inputs (CM)
+    const heightKey = height;
 
     let items = [];
 
-    // 1. Panels
-    const panelWidth = 2.5; // m
-    const numPanels = Math.ceil(length / panelWidth);
+    // Construct Price Lookup
+    let panelPrice = 0;
+    let panelName = "";
 
-    let panelName = '';
-    if (panelType === '2d') {
-        panelName = `2D Panel ${height}cm (6/5/6) - ${color === '7016' ? 'Antracit' : 'Zeleni'}`;
+    if (type === '2d') {
+        // MATCHING: prices.fence.panel_2d[heightKey]
+        try {
+            if (prices.fence.panel_2d[heightKey]) {
+                panelPrice = prices.fence.panel_2d[heightKey].price || 0;
+            }
+        } catch (e) { console.error("Missing price for 2D", heightKey); }
+
+        panelName = `2D panel 6/5/6 mm (${height}cm) - ${color}`;
     } else {
-        const thickness = data.panelThickness || '4';
-        panelName = `3D Panel ${height}cm (${thickness}mm) - ${color === '7016' ? 'Antracit' : 'Zeleni'}`;
+        const thickness = data.panelThickness || '4'; // Default to 4
+        // MATCHING: prices.fence.panel_3d_5[heightKey] or panel_3d_4[heightKey]
+        const key3d = `panel_3d_${thickness}`;
+        try {
+            if (prices.fence[key3d] && prices.fence[key3d][heightKey]) {
+                panelPrice = prices.fence[key3d][heightKey].price || 0;
+            }
+        } catch (e) { console.error("Missing price for 3D", thickness, heightKey); }
+
+        panelName = `3D panel ${thickness}mm (${height}cm) - ${color}`;
     }
 
-    // Price lookup (Mockup - would depend on type/height)
-    // Here we just define standard prices for example
-    let panelPrice = 0;
-    // Simple lookup based on height for demo
-    if (height === 103) panelPrice = 25;
-    if (height === 123) panelPrice = 29;
-    if (height === 153) panelPrice = 35;
-    if (height === 173) panelPrice = 40;
-    if (height === 203) panelPrice = 48;
+    // 1. Paneli (Dužina / 2.5m)
+    const numPanels = Math.ceil(length / 2.5);
 
     items.push({
+        sku: '2001',
         name: panelName,
         value: numPanels,
         unit: 'kom',
         price: panelPrice
     });
 
-    // 2. Posts & 3. Clamps Logic
-    // Logic based on Panel Height (cm)
-    // Table Data:
-    // Panel | Clamps | Plate Post | Concrete Post
-    // 83    | 2      | 85         | 155
-    // 103   | 2      | 105        | 155
-    // 123   | 3      | 125        | 175
-    // 143(2D)| 3     | 155        | 205 (Interpolated/From 2D table)
-    // 153   | 3      | 155        | 205
-    // 163(2D)| 4     | 175        | 225
-    // 173   | 4      | 175        | 225
-    // 183(2D)| 4     | 205        | 250
-    // 203   | 4      | 205        | 250/255 (Using 250 for consistency or 255 for 3D? User table for 3D says 255, 2D says 250. Let's strict map.)
+    // 2. Stupovi (Broj panela + 1 za početak/kraj)
+    const corners = parseInt(data.fenceCorners) || 0;
+    const numPosts = numPanels + 1 + corners;
 
-    let specs = { plate: height, concrete: height + 50, clamps: 2 }; // Default fallback
-
-    if (panelType === '2d') {
-        if (height <= 103) specs = { plate: height + 2, concrete: 155, clamps: 2 };
-        else if (height <= 123) specs = { plate: 125, concrete: 175, clamps: 3 };
-        else if (height <= 143) specs = { plate: 155, concrete: 205, clamps: 3 };
-        else if (height <= 163) specs = { plate: 175, concrete: 225, clamps: 4 };
-        else if (height <= 183) specs = { plate: 205, concrete: 250, clamps: 4 };
-        else specs = { plate: 205, concrete: 250, clamps: 4 }; // 203+
-    } else {
-        // 3D
-        if (height <= 83) specs = { plate: 85, concrete: 155, clamps: 2 };
-        else if (height <= 103) specs = { plate: 105, concrete: 155, clamps: 2 };
-        else if (height <= 123) specs = { plate: 125, concrete: 175, clamps: 3 };
-        else if (height <= 153) specs = { plate: 155, concrete: 205, clamps: 3 };
-        else if (height <= 173) specs = { plate: 175, concrete: 225, clamps: 4 };
-        else specs = { plate: 205, concrete: 255, clamps: 4 }; // 203+
+    let postHeight = parseInt(height) + 2; // This is logic for post length? No, usually + 50cm for embedding?
+    // User logic:
+    if (data.postType === 'concrete') {
+        // Standard mapping based on existing code logic
+        if (height <= 103) postHeight = 155;
+        else if (height <= 123) postHeight = 175;
+        else if (height <= 153) postHeight = 205;
+        else if (height <= 173) postHeight = 225; // 225 cm not in list? 230
+        else postHeight = 255;
     }
 
-    // Number of posts = Number of Panels + 1 + Corners (extra post per corner)
-    const numPosts = numPanels + 1 + corners;
-    const postHeight = postType === 'concrete' ? specs.concrete : specs.plate;
+    // MATCHING: prices.fence.posts[postHeight]
+    let postPrice = 0;
+
+    // Standard Heights available in config/prices
+    const standardPostHeights = [155, 175, 205, 225, 230, 255];
+
+    // Fallback Logic: Find first available height >= requested postHeight
+    let lookupHeight = postHeight;
+    let priceSource = prices.fence.posts;
+
+    // Use Concrete Price Source if applicable
+    if (data.postType === 'concrete' && prices.fence.posts_concrete) {
+        priceSource = prices.fence.posts_concrete;
+    }
+
+    // Try finding exact or next larger
+    if (!priceSource[lookupHeight]) {
+        // Try to find next larger standard size
+        const nextSize = standardPostHeights.find(h => h >= postHeight);
+        if (nextSize) {
+            // console.log(`Fallback post height: ${postHeight} -> ${nextSize}`);
+            lookupHeight = nextSize;
+        }
+    }
+
+    try {
+        if (priceSource[lookupHeight]) {
+            postPrice = priceSource[lookupHeight].price || 0;
+        }
+    } catch (e) { console.error("Missing price for post", lookupHeight); }
+
+    const postTypeLabel = data.postType === 'plate' ? 's pločicom' : 'za betoniranje';
 
     items.push({
-        name: `Stup 60x60mm (v${postHeight}cm) ${postType === 'plate' ? 's pločicom' : 'za beton.'}`,
+        sku: '2002',
+        name: `Stup ${postHeight}cm (${postTypeLabel}) - ${color}`,
         value: numPosts,
         unit: 'kom',
-        price: 15 // Placeholder
+        price: postPrice
     });
 
-    // 3. Mounting Sets (Spojnice)
-    const totalClamps = numPosts * specs.clamps;
+    // 3. Pribor
+    // Spojnice:
+    // ... rest of fence logic ...
+
+    // 83-103 -> 2 kom
+    // 123, 143, 153, 163 -> 3 kom
+    // 173, 183, 203 -> 4 kom
+    let clampsPerPost = 3;
+    const h = parseInt(postHeight) || 0;
+
+    if (h <= 103) {
+        clampsPerPost = 2;
+    } else if (h <= 163) {
+        clampsPerPost = 3;
+    } else {
+        clampsPerPost = 4;
+    }
+
+    const totalClamps = numPosts * clampsPerPost;
+
     items.push({
-        name: 'Spojnice (kompleti)<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(spojnica + samourezni vijak)</small>',
+        sku: '2003',
+        name: 'Spojnice (Komplet s vijkom)',
         value: totalClamps,
         unit: 'kom',
-        price: prices.fence.set_spojnica
+        price: prices.fence.set_spojnica, cost_price: costs.fence.set_spojnica
     });
 
-    // 4. Anchors (if plate)
-    if (postType === 'plate') {
+    if (data.postType === 'plate') {
+        // Anker vijci (4 po stupu)
         items.push({
-            name: 'Sidreni vijci, M10 (4 po stupu)',
+            sku: '2004',
+            name: 'Anker vijci, M10 (za montažu na beton)',
             value: numPosts * 4,
             unit: 'kom',
-            price: prices.fence.anker_vijci
+            price: prices.fence.anker_vijci, cost_price: costs.fence.anker_vijci
         });
     }
 
-    // 5. Gate (Pješačka vrata)
-    if (gateNeeded && gateDim) {
-        // Price logic from matrix
-        let gatePrice = 0;
-        const pricesObj = prices.fence.gate_prices[gateDim];
-        if (pricesObj) {
-            gatePrice = gatePostType === 'concrete' ? pricesObj.concrete : pricesObj.plate;
-        }
+    // 4. Montaža (Optional)
+    if (data.fenceInstallation === 'yes') {
+        let installPrice = prices.fence.montaza_plate;
+        let installName = 'Usluga montaže ograde';
 
-        // Expanded name for PDF visualization with note
-        // "izbaci komplet, a umjesto toga napiši napomenu"
-        const gateName = `Pješačka vrata ${gateDim}mm<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(sidro vijci, brava, kvaka i ključ uključeni)</small>`;
-
-        items.push({
-            name: gateName,
-            value: 1,
-            unit: 'kpl',
-            price: gatePrice
-        });
-    }
-
-    // 6. Corners (Logic handled in Post count)
-    // Removed "Kutni setovi" item as requested.
-
-    // 6. Installation
-    if (installation) {
-        let installPrice = 16; // Fallback
-
-        // "ako je stup na pločici - montaža je 25 eur/m (izbaci napomenu iskop)"
-        // "ako su stupovi za betoniranje - montaža je 40 eur/m (ostavi napomenu)"
-
-        let installName = 'Montaža ograde (ključ u ruke)';
-
-        if (postType === 'plate') {
-            installPrice = prices.fence.montaza_plate || 25;
-            // No note for plate
-        } else {
-            installPrice = prices.fence.montaza_concrete || 40;
+        if (data.postType === 'concrete') {
+            installPrice = prices.fence.montaza_concrete;
             installName += '<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(iskop i beton uključen u cijenu montaže)</small>';
         }
 
-        // Add general disclaimer note for installation (Request: user wants it on web and PDF)
-        // Add general disclaimer note for installation (Request: user wants it on web and PDF)
-        installName += '<br><span style="display: block; color: #000; font-size: 11px; margin-top: 2px;">* Iznos montaže je informativnog karaktera i vrijedi za Zagreb i okolicu do 20km.</span>';
-
-        // Gate installation extra? Probably. Let's add a fixed amount for gate install if selected.
-        let totalInstallPrice = length * installPrice;
-        if (gateNeeded) {
-            const gateInstallPrice = 120; // Updated fixed price
-            totalInstallPrice += gateInstallPrice;
-            // Remove "+ Montaža vrata" string as requested
-            // "kod stavke 'Montaža ograde (ključ u ruke) izbaci '+ Montaža vrata'"
-        }
-
         items.push({
+            sku: '2005',
             name: installName,
             value: length.toFixed(2),
             unit: 'm',
             price: installPrice
         });
+    }
 
-        if (gateNeeded) {
-            items.push({
-                name: 'Montaža pješačkih vrata',
-                value: 1,
-                unit: 'kom',
-                price: 120
-            });
-        }
+    // 5. Pješačka vrata (NEW)
+    if (data.gateNeeded === 'yes') {
+        const gSize = data.gateSize || '1000'; // 1000, 1200...
+        const gPostType = data.gatePostType || 'plate';
+        const gPostLabel = gPostType === 'plate' ? 's pločicom' : 'za betoniranje';
+
+        // Price lookup
+        let gatePrice = 0;
+        try {
+            gatePrice = prices.fence.gates[gSize] || 0;
+        } catch (e) { console.error("Missing gate price", gSize); }
+
+        items.push({
+            sku: '2006',
+            name: `Pješačka vrata 1000x${gSize}mm (Stupovi ${gPostLabel})`,
+            value: 1,
+            unit: 'kom',
+            price: gatePrice
+        });
     }
 
     return items;
@@ -982,6 +1238,9 @@ function displayResults(items) {
     resultsContainer.appendChild(header);
 
     let grandTotal = 0;
+
+    // Store items for email sending
+    window.lastItems = items;
 
     items.forEach(item => {
         const div = document.createElement('div');
@@ -1008,7 +1267,7 @@ function displayResults(items) {
 
     // Grand Total Row
     const totalDiv = document.createElement('div');
-    totalDiv.className = 'result-total-row'; // Unique class to prevent email loop iteration
+    totalDiv.className = 'result-item grand-total';
     const fmtGrandTotal = grandTotal.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     // Conditional Styling for Fence Module
@@ -1055,20 +1314,28 @@ function displayResults(items) {
 
     resultsContainer.appendChild(totalDiv);
 
-    // Add Persistent Footer Note (Web & PDF)
-    // Add Persistent Footer Note (Web & PDF)
-    const footerNote = document.createElement('div');
-    footerNote.className = 'calc-footer-note';
-    // Use Flexbox container for perfect alignment
-    footerNote.innerHTML = `
-        <div class="note-flex-container">
-            <span class="note-copyright">© 2026</span> 
-            <span class="note-brand">2LMF PRO</span> 
-            <span class="note-calc">Kalkulator</span>
+    // Add Payment Note to Frontend Result
+    const noteDiv = document.createElement('div');
+    noteDiv.className = 'result-note';
+    noteDiv.style.marginTop = '20px';
+    noteDiv.style.padding = '15px';
+    noteDiv.style.backgroundColor = '#fff3e0';
+    noteDiv.style.borderLeft = '4px solid #E67E22';
+    noteDiv.style.fontSize = '0.9rem';
+    noteDiv.style.color = '#444';
+
+    noteDiv.innerHTML = `
+        <strong>Uvjeti kupnje:</strong>
+        <ul style="margin: 5px 0 10px 20px; padding: 0;">
+            <li>Plaćanje: avans - uplatom na žiro račun</li>
+            <li>Minimalni iznos kupovine: 200,00 eur</li>
+            <li>Sve cijene su sa PDV-om, koji ne smije biti iskazan na računu*</li>
+        </ul>
+        <div style="font-size: 0.8rem; opacity: 0.8;">
+            * Porezni obveznik nije u sustavu PDV-a, temeljem članka 90. Zakona o porezu na dodanu vrijednost
         </div>
-        <p class="small-note">Svi izračuni su informativnog karaktera</p>
     `;
-    resultsContainer.appendChild(footerNote);
+    resultsContainer.appendChild(noteDiv);
 
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
@@ -1077,261 +1344,96 @@ function displayResults(items) {
 const pdfBtn = document.getElementById('pdf-btn');
 const emailBtn = document.getElementById('email-btn');
 
-if (pdfBtn) {
+/* if (pdfBtn) {
     pdfBtn.addEventListener('click', () => {
         const element = document.getElementById('results-section');
         const opt = {
-            margin: [10, 10], // Top/Bottom margin
+            margin: 10,
             filename: `izracun_${currentModule}_${new Date().toISOString().split('T')[0]}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                scrollY: 0,
-                backgroundColor: '#ffffff' // Force white background
-            },
+            html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-
         // Temporarily hide buttons for clean PDF
-        const btns = document.querySelector('.results-actions-container');
-        if (btns) btns.style.display = 'none';
-
-        // Ensure background is opaque white during render
-        const originalBg = element.style.backgroundColor;
-        element.style.backgroundColor = '#ffffff';
-
-        // Clone Header for PDF
-        const headerEl = document.querySelector('.main-header');
-        let headerClone = null;
-        if (headerEl) {
-            headerClone = headerEl.cloneNode(true);
-            // Adjust styles for PDF context
-            headerClone.style.marginBottom = '2rem';
-            headerClone.style.marginTop = '-1rem'; // Offset padding
-            headerClone.style.width = 'calc(100% + 5rem)'; // Counteract parent padding (2.5rem * 2)
-            headerClone.style.marginLeft = '-2.5rem';
-            headerClone.style.boxShadow = 'none';
-
-            element.insertBefore(headerClone, element.firstChild);
-
-            // Fix PDF Alignment for Header
-            const h1 = headerClone.querySelector('h1');
-            if (h1) {
-                h1.style.display = 'block'; // Remove flex for PDF
-                h1.style.textAlign = 'center';
-                const spans = h1.querySelectorAll('span');
-                spans.forEach(s => {
-                    s.style.display = 'inline-block';
-                    s.style.verticalAlign = 'middle';
-                    // Header: "Calculator is higher" -> Raise Brand (2LMF) more
-                    if (s.classList.contains('brand-name')) {
-                        s.style.transform = 'translateY(-9px)';
-                    }
-                });
-            }
-
-            // Fix PDF Alignment for Footer Note (Disclaimer)
-            const footerNoteClone = element.querySelector('.calc-footer-note');
-            if (footerNoteClone) {
-                const spans = footerNoteClone.querySelectorAll('span');
-                spans.forEach(s => {
-                    s.style.display = 'inline-block';
-                    s.style.verticalAlign = 'middle';
-                    if (s.classList.contains('note-brand')) {
-                        // PDF Specific: CSS top: -5px handles the main shift.
-                        // Setting transform to 0 to avoid interference.
-                        s.style.transform = 'translateY(0px)';
-                    }
-                });
-            }
-        }
-
-        // Inject Styles for PDF layout (prevent wrapping)
-        const pdfStyle = document.createElement('style');
-        pdfStyle.innerHTML = `
-            #results-section .result-item { 
-                grid-template-columns: 3fr 1.1fr 1.1fr 1.2fr !important; /* give Name col more space for disclaimer */
-                gap: 0.8rem !important; /* Reduce gap slightly to save space */
-            }
-            #results-section .col-name { 
-                font-size: 0.75rem !important;
-            }
-            #results-section .col-total { 
-                white-space: nowrap !important;
-                font-size: 0.85rem !important;
-            }
-            #results-section .col-qty, 
-            #results-section .col-price {
-                font-size: 0.80rem !important;
-            }
-            /* Explicitly target brand in PDF if inline styles behave weirdly */
-            .note-brand {
-                position: relative;
-                top: -4px !important; 
-            }
-        `;
-        element.appendChild(pdfStyle);
-
-        // Create Orange Footer Bar for PDF
-        const pdfFooter = document.createElement('div');
-        pdfFooter.style.backgroundColor = '#E67E22';
-        pdfFooter.style.color = '#000';
-        pdfFooter.style.padding = '1.5rem';
-        pdfFooter.style.marginTop = '2rem';
-        pdfFooter.style.marginBottom = '-2.5rem'; // Extend to bottom
-        pdfFooter.style.marginLeft = '-2.5rem';
-        pdfFooter.style.width = 'calc(100% + 5rem)';
-        pdfFooter.style.textAlign = 'center';
-        pdfFooter.style.fontFamily = 'sans-serif';
-        pdfFooter.style.fontSize = '0.9rem';
-        pdfFooter.style.fontWeight = '700';
-        pdfFooter.style.lineHeight = '1.6'; // Spacing for 2 lines
-        pdfFooter.innerHTML = `
-            Email: 2lmf.info@gmail.com &nbsp;|&nbsp; Mob: +385 95 311 5007<br>
-            OIB: 29766043828 &nbsp;|&nbsp; IBAN: HR312340009111121324
-        `;
-        element.appendChild(pdfFooter);
+        const btns = document.querySelector('.action-buttons');
+        btns.style.display = 'none';
 
         html2pdf().set(opt).from(element).save().then(() => {
-            if (btns) btns.style.display = 'block'; // Restore buttons
-            element.style.backgroundColor = originalBg; // Restore background
-
-            // Remove cloned elements
-            if (headerClone) headerClone.remove();
-            if (pdfFooter) pdfFooter.remove();
-            if (pdfStyle) pdfStyle.remove();
+            btns.style.display = 'flex'; // Restore buttons
         });
     });
-}
+} */
 
 const emailBtnSend = document.getElementById('email-btn-send');
 
 if (emailBtnSend) {
     emailBtnSend.addEventListener('click', () => {
+        // Collect User Data from the current form
+        // Note: IDs are unique because we completely overwrite HTML, so document.getElementById is safe
         const emailInput = document.getElementById('user-email');
         const nameInput = document.getElementById('user-name');
         const phoneInput = document.getElementById('user-phone');
 
-        const emailTo = emailInput.value.trim();
-        const userName = nameInput ? nameInput.value.trim() : '';
-        const userPhone = phoneInput ? phoneInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : "";
+        const name = nameInput ? nameInput.value.trim() : "Kupac";
+        const phone = phoneInput ? phoneInput.value.trim() : "";
 
-        if (!emailTo) {
-            alert("Molim vas upišite email adresu.");
+        if (!email) {
+            alert("Molim vas upišite email adresu u formu prije slanja.");
+            // Scroll to form if needed/possible, or just let user find it
+            const form = document.querySelector('#calc-form');
+            if (form) form.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
-        const items = document.querySelectorAll('.result-item:not(.result-header-row):not(.grand-total)');
-
-        // Prepare FormData
-        const formData = new FormData();
-        formData.append('email', emailTo);
-        // Try to send copy to user via _cc or similar if supported, or rely on Formspree settings.
-        // Adding _cc field (works on some Formspree plans, harmless if not)
-        formData.append('_cc', emailTo);
-        formData.append('_subject', `Izračun materijala: ${currentModule.toUpperCase()}`);
-
-        // Construct Rich Message Body
-        // Intro Text
-        // Construct Rich Message Body
-
-        // 1. Customer Contacts (First, per 2LMF request)
-        let messageBody = "";
-        if (emailTo) {
-            messageBody += "--------------------------------------------------\n";
-            messageBody += "Podaci o kupcu:\n";
-            if (userName) messageBody += `Ime i prezime: ${userName}\n`;
-            if (userPhone) messageBody += `Telefon: ${userPhone}\n`;
-            messageBody += `Email: ${emailTo}\n`;
-            messageBody += "--------------------------------------------------\n\n";
+        if (!window.lastItems || window.lastItems.length === 0) {
+            alert("Nema stavki za slanje. Molimo napravite izračun prvo.");
+            return;
         }
 
-        // 2. Greeting (for Customer)
-        messageBody += "Poštovani,\n\n";
-        messageBody += "Hvala Vam na upitu.\n";
-        messageBody += "Kratki informativni izračun nalazi se niže u mailu.\n\n";
+        // Prepare Payload
+        // Map JS items to GAS expected structure: {name, qty, unit, price_sell}
+        const itemsPayload = window.lastItems.filter(i => i.price > 0).map(i => ({
+            sku: i.sku || "", // Pass SKU!
+            name: i.name,
+            qty: i.value,     // JS uses 'value' for quantity
+            unit: i.unit,
+            price_sell: i.price,
+            // We pass price_sell, GAS calculates buy/profit
+        }));
 
-        let index = 1;
-        items.forEach(item => {
-            // Clean up name (remove HTML tags for email text)
-            let name = item.querySelector('.col-name').innerText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+        const payload = {
+            email: email,
+            name: name,
+            phone: phone,
+            _subject: `Upit za ponudu - ${translateModule(currentModule)}`,
+            items_json: JSON.stringify(itemsPayload)
+        };
 
-            // Format numbers nicely
-            const qty = item.querySelector('.col-qty').innerText.replace(/\n/g, '').trim();
-            const price = item.querySelector('.col-price').innerText.replace(/\n/g, '').trim();
-            const total = item.querySelector('.col-total').innerText.replace(/\n/g, '').trim();
-
-            // Format: 
-            // 04. Pješačka vrata 1000x1200mm (sidro vijci...)
-            //      količina |   jed. cijena |    ukupno
-            //        10 kom |       29,00 € | 290,00 €
-
-            const idxStr = index < 10 ? '0' + index : index;
-            messageBody += `${idxStr}. ${name}\n`;
-
-            // Header for this item (Right Aligned)
-            const colWidth = 18;
-            const hQty = "količina".padStart(colWidth); // "       količina"
-            const hPrice = "jed. cijena".padStart(colWidth); // "    jed. cijena"
-
-            messageBody += `${hQty} | ${hPrice} | ukupno\n`;
-
-            // Values aligned
-            const vQty = qty.padStart(colWidth);
-            const vPrice = price.padStart(colWidth);
-
-            messageBody += `${vQty} | ${vPrice} | ${total}\n\n`;
-
-            index++;
-        });
-
-        // Add Grand Total logic
-        const grandTotal = document.querySelector('.result-total-row .col-total');
-        if (grandTotal) {
-            messageBody += "--------------------------------------------------\n";
-            messageBody += "SVEUKUPNO: " + grandTotal.innerText + "\n";
-            messageBody += "--------------------------------------------------\n";
-        }
-
-        // 4. Signature (at the end)
-        messageBody += "\nLijepi pozdrav!\n\n";
-        messageBody += "Vaš 2LMF PRO\n";
-        messageBody += "Mob: +385 95 311 5007\n";
-        messageBody += "Email: 2lmf.info@gmail.com\n";
-
-        // Inject compiled message
-        formData.append('message', messageBody);
-
-        // Send via AJAX to Formspree
+        // UI Feedback
         const originalText = emailBtnSend.innerHTML;
-        emailBtnSend.innerHTML = '⏳ Šaljem...';
+        emailBtnSend.innerHTML = "⏳ Šaljem...";
         emailBtnSend.disabled = true;
 
-        fetch("https://formspree.io/f/mwvlndlq", {
-            method: "POST",
-            headers: {
-                "Accept": "application/json"
-            },
-            body: formData
+        // Send to GAS
+        // Send to GAS
+        const GAS_URL = GOOGLE_SCRIPT_URL;
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            body: new URLSearchParams(payload)
         })
-            .then(response => {
-                if (response.ok) {
-                    alert("Izračun je uspješno poslan na vaš email! (v11)");
-                    emailInput.value = '';
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    alert("Ponuda je uspješno poslana na vaš email!");
                 } else {
-                    return response.json().then(data => {
-                        if (Object.hasOwn(data, 'errors')) {
-                            alert(data["errors"].map(error => error["message"]).join(", "))
-                        } else {
-                            alert("Došlo je do greške. Molimo pokušajte ponovno.");
-                        }
-                    })
+                    alert("Došlo je do greške: " + data.error);
                 }
             })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Došlo je do greške prilikom slanja.");
+            .catch(err => {
+                console.error(err);
+                alert("Greška u komunikaciji sa serverom.");
             })
             .finally(() => {
                 emailBtnSend.innerHTML = originalText;
@@ -1341,4 +1443,255 @@ if (emailBtnSend) {
 }
 
 // Load default
+currentModule = 'hydro'; // Fix: Ensure state matches UI
 loadModule('hydro');
+setTimeout(() => {
+    // Ensure options are visible for the default selection
+    if (typeof toggleHydroOptions === 'function') toggleHydroOptions();
+}, 100);
+
+// PDF Generation Handler (Robust: Creates clean temporary HTML)
+setTimeout(() => {
+    const pdfBtn = document.getElementById('pdf-btn');
+    if (pdfBtn) {
+        pdfBtn.addEventListener('click', function () {
+            // Check if results exist
+            if (!window.lastItems || window.lastItems.length === 0) {
+                alert("Prvo napravite izračun!");
+                return;
+            }
+
+            // Create a clean, temporary print container
+            const printContainer = document.createElement('div');
+            printContainer.id = 'pdf-print-container';
+
+            // Inline Styles (VISIBLE for debugging/rendering stability)
+            printContainer.style.position = 'fixed'; // Changed from absolute
+            printContainer.style.left = '0';         // Changed from -9999px
+            printContainer.style.top = '0';
+            printContainer.style.width = '100%';     // Full width
+            printContainer.style.height = '100%';    // Full height
+            printContainer.style.overflow = 'auto';  // Scrollable if needed
+            printContainer.style.background = 'white';
+            printContainer.style.color = 'black';
+            printContainer.style.fontFamily = "'Segoe UI', sans-serif";
+            printContainer.style.padding = '20mm';
+            printContainer.style.zIndex = '99999';   // On top of everything
+
+            // Build HTML Content (Similar to Email Template)
+            let rowsHtml = '';
+            let total = 0;
+
+            window.lastItems.forEach(item => {
+                const lineTotal = item.value * item.price;
+                total += lineTotal;
+                rowsHtml += `
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px; text-align: left;">${item.name}</td>
+                        <td style="padding: 10px; text-align: center;">${item.value} ${item.unit}</td>
+                        <td style="padding: 10px; text-align: right; white-space: nowrap;">${item.price > 0 ? item.price.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €' : '-'}</td>
+                        <td style="padding: 10px; text-align: right; white-space: nowrap; font-weight: bold;">${item.price > 0 ? lineTotal.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €' : '-'}</td>
+                    </tr>
+                `;
+            });
+
+            printContainer.innerHTML = `
+                <div style="text-align: center; border-bottom: 4px solid #2C2C54; padding-bottom: 20px; margin-bottom: 30px;">
+                    <h1 style="color: #E67E22; font-family: 'Chakra Petch', sans-serif; margin: 0; font-size: 28px; text-transform: uppercase;">2LMF PRO</h1>
+                    <p style="margin: 5px 0 0 0; color: #333; font-size: 14px; font-weight: bold;">HIDRO & TERMO IZOLACIJA • FASADE • OGRADE</p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h2 style="color: #E67E22; margin-bottom: 10px; font-size: 18px; border-bottom: 2px solid #ddd; padding-bottom: 5px;">INFORMATIVNA PONUDA</h2>
+                    <p style="font-size: 12px; color: #555;">Hvala na vašem interesu. Ovdje je informativni izračun prema vašim parametrima.</p>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background-color: #E67E22; color: black;">
+                            <th style="padding: 10px; text-align: left;">STAVKA</th>
+                            <th style="padding: 10px; text-align: center;">KOL.</th>
+                            <th style="padding: 10px; text-align: right;">CIJENA</th>
+                            <th style="padding: 10px; text-align: right;">UKUPNO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 30px; text-align: right;">
+                    <div style="display: inline-block; background: #E67E22; color: black; padding: 15px; border: 2px solid #2C2C54; border-radius: 4px;">
+                        <span style="display: block; font-size: 10px; text-transform: uppercase; margin-bottom: 5px;">SVEUKUPNI IZNOS</span>
+                        <span style="font-size: 20px; font-weight: bold; font-family: 'Chakra Petch', sans-serif;">${total.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; background: #fff3e0; padding: 15px; font-size: 11px; color: #444; border-left: 4px solid #E67E22;">
+                    <b>Uvjeti kupnje:</b><br>
+                    <ul style="margin-top:5px; padding-left: 20px;">
+                        <li>Plaćanje: avans - uplatom na žiro račun</li>
+                        <li>Minimalni iznos kupovine: 200,00 eur</li>
+                        <li>Sve cijene su sa PDV-om, koji ne smije biti iskazan na računu*</li>
+                    </ul>
+                    <div style="margin-top: 5px; opacity: 0.8;">* Porezni obveznik nije u sustavu PDV-a, temeljem članka 90. Zakona o porezu na dodanu vrijednost</div>
+                </div>
+
+                <div style="margin-top: 50px; text-align: center; font-size: 10px; color: #666; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <b>2LMF PRO j.d.o.o.</b> • Orešje 7, 10090 Zagreb • Tel: +385 95 311 5007 • Email: 2lmf.info@gmail.com
+                </div>
+            `;
+
+            // NATIVE PRINT STRATEGY (Most Robust)
+            // 1. Create a new window
+            const printWindow = window.open('', '_blank', 'width=1000,height=800');
+
+            if (!printWindow) {
+                alert("Molim vas omogućite skočne prozore (popups) za preuzimanje ponude.");
+                return;
+            }
+
+            // 2. Build the full HTML document for the new window
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Informativna Ponuda - 2LMF PRO</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Segoe+UI&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Segoe UI', sans-serif; padding: 40px; color: #000; background: #f9f9f9; }
+                        .paper { background: white; padding: 40px; max-width: 210mm; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th { background-color: #E67E22; color: #000; padding: 10px; text-align: left; }
+                        td { padding: 10px; border-bottom: 1px solid #eee; }
+                        .text-right { text-align: right; }
+                        .text-center { text-align: center; }
+                        h1 { font-family: 'Chakra Petch', sans-serif; color: #E67E22; margin: 0; }
+                        
+                        /* Action Bar for User */
+                        .action-bar { text-align: center; margin-bottom: 30px; padding: 20px; background: #333; color: white; border-radius: 8px; }
+                        .btn-print { background: #E67E22; border: none; padding: 12px 30px; color: black; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 4px; font-family: 'Chakra Petch', sans-serif; }
+                        .btn-print:hover { background: #d35400; }
+
+                        @media print {
+                            body { background: white; padding: 0; }
+                            .paper { box-shadow: none; padding: 0; margin: 0; max-width: none; }
+                            .action-bar { display: none !important; } /* Hide button in PDF */
+                            @page { margin: 10mm; }
+                            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    
+                    <div class="action-bar">
+                        <p style="margin: 0 0 10px 0; font-size: 1.2rem; font-weight: bold;">Vaša ponuda je spremna!</p>
+                        <button class="btn-print" onclick="window.print()">🖨️ SPREMI KAO PDF / ISPIŠI</button>
+                        <p style="margin: 15px 0 0 0; font-size: 0.9rem; color: #ccc;">
+                            ℹ️ U prozorčiću koji se otvori, pod <b>"Odredište" (Destination)</b><br>
+                            odaberite <b>"Spremi kao PDF"</b> (Save as PDF).
+                        </p>
+                    </div>
+
+                    <div class="paper">
+                        <div style="text-align: center; border-bottom: 4px solid #2C2C54; padding-bottom: 20px; margin-bottom: 30px;">
+                            <h1>2LMF PRO</h1>
+                            <p style="margin: 5px 0 0 0; color: #333; font-weight: bold;">HIDRO & TERMO IZOLACIJA • FASADE • OGRADE</p>
+                        </div>
+
+                        <div style="margin-bottom: 30px;">
+                            <h2 style="color: #E67E22; margin-bottom: 10px; border-bottom: 2px solid #ddd; padding-bottom: 5px;">INFORMATIVNA PONUDA</h2>
+                            <p style="font-size: 14px; color: #555;">Hvala na vašem interesu. Ovdje je informativni izračun prema vašim parametrima.</p>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>STAVKA</th>
+                                    <th class="text-center">KOL.</th>
+                                    <th class="text-right">CIJENA</th>
+                                    <th class="text-right">UKUPNO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 30px; text-align: right;">
+                            <div style="display: inline-block; background: #E67E22; color: black; padding: 15px; border: 2px solid #2C2C54; border-radius: 4px;">
+                                <span style="display: block; font-size: 12px; text-transform: uppercase;">SVEUKUPNI IZNOS</span>
+                                <span style="font-size: 24px; font-weight: bold; font-family: 'Chakra Petch', sans-serif;">${total.toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 40px; background: #fff3e0; padding: 15px; font-size: 12px; color: #444; border-left: 4px solid #E67E22;">
+                            <b>Uvjeti kupnje:</b><br>
+                            <ul style="margin-top:5px; padding-left: 20px;">
+                                <li>Plaćanje: avans - uplatom na žiro račun</li>
+                                <li>Minimalni iznos kupovine: 200,00 eur</li>
+                                <li>Sve cijene su sa PDV-om, koji ne smije biti iskazan na računu*</li>
+                            </ul>
+                            <div style="margin-top: 5px; opacity: 0.8;">* Porezni obveznik nije u sustavu PDV-a, temeljem članka 90. Zakona o porezu na dodanu vrijednost</div>
+                        </div>
+
+                        <div style="margin-top: 50px; text-align: center; font-size: 11px; color: #000; background: #E67E22; padding: 20px; border-top: 4px solid #000;">
+                            <b>2LMF PRO j.d.o.o.</b> • Orešje 7, 10090 Zagreb • Tel: +385 95 311 5007 • Email: 2lmf.info@gmail.com<br>
+                            OIB: 29766043828 • IBAN: <b>HR312340009111121324</b>
+                            <div style="margin-top:5px; opacity: 0.8;">© 2026 2LMF PRO</div>
+                        </div>
+                    </div>
+                    
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+        });
+    }
+}, 1000);
+
+// Helper function for Instant Data Capture
+// Helper function for Instant Data Capture
+function sendInstantData(items, userData) {
+    // CORRECT URL (Same as Manual Button)
+    const GAS_URL = GOOGLE_SCRIPT_URL;
+
+    // Safety check - we need at least email
+    if (!userData.userEmail) return;
+
+    const itemsPayload = items.filter(i => i.price > 0 || i.price === 0).map(i => ({
+        sku: i.sku || "",
+        name: i.name,
+        qty: i.value,
+        unit: i.unit,
+        price_sell: i.price || 0, price_buy_mpc: i.cost_price || 0,
+    }));
+
+    const payload = {
+        email: userData.userEmail,
+        name: userData.userName || "Kupac",
+        phone: userData.userPhone,
+        _subject: `Upit za ponudu - ${translateModule(currentModule)}`,
+        items_json: JSON.stringify(itemsPayload),
+        silent: 'true' // Trigger for backend to skip immediate customer email
+    };
+
+    console.log("Sending instant data...", payload);
+
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: new URLSearchParams(payload)
+    }).then(() => console.log("Instant data sent successfully."))
+        .catch(e => console.error("Instant send failed", e));
+}
+
+
+
+
+
+// Start Price Fetch
+document.addEventListener('DOMContentLoaded', () => {
+    initPriceFetch();
+});

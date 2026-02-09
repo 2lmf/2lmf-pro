@@ -198,37 +198,77 @@ nav a:hover {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Hero modifiers */
+.hero.hero-sm {
+    height: 25vh;
+    /* Reduced from 30vh */
+    min-height: 200px;
+}
+
+.hero.hero-sm h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+}
+
+/* Specific override for hero tagline when demoted from h1 */
+.hero.hero-sm .hero-tagline-text {
+    font-size: 2.0rem;
+    /* Reduced from 3.2rem to be a label */
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    font-family: 'Barlow', sans-serif;
+    letter-spacing: 2px;
+    /* Increased letter spacing */
+    text-transform: uppercase;
+}
+
 /* USLUGE (HOMEPAGE) */
 .services {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 60px 20px;
-    gap: 30px;
-    max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 columns in 1 row */
+    gap: 20px;
+    padding: 60px 20px 100px 20px;
+    /* Increased bottom padding again */
+    max-width: 1400px;
+    /* Increased max-width for 5 cols */
     margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+    .services {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* Fallback for smaller screens */
+    }
 }
 
 .service-link {
     text-decoration: none;
     color: inherit;
-    width: 220px;
+    /* Width handled by grid */
     display: block;
 }
 
 .service-card {
     background: #FAE5D3;
     /* Calculator Light Orange */
+    border: 3px solid #e67e22;
+    /* Thicker orange border */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    padding: 15px;
+    /* Reduced padding */
     text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-    min-height: 240px;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, border-color 0.3s;
+    height: 100%;
+    /* Fill grid height */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 0;
+    /* Remove default min-height limit */
 }
 
 .service-card:hover {
@@ -384,9 +424,19 @@ nav a:hover {
     margin-bottom: 20px;
 }
 
-.blog-post h2 {
+.blog-post h1 {
+    font-size: 2.5rem;
     color: #2c3e50;
     margin-top: 0;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.blog-post h2 {
+    color: #2c3e50;
+    margin-top: 30px;
+    /* More spacing for subheads */
     border-bottom: 2px solid #e67e22;
     padding-bottom: 10px;
     display: inline-block;
@@ -665,8 +715,8 @@ nav a:hover {
 
 .hashtags {
     color: #7f8c8d;
-    font-size: 0.75rem;
-    /* Smaller font as requested */
+    font-size: 0.75rem !important;
+    /* Enforce small size */
     margin-top: 25px;
     font-style: italic;
     line-height: 1.4;
@@ -738,8 +788,41 @@ nav a:hover {
     .comparison-table td {
         padding: 5px;
     }
+}
 
-    .blog-post img {
-        height: 250px;
-    }
+/* COOKIE BANNER */
+#cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2c2c2c;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    display: none;
+    /* Hidden by default, shown via JS */
+    font-size: 0.9rem;
+}
+
+#cookie-banner p {
+    display: inline-block;
+    margin: 0 20px 0 0;
+}
+
+#cookie-banner button {
+    background-color: #e67e22;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.3s;
+}
+
+#cookie-banner button:hover {
+    background-color: #d35400;
 }

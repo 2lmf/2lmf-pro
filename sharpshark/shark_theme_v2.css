@@ -1,0 +1,385 @@
+/* 
+   SHARPSHARK V2 - DEEP OCEAN NEON THEME 
+   Aesthetic: Abyssal Dark, Cyber-Marine, Neon Accents, Glassmorphism
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;600&display=swap');
+
+:root {
+    /* -- PALETTE -- */
+    --bg-abyss: #010103;
+    --bg-deep: #050510;
+    --bg-surface: #0a0a1a;
+
+    --neon-cyan: #00f3ff;
+    --neon-blue: #0066ff;
+    --neon-orange: #ff9d00;
+    /* SharpShark Brand */
+    --neon-purple: #bc13fe;
+
+    --text-main: #ffffff;
+    --text-muted: #8892b0;
+
+    /* -- EFFECTS -- */
+    --glass-panel: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --neon-glow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
+    --orange-glow: 0 0 15px rgba(255, 157, 0, 0.6);
+
+    /* -- TYPOGRAPHY -- */
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-abyss);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    margin: 0;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* --- BACKGROUNDS & ANIMATIONS --- */
+.ocean-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(188, 19, 254, 0.05) 0%, transparent 25%);
+    background-size: 100% 100%;
+}
+
+.grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --- COMPONENTS --- */
+.glass-card {
+    background: var(--glass-panel);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-5px);
+    box-shadow: var(--neon-glow);
+}
+
+.btn-shark {
+    display: inline-block;
+    background: transparent;
+    color: var(--neon-cyan);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    /* Much smaller */
+    border: 2px solid var(--neon-cyan);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    width: max-content;
+    flex-shrink: 0;
+    min-width: unset;
+    font-size: 0.75rem;
+    /* Small compact text */
+    box-sizing: border-box;
+    /* Ensure border is included */
+    line-height: 1.2;
+    /* Tighter line height */
+}
+
+.btn-shark::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--neon-cyan);
+    z-index: -1;
+    transition: left 0.4s ease;
+}
+
+.btn-shark:hover::before {
+    left: 0;
+}
+
+.btn-shark:hover {
+    color: #000;
+    box-shadow: var(--neon-glow);
+}
+
+.btn-primary-filled {
+    background: var(--neon-orange);
+    color: black;
+    border: none;
+    box-shadow: var(--orange-glow);
+}
+
+.btn-primary-filled:hover {
+    background: #ffb84d;
+    box-shadow: 0 0 30px rgba(255, 157, 0, 0.8);
+    color: black;
+}
+
+/* --- TYPOGRAPHY UTILS --- */
+.gradient-text {
+    background: linear-gradient(90deg, var(--neon-cyan), #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+}
+
+/* --- HERO --- */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    padding-top: 180px;
+    /* Offset for larger fixed header */
+    position: relative;
+}
+
+.hero-title {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    margin: 2rem 0;
+    max-width: 600px;
+}
+
+/* --- SECTIONS --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* --- NAVIGATION --- */
+.shark-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(1, 1, 3, 0.9), transparent);
+}
+
+header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 101;
+    /* Ensure logo is on top */
+}
+
+/* Fix overlap on small screens or tight layouts */
+header h1 {
+    white-space: nowrap;
+    /* Prevent breaking if possible */
+}
+
+/* Ensure Hero content pushes down enough or has Z-index */
+.hero-content {
+    position: relative;
+    z-index: 10;
+    margin-top: 2rem;
+    /* Add specific breathing room */
+}
+
+.logo-text {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.logo-highlight {
+    color: var(--neon-orange);
+}
+
+/* --- LOGO IMAGE --- */
+.nav-logo {
+    height: 130px;
+    /* HUGE as requested */
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+    /* Stronger glow for bigger logo */
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05) rotate(-2deg);
+    /* Added slight rotation for "Shark" dynamic feel */
+}
+
+@media (max-width: 768px) {
+    .nav-logo {
+        height: 80px;
+    }
+}
+
+/* --- DEMO FLOATING BUTTON --- */
+.agency-float-btn {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    border: 3px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-weight: bold;
+    text-decoration: none;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.agency-float-btn:hover {
+    transform: scale(1.05);
+    background: var(--neon-cyan);
+    color: black;
+    box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+        border-color: white;
+    }
+
+    100% {
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    }
+
+}
+
+@keyframes pulse-red {
+    0% {
+        text-shadow: 0 0 10px #ff0000;
+        opacity: 1;
+    }
+
+    50% {
+        text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+        opacity: 0.8;
+    }
+
+    100% {
+        text-shadow: 0 0 10px #ff0000;
+        opacity: 1;
+    }
+}
+
+.shot-clock-container {
+    margin-top: 2.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #ff0000;
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.shot-clock-display {
+    font-family: 'Orbitron', monospace;
+    /* Uses existing font but mono-style */
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ff0000;
+    line-height: 1;
+    letter-spacing: 5px;
+    animation: pulse-red 1s infinite alternate;
+}
+
+.fomo-text {
+    color: #fff;
+    font-size: 1rem;
+    margin-top: 5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    max-width: 350px;
+}
+
+.fomo-highlight {
+    color: #ff0000;
+    font-weight: 900;
+    text-decoration: underline;
+}

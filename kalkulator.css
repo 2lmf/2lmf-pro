@@ -299,6 +299,19 @@ nav a:hover {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
+.nav-btn.disabled-module {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: repeating-linear-gradient(45deg,
+            #e74c3c,
+            #e74c3c 10px,
+            #ffffff 10px,
+            #ffffff 20px);
+    border-color: #999;
+    color: #333;
+    font-weight: 700;
+}
+
 .nav-btn:hover::before {
     transform: scaleY(1);
 }

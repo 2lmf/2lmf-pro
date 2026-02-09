@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharpShark | Web Shop Zauvijek</title>
+    <link rel="stylesheet" href="shark_theme_v2.css?v=2.1">
+    <!-- Ionicons for crisp icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+    <!-- Background Layers -->
+    <div class="ocean-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="shark-nav" style="align-items: flex-start;">
+        <div class="logo-container" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <a href="../index.html" class="btn-shark"
+                style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <ion-icon name="home-outline"></ion-icon>
+                POČETNA STRANA
+            </a>
+            <img src="assets/images/logo_shark_digital_neon.png" alt="SharpShark Digital" class="nav-logo"
+                style="height: 120px;">
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <a href="#benefits" class="btn-shark">PREDNOSTI</a>
+            <a href="#portfolio" class="btn-shark">PORTFOLIO</a>
+            <a href="#contact" class="btn-shark">ZATRAŽI PONUDU</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <h1 class="hero-title">
+            WEB SHOP <br>
+            <span class="gradient-text">ZAUVIJEK.</span>
+        </h1>
+        <p class="hero-subtitle">
+            1600 eur + pdv za jednokratno plaćanje, moguće i na rate. Bez mjesečnih naknada. Bez provizija.<br>
+            Idealno za vinare, OPG-ove i male proizvođače.
+        </p>
+        <div style="display: flex; gap: 1rem;">
+            <a href="#contact" class="btn-shark btn-primary-filled">KRENI ODMAH</a>
+            <a href="demo_shop.html" class="btn-shark">VIDI PRIMJER</a>
+        </div>
+
+        <!-- SHOT CLOCK FOMO -->
+        <div class="shot-clock-container">
+            <div id="countdown" class="shot-clock-display">10</div>
+            <div class="fomo-text">
+                Iskoristite priliku. Budite među prvih 10 kupaca i <span class="fomo-highlight">NEMOJTE PLATIT
+                    PDV!</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Value Props Grid -->
+    <section id="benefits" class="container">
+        <div class="grid-3">
+            <!-- Card 1 -->
+            <div class="glass-card">
+                <div style="font-size: 3rem; color: var(--neon-cyan); margin-bottom: 1rem;">
+                    <ion-icon name="server-outline"></ion-icon>
+                </div>
+                <h3>Hosting Zauvijek</h3>
+                <p style="color: var(--text-muted);">
+                    Nikada više ne plaćajte "mjesečno održavanje" ili servere. Vaš shop živi na modernoj infrastrukturi
+                    besplatno.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-card">
+                <div style="font-size: 3rem; color: var(--neon-orange); margin-bottom: 1rem;">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                </div>
+                <h3>0% Provizije</h3>
+                <p style="color: var(--text-muted);">
+                    Za razliku od Shopify-a ili agencija, mi ne uzimamo postotak od vaše prodaje. Svaka boca vina je
+                    100% vaša zarada.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-card">
+                <div style="font-size: 3rem; color: var(--neon-purple); margin-bottom: 1rem;">
+                    <ion-icon name="speedometer-outline"></ion-icon>
+                </div>
+                <h3>Ludo Brzo</h3>
+                <p style="color: var(--text-muted);">
+                    Izrađeno na najnovijim tehnologijama (Jamstack). Učitava se trenutno. Google to voli, kupci to
+                    obožavaju.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="container" style="text-align: center;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 3rem;">ZA PROIZVOĐAČE <span class="gradient-text">SA STAVOM</span>
+        </h2>
+
+        <div class="grid-3">
+            <!-- Vinarije -->
+            <div class="glass-card"
+                style="padding: 0; overflow: hidden; height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                <div style="font-size: 3rem; color: var(--neon-cyan); z-index: 2; margin-bottom: 0.5rem;">
+                    <ion-icon name="wine-outline"></ion-icon>
+                </div>
+                <h3 style="z-index: 2; font-size: 1.5rem; margin: 0;">VINARIJE</h3>
+                <div
+                    style="position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));">
+                </div>
+            </div>
+
+            <!-- Sirane -->
+            <div class="glass-card"
+                style="padding: 0; overflow: hidden; height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                <div style="font-size: 3rem; color: var(--neon-orange); z-index: 2; margin-bottom: 0.5rem;">
+                    <ion-icon name="pizza-outline"></ion-icon> <!-- Pizza slice implies wedge of cheese -->
+                </div>
+                <h3 style="z-index: 2; font-size: 1.5rem; margin: 0;">SIRANE</h3>
+                <div
+                    style="position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));">
+                </div>
+            </div>
+
+            <!-- Maslinova Ulja -->
+            <div class="glass-card"
+                style="padding: 0; overflow: hidden; height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                <div style="font-size: 3rem; color: var(--neon-purple); z-index: 2; margin-bottom: 0.5rem;">
+                    <ion-icon name="water-outline"></ion-icon> <!-- Droplet for Oil -->
+                </div>
+                <h3 style="z-index: 2; font-size: 1.5rem; margin: 0;">MASLINOVA ULJA</h3>
+                <div
+                    style="position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / What's Included -->
+    <section id="features" class="container" style="padding-top: 0;">
+        <div class="glass-card" style="border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">ŠTO UKLJUČUJE <span
+                    class="gradient-text">PAKET 1600€ + PDV</span>?</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- Left Column -->
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem;">
+                        <ion-icon name="checkmark-circle"
+                            style="color: var(--neon-cyan); font-size: 1.5rem;"></ion-icon>
+                        <span><b>Premium Web Dizajn</b> (Moderni dark/neon stil)</span>
+                    </li>
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem;">
+                        <ion-icon name="cart" style="color: var(--neon-cyan); font-size: 1.5rem;"></ion-icon>
+                        <span><b>Web Shop Sustav</b> (Slanje narudžbi na email)</span>
+                    </li>
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem;">
+                        <ion-icon name="grid" style="color: var(--neon-cyan); font-size: 1.5rem;"></ion-icon>
+                        <span><b>Google Sheets Baza</b> (Automatsko prikupljanje upita)</span>
+                    </li>
+                </ul>
+
+                <!-- Right Column -->
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem;">
+                        <ion-icon name="rocket" style="color: var(--neon-orange); font-size: 1.5rem;"></ion-icon>
+                        <span><b>SEO Optimizacija</b> (Brže rangiranje na Google-u)</span>
+                    </li>
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem;">
+                        <ion-icon name="cloud-upload" style="color: var(--neon-orange); font-size: 1.5rem;"></ion-icon>
+                        <span><b>Besplatan Hosting</b> (Zauvijek, bez mjesečnih naknada)</span>
+                    </li>
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem;">
+                        <ion-icon name="construct" style="color: var(--neon-orange); font-size: 1.5rem;"></ion-icon>
+                        <span><b>Održavanje 1 Godina</b> (Tehnička podrška uključena)</span>
+                    </li>
+                    <li
+                        style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.1rem; opacity: 0.7;">
+                        <ion-icon name="card" style="color: var(--neon-purple); font-size: 1.5rem;"></ion-icon>
+                        <span><i>Mogućnost nadogradnje: fiskalizacija i kartice</i></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- USP Box -->
+            <div
+                style="margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--neon-cyan); background: rgba(0, 243, 255, 0.05); border-radius: 8px; text-align: center;">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 0.5rem; font-size: 1.2rem;">ZAŠTO MI?</h3>
+                <p style="margin: 0; font-size: 1.1rem;">
+                    <b>Zauvijek tvoje, bez mjesečnih troškova.</b><br>
+                    Dok drugi naplaćuju godišnje obnove hostinga i održavanja, kod nas je to uključeno u cijenu.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container" style="max-width: 600px;">
+        <div class="glass-card">
+            <h2 style="text-align: center; margin-bottom: 2rem;">DIGITALIZIRAJTE SE</h2>
+            <form onsubmit="handleContact(event)">
+                <div style="margin-bottom: 1.5rem;">
+                    <label
+                        style="display: block; margin-bottom: 0.5rem; color: var(--neon-cyan); font-family: var(--font-heading);">IME
+                        I PREZIME</label>
+                    <input type="text"
+                        style="width: 100%; padding: 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label
+                        style="display: block; margin-bottom: 0.5rem; color: var(--neon-cyan); font-family: var(--font-heading);">EMAIL
+                        *</label>
+                    <input type="email" required
+                        style="width: 100%; padding: 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label
+                        style="display: block; margin-bottom: 0.5rem; color: var(--neon-cyan); font-family: var(--font-heading);">TELEFON
+                        *</label>
+                    <input type="tel" required
+                        style="width: 100%; padding: 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 2rem;">
+                    <label
+                        style="display: block; margin-bottom: 0.5rem; color: var(--neon-cyan); font-family: var(--font-heading);">PORUKA
+                        / VRSTA POSLA</label>
+                    <textarea rows="4"
+                        style="width: 100%; padding: 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; border-radius: 8px;"></textarea>
+                </div>
+                <button type="submit" class="btn-shark btn-primary-filled" style="width: 100%; border:none;">POŠALJI
+                    UPIT</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Floating Promo Button -->
+    <a href="demo_shop.html" class="agency-float-btn blink-promo">
+        <ion-icon name="cart-outline" style="font-size: 1.5rem;"></ion-icon>
+        POGLEDAJTE VAŠ SHOP
+    </a>
+
+    <style>
+        /* Blinking Animation for Promo Button */
+        @keyframes blink-promo {
+
+            0%,
+            50% {
+                background: rgba(0, 0, 0, 0.9);
+                color: #00f3ff;
+                border-color: #00f3ff;
+            }
+
+            51%,
+            100% {
+                background: #00f3ff;
+                color: #000000;
+                border-color: #000000;
+            }
+        }
+
+        .blink-promo {
+            animation: blink-promo 2s infinite steps(1);
+            /* Reset specific styles ensuring animation takes precedence if needed, 
+               but kept minimal to preserve shape/text */
+        }
+    </style>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem;">
+        &copy; 2026 SharpShark Digital Agency. Built for speed.
+    </footer>
+
+    <script>
+        function handleContact(e) {
+            e.preventDefault();
+            // Simulate sending
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+
+            btn.innerText = "ŠALJEM...";
+            btn.style.opacity = "0.7";
+
+            setTimeout(() => {
+                alert("Hvala na upitu! Podaci su poslani na 2lmf.info@gmail.com. Javit ćemo vam se u roku od 24h.");
+                e.target.reset();
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+            }, 1000);
+        }
+
+        // --- SHOT CLOCK LOGIC ---
+        (function () {
+            let count = 10;
+            const display = document.getElementById('countdown');
+
+            // Random decrement to simulate live sales, but don't hit 0 too fast
+            // Logic: 10 -> 9 (fast), ... -> 4 (slow), -> 2 (very slow), -> 1 (stop)
+
+            function tick() {
+                if (count > 2) {
+                    count--;
+                    display.innerText = count < 10 ? "0" + count : count;
+
+                    // Random delay for next tick (between 2s and 8s) to feel organic
+                    let nextTick = Math.random() * 6000 + 2000;
+                    setTimeout(tick, nextTick);
+                } else if (count == 2) {
+                    count--; // Go to 1
+                    display.innerText = "01";
+                }
+            }
+
+            // Start initial drop quickly
+            setTimeout(tick, 3000);
+        })();
+    </script>
+</body>
+
+</html>
