@@ -1709,6 +1709,45 @@ function sendInstantData(items, userData) {
 
 
 
+// --- GOOGLE SHEETS LIVE PRICING ---
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIWixcWJRDQOzcBPTCTfstUzbhrFJlTa7dMq21lnE2YunRDJL-IJlpxEnjf3w76-KI/exec";
+
+async function initPriceFetch() {
+    try {
+        console.log("Fetching live prices...");
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=get_prices`);
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const livePrices = await response.json();
+        console.log("Live prices loaded:", Object.keys(livePrices).length);
+
+        // Update global 'prices' object
+        updatePricesRecursive(prices, livePrices);
+
+        const btn = document.querySelector('#calc-form .calculate-btn');
+        if (btn) btn.innerHTML = "Izračunaj (Cijene ažurirane)";
+
+    } catch (error) {
+        console.error("Failed to fetch live prices:", error);
+    }
+}
+
+function updatePricesRecursive(targetObj, sourceFlat) {
+    for (const key in targetObj) {
+        if (typeof targetObj[key] === 'object' && targetObj[key] !== null) {
+            if (targetObj[key].hasOwnProperty('sku') && targetObj[key].hasOwnProperty('price')) {
+                const sku = targetObj[key].sku;
+                let livePrice = sourceFlat[sku] || sourceFlat[sku.toUpperCase()] || sourceFlat[sku.toLowerCase()];
+                if (livePrice !== undefined) {
+                    targetObj[key].price = parseFloat(livePrice);
+                }
+            } else {
+                updatePricesRecursive(targetObj[key], sourceFlat);
+            }
+        }
+    }
+}
+
 // Start Price Fetch
 document.addEventListener('DOMContentLoaded', () => {
     initPriceFetch();
