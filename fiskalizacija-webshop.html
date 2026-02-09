@@ -58,76 +58,7 @@
     }
     </script>
 
-    <style>
-        /* Inherit Floating Button Styles from Index */
-        @keyframes blink-promo {
 
-            0%,
-            50% {
-                background: rgba(0, 0, 0, 0.9);
-                color: #00f3ff;
-                border-color: #00f3ff;
-            }
-
-            51%,
-            100% {
-                background: #00f3ff;
-                color: #000000;
-                border-color: #000000;
-            }
-        }
-
-        .floating-promo-btn {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-
-            /* Initial State */
-            background: rgba(0, 0, 0, 0.9);
-            color: #00f3ff;
-            border: 2px solid #00f3ff;
-
-            padding: 15px 25px;
-            text-decoration: none;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-            transition: all 0.3s ease;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            font-family: 'Orbitron', sans-serif;
-            overflow: hidden;
-            border-radius: 5px;
-
-            /* Animation */
-            animation: blink-promo 2s infinite steps(1);
-        }
-
-        .floating-promo-btn:hover {
-            transform: translateY(-50%) scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.8);
-        }
-
-        .promo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-            text-transform: uppercase;
-        }
-
-        .promo-text .top {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .promo-text .bottom {
-            font-size: 1.0rem;
-            font-weight: 900;
-            color: inherit;
-            transition: color 0.3s ease;
-        }
-    </style>
 </head>
 
 <body>
@@ -251,6 +182,23 @@
         </main>
     </div>
 
+    <!-- Hashtags -->
+    <div style="background: #f9f9f9; padding: 20px 0; text-align: center;">
+        <div class="container">
+            <p
+                style="font-size: 0.75rem; font-style: italic; opacity: 0.8; line-height: 1.6; color: #7f8c8d; margin: 0;">
+                #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija
+                #najpovoljnije #beznaknade #freehosting #freehostingzauvijek #vrhunskakvaliteta #webshop #freewebshop
+                #sharpshark #sharpsharkdigital #besplatno #besplatniwebshop #3dpanel #2dpanel #panelograda #konfigurator
+                #fiskalizacija #rezervacijasmještaja #channelmanager #webdesign #SEO #konfiguratorograda
+                #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen #bitumenskaljepenka
+                #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada #građevinskikalkulator
+                #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS #stiropor #bentonit
+                #polimercement #vuna #kamenavuna #konfiguratorograda #blog #manjenaknade #vasezauvijek
+            </p>
+        </div>
+    </div>
+
     <!-- Standard Contact Footer -->
     <footer class="main-footer" id="kontakt">
         <div class="container">
@@ -297,17 +245,7 @@
             </div>
 
             <!-- Hashtags -->
-            <div
-                style="text-align: center; padding: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem; line-height: 1.6; font-style: italic;">
-                #ventiliranefasade #fasada #hpl #vlaknocement #aluminij #podkonstrukcija #termo #termoizolacija
-                #najpovoljnije #beznaknade #freehosting #freehostingzauvijek #vrhunskakvaliteta #webshop #freewebshop
-                #sharpshark #sharpsharkdigital #besplatno #besplatniwebshop #3dpanel #2dpanel #panelograda #konfigurator
-                #fiskalizacija #rezervacijasmještaja #channelmanager #webdesign #SEO #konfiguratorograda
-                #najpovoljnijacijena #top #hidro #hidroizolacija #XPS #stirodur #TPO #PVC #bitumen #bitumenskaljepenka
-                #ljepenka #arhitektura #kalkulator #kalkulatorograda #kalkulatorfasada #građevinskikalkulator
-                #projektiranje #poliuretanPU #aluminijskaizolacija #zvučnaizolacija #osb #EPS #stiropor #bentonit
-                #polimercement #vuna #kamenavuna #konfiguratorograda #blog #manjenaknade #vasezauvijek
-            </div>
+
         </div>
     </footer>
 

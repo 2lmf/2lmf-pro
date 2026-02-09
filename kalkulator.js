@@ -674,7 +674,12 @@ let isSubmitting = false;
 
 function handleCalculation(e) {
     if (e) e.preventDefault();
-    if (isSubmitting) return;
+    console.log("Starting calculation...", data);
+
+    if (isSubmitting) {
+        console.warn("Calculation block: Already submitting");
+        return;
+    }
 
     // Find the button and disable it temporarily
     const btn = document.querySelector('#calc-form .calculate-btn');
