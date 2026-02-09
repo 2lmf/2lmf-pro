@@ -20,46 +20,10 @@ function translateModule(mod) {
 
 // State
 // State
+// State
 let currentModule = 'facade';
-
-// --- GOOGLE SHEETS SYNC ---
-// PASTE YOUR DEPLOYMENT URL HERE (from Apps Script -> Deploy -> Web App)
-// --- GOOGLE SHEETS SYNC ---
-// UNIFIED API URL (Prices & Emails)
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvD27R4fbc5g61Dl0cGCE73-G75EsZGoEbKuRqzU7-5oqg5ZxALf5W9RyTGiPF_08G/exec';
-
-async function initPriceFetch() {
-    if (!GOOGLE_SCRIPT_URL) {
-        console.log("⚠️ No API URL configured. Using local prices.");
-        return;
-    }
-
-    try {
-        console.log("⏳ Fetching live prices...");
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=get_prices`);
-        const livePrices = await response.json();
-
-        if (livePrices.error) throw new Error(livePrices.error);
-        if (Object.keys(livePrices).length === 0) throw new Error("Empty price list");
-
-        // Sync Logic: Map SKU to our internal structure
-        updateLocalPrices(livePrices);
-        console.log("✅ Live prices active!", livePrices);
-
-        // Show subtle success indicator
-        const ind = document.createElement("div");
-        ind.style.cssText = "position:fixed; bottom:10px; right:10px; background:#4cd964; color:white; padding:5px 10px; border-radius:20px; font-size:12px; opacity:0.8; z-index:9999;";
-        ind.innerText = `⚡ Live Cijene (${Object.keys(livePrices).length})`;
-        document.body.appendChild(ind);
-        setTimeout(() => ind.remove(), 4000);
-
-    } catch (e) {
-        console.error("❌ Price sync failed:", e);
-        // Also show alert
-        const errDiv = document.createElement("div");
-        errDiv.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:red; color:white; padding:20px; z-index:10000; font-size:20px;";
-        errDiv.innerText = "GREŠKA PRI UČITAVANJU: \n" + e.message;
-        document.body.appendChild(errDiv);
+errDiv.innerText = "GREŠKA PRI UČITAVANJU: \n" + e.message;
+document.body.appendChild(errDiv);
     }
 }
 
