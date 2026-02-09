@@ -1309,12 +1309,11 @@ if (emailBtnSend) {
         // Prepare Payload
         // Map JS items to GAS expected structure: {name, qty, unit, price_sell}
         const itemsPayload = window.lastItems.filter(i => i.price > 0).map(i => ({
-            sku: i.sku || "", // Pass SKU!
+            sku: i.sku || "",
             name: i.name,
-            qty: i.value,     // JS uses 'value' for quantity
+            qty: typeof i.value === 'string' ? parseFloat(i.value) : i.value,
             unit: i.unit,
             price_sell: i.price,
-            // We pass price_sell, GAS calculates buy/profit
         }));
 
         const payload = {
