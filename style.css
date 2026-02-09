@@ -986,8 +986,8 @@ nav a:hover {
 
 /* Sharpshark Card Logo */
 .service-card .sharpshark-logo {
-    height: 110px;
-    /* Increased from 80px */
+    height: 150px;
+    /* Increased from 110px to 150px */
     width: auto;
     margin-bottom: 15px;
     display: block;
