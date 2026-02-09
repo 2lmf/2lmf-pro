@@ -841,38 +841,46 @@ nav a:hover {
     }
 
     /* Agency Float Button (Sharpshark Neon Style) */
-    /* Agency Float Button (Sharpshark Neon Style - EXACT REPLICA) */
+    /* Agency Float Badge (Left Side - Screenshot Match) */
     .agency-float-btn {
         position: fixed;
+        left: 0;
         top: 50%;
-        right: 20px;
-        /* Right side */
         transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.9);
-        border: 3px solid #00f3ff;
-        /* Neon Cyan */
-        color: #00f3ff;
-        padding: 1rem 1.5rem;
-        border-radius: 50px;
-        font-family: 'Chakra Petch', sans-serif;
-        font-weight: bold;
+        background-color: #00f3ff;
+        /* Cyan color */
+        color: #000;
+        padding: 15px 20px;
+        border-radius: 0 8px 8px 0;
+        /* Rounded only on right */
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
         text-decoration: none;
-        z-index: 1000;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-        transition: transform 0.3s, box-shadow 0.3s;
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-        text-align: center;
+        flex-direction: column;
+        align-items: flex-start;
+        font-family: 'Chakra Petch', sans-serif;
+        border: 2px solid #000;
+        transition: transform 0.3s;
     }
 
     .agency-float-btn:hover {
-        transform: translateY(-50%) scale(1.05);
-        background: #00f3ff;
-        color: black;
-        box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+        transform: translateY(-50%) translateX(5px);
+    }
+
+    .badge-line-1 {
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+    }
+
+    .badge-line-2 {
+        font-size: 1.1rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
 
     @keyframes blink-promo {
