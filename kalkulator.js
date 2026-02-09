@@ -297,7 +297,7 @@ const templates = {
             <h2>💧 Hidroizolacija</h2>
             <p>Bitumen, Polimer cement ili TPO/PVC folije.</p>
         </div>
-        <form id="calc-form" onsubmit="handleCalculation(event)">
+        <form id="calc-form">
             <div class="form-group">
                 <label for="hydro-type">Sustav</label>
                 <select id="hydro-type" name="type" required onchange="toggleHydroOptions()">
