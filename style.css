@@ -229,10 +229,10 @@ nav a:hover {
     display: grid;
     /* Allow smaller cards to fit 5 in a row on typical screens (5 * 220 = 1100px) */
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-    /* Reduced gap */
-    padding: 60px 20px 100px 20px;
-    /* Increased bottom padding again */
+    gap: 30px !important;
+    /* Increased gap and forced */
+    padding: 60px 40px 100px 40px;
+    /* Increased padding */
     max-width: 1600px;
     /* Increased max-width for 5 cols */
     margin: 0 auto;
