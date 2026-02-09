@@ -35,7 +35,8 @@ const prices = {
         pvc_temelji: { price: 6.34, sku: "2111", name: "FLAG BSL (PVC) 1,5 mm, folija za temelje" },
         pvc_krov: { price: 8.94, sku: "2112", name: "FLAG SR (PVC) 1,5 mm, krovna folija" },
         cepasta: { price: 1.54, sku: "2123", name: "ČEPASTA FOLIJA" },
-        geotextile: { price: 0.81, sku: "2124", name: "Geotekstil, 200g" }
+        geotextile: { price: 0.81, sku: "2124", name: "Geotekstil, 200g" },
+        geotextile_300: { price: 1.20, sku: "2125", name: "Geotekstil, 300g" } // Added based on user list if needed, or stick to 200g
     },
 
     bitumen: {
@@ -114,13 +115,15 @@ const prices = {
             250: { price: 21.45, sku: "1033", name: "Stup za beton 2,50 m" }
         },
 
-        set_spojnica: { price: 0.42, sku: "1039", name: "PVC Spojnica" },
+        set_spojnica: { price: 0.42, sku: "1039", name: "PVC Spojnica (s vijkom)" }, // Updated Name
         anker_vijci: { price: 0.59, sku: "1040", name: "SIDRENI VIJAK ZN M10" },
+        zastita_ok: { price: 0, sku: "1041", name: "ZAŠTITA OD POGLEDA, REBRASTA, 26 m²" }, // Placeholder price
+        pricvrsnica_traka: { price: 0, sku: "1042", name: "PVC PRIČVRSNICA ZA TRAKU" }, // Placeholder price
         montaza_plate: { price: 31.25, sku: "1043", name: "montaža na parapet/m'" },
         montaza_concrete: { price: 43.75, sku: "1044", name: "montaža u beton/m'" },
 
         gate_prices: {
-            // Placeholder Logic: Using Single SKU for both mount types as per User List
+            // Updated to match specific gate SKUs
             '1000x1000': { plate: { p: 266.50, s: '1034' }, concrete: { p: 266.50, s: '1034' } },
             '1000x1200': { plate: { p: 315.25, s: '1035' }, concrete: { p: 315.25, s: '1035' } },
             '1000x1500': { plate: { p: 390.00, s: '1036' }, concrete: { p: 390.00, s: '1036' } },
@@ -134,7 +137,8 @@ const prices = {
         isoflex_pu500: { price: 7.96, sku: "2130", name: "Isomat: Isoflex PU500, bijeli, (poliuretan)" },
         ak20: { price: 0.45, sku: "2122", name: "Isomat AK 20" },
         fimizol: { price: 2.25, sku: "2131", name: "FIMIZOL, 9L, bitumenski premaz" },
-        insta_stik: { price: 10.29, sku: "2010", name: "Dow Insta Stik, za pištolj" }
+        insta_stik: { price: 10.29, sku: "2010", name: "Dow Insta Stik, za pištolj" },
+        pu_primer: { price: 0, sku: "2129", name: "Isomat PU pimer, 5kg" } // Added
     },
 
     others: {
@@ -145,15 +149,31 @@ const prices = {
         osb_15: { price: 7.43, sku: "3007", name: "OSB ploče 15mm (2500 x 675mm)" },
         osb_18: { price: 8.91, sku: "3008", name: "OSB ploče 18mm (2500 x 675mm)" },
         osb_22: { price: 10.89, sku: "3009", name: "OSB ploče 22mm (2500 x 675mm)" },
-        ethafoam: { price: 1.94, sku: "OTH-02", name: "Ethafoam podloga" },
+        ethafoam: { price: 1.94, sku: "OTH-02", name: "Ethafoam podloga" }, // Keep existing if not in user list but used in logic? User didn't delete, just didn't list.
         cellucushion: { price: 1.40, sku: "OTH-03", name: "Cellucushion" },
         reflectix: { price: 3.46, sku: "OTH-04", name: "Reflectix folija" }
     }
 };
 
 // Helpers (Updated to handle objects)
+// Helpers (Updated to handle objects)
 function getXPSPrice(thickness) {
     if (prices.xps[thickness]) return prices.xps[thickness].price;
+    return 0;
+}
+
+function getXPSCost(thickness) {
+    if (costs.xps[thickness]) return costs.xps[thickness];
+    return 0;
+}
+
+function getWoolPrice(thickness) {
+    if (prices.wool_facade[thickness]) return prices.wool_facade[thickness].price;
+    return 0;
+}
+
+function getWoolCost(thickness) {
+    if (costs.wool_facade[thickness]) return costs.wool_facade[thickness];
     return 0;
 }
 // --- NABAVNE CIJENE (COSTS) ---

@@ -978,199 +978,160 @@ window.selectColor = function (ral, btn) {
 
 function calculateFence(data) {
     const length = parseFloat(data.length.replace(',', '.'));
-    const height = parseInt(data.height); // "103", "123" (cm)
-    const type = data.panelType; // "2d" or "3d"
-    const color = data.fenceColor === '6005' ? 'Zelena (RAL 6005)' : 'Antracit (RAL 7016)';
-
-    // KEY FIX: Data is matchign inputs (CM)
-    const heightKey = height;
-
+    const height = parseInt(data.height); // 83, 103, 123, 153, 173, 203
+    const color = data.color === '6005' ? 'Zelena (6005)' : 'Antracit (7016)';
     let items = [];
 
-    // Construct Price Lookup
+    // console.log("Calculating Fence...", height);
+
+    // 1. PANELI
+    let panelSku = '';
+    let panelName = '';
     let panelPrice = 0;
-    let panelName = "";
 
-    if (type === '2d') {
-        // MATCHING: prices.fence.panel_2d[heightKey]
-        try {
-            if (prices.fence.panel_2d[heightKey]) {
-                panelPrice = prices.fence.panel_2d[heightKey].price || 0;
-            }
-        } catch (e) { console.error("Missing price for 2D", heightKey); }
+    // Height match to SKU suffix/ID could be complex, assuming standard mapping from items_data.js
+    // prices.fence.panel_2d[height] exists.
 
-        panelName = `2D panel 6/5/6 mm (${height}cm) - ${color}`;
+    const heightKey = height; // e.g. 83
+
+    if (data.panelType === '2d') {
+        if (prices.fence.panel_2d[heightKey]) {
+            panelSku = prices.fence.panel_2d[heightKey].sku;
+            panelPrice = prices.fence.panel_2d[heightKey].price;
+            panelName = prices.fence.panel_2d[heightKey].name;
+        } else {
+            console.error("Missing 2D panel price for height", heightKey);
+        }
     } else {
-        const thickness = data.panelThickness || '4'; // Default to 4
-        // MATCHING: prices.fence.panel_3d_5[heightKey] or panel_3d_4[heightKey]
-        const key3d = `panel_3d_${thickness}`;
-        try {
-            if (prices.fence[key3d] && prices.fence[key3d][heightKey]) {
-                panelPrice = prices.fence[key3d][heightKey].price || 0;
-            }
-        } catch (e) { console.error("Missing price for 3D", thickness, heightKey); }
+        // 3D
+        const thickness = data.panelThickness || '5'; // default 5
+        const groupKey = thickness == '4' ? 'panel_3d_4' : 'panel_3d_5';
 
-        panelName = `3D panel ${thickness}mm (${height}cm) - ${color}`;
+        if (prices.fence[groupKey] && prices.fence[groupKey][heightKey]) {
+            panelSku = prices.fence[groupKey][heightKey].sku;
+            panelPrice = prices.fence[groupKey][heightKey].price;
+            panelName = prices.fence[groupKey][heightKey].name;
+        } else {
+            console.error(`Missing 3D panel price ${groupKey} for height`, heightKey);
+        }
     }
 
-    // 1. Paneli (Dužina / 2.5m)
+    // Calc Panels
     const numPanels = Math.ceil(length / 2.5);
+    items.push({ sku: panelSku, name: panelName, value: numPanels, unit: 'kom', price: panelPrice });
 
-    items.push({
-        sku: '2001',
-        name: panelName,
-        value: numPanels,
-        unit: 'kom',
-        price: panelPrice
-    });
-
-    // 2. Stupovi (Broj panela + 1 za početak/kraj)
+    // 2. STUPOVI
     const corners = parseInt(data.fenceCorners) || 0;
     const numPosts = numPanels + 1 + corners;
 
-    let postHeight = parseInt(height) + 2; // This is logic for post length? No, usually + 50cm for embedding?
-    // User logic:
-    if (data.postType === 'concrete') {
-        // Standard mapping based on existing code logic
-        if (height <= 103) postHeight = 155;
-        else if (height <= 123) postHeight = 175;
-        else if (height <= 153) postHeight = 205;
-        else if (height <= 173) postHeight = 225; // 225 cm not in list? 230
-        else postHeight = 255;
-    }
-
-    // MATCHING: prices.fence.posts[postHeight]
+    let postSku = '';
+    let postName = '';
     let postPrice = 0;
+    let postCost = 0;
 
-    // Standard Heights available in config/prices
-    const standardPostHeights = [155, 175, 205, 225, 230, 255];
+    if (data.installation === 'parapet' || data.postType === 'plate') {
+        // STUPOVI S PLOČICOM
+        // Map Panel Height -> Post Size Key (prices.fence.posts[key])
+        let pKey = 0;
+        if (height == 83) pKey = 85; // 1020
+        else if (height == 103) pKey = 105; // 1021
+        else if (height == 123) pKey = 125; // 1022
+        else if (height == 143) pKey = 145;
+        else if (height == 153) pKey = 155;
+        else if (height == 163) pKey = 165;
+        else if (height == 173) pKey = 175;
+        else if (height == 183) pKey = 185;
+        else if (height == 203) pKey = 205;
 
-    // Fallback Logic: Find first available height >= requested postHeight
-    let lookupHeight = postHeight;
-    let priceSource = prices.fence.posts;
-
-    // Use Concrete Price Source if applicable
-    if (data.postType === 'concrete' && prices.fence.posts_concrete) {
-        priceSource = prices.fence.posts_concrete;
-    }
-
-    // Try finding exact or next larger
-    if (!priceSource[lookupHeight]) {
-        // Try to find next larger standard size
-        const nextSize = standardPostHeights.find(h => h >= postHeight);
-        if (nextSize) {
-            // console.log(`Fallback post height: ${postHeight} -> ${nextSize}`);
-            lookupHeight = nextSize;
+        if (prices.fence.posts[pKey]) {
+            postSku = prices.fence.posts[pKey].sku;
+            postName = prices.fence.posts[pKey].name;
+            postPrice = prices.fence.posts[pKey].price;
+        } else {
+            console.error("Missing Plate Post price for height", height, "key", pKey);
+            postName = `Stup s pločicom (Greška: ${height})`;
         }
-    }
 
-    try {
-        if (priceSource[lookupHeight]) {
-            postPrice = priceSource[lookupHeight].price || 0;
-        }
-    } catch (e) { console.error("Missing price for post", lookupHeight); }
-
-    const postTypeLabel = data.postType === 'plate' ? 's pločicom' : 'za betoniranje';
-
-    items.push({
-        sku: '2002',
-        name: `Stup ${postHeight}cm (${postTypeLabel}) - ${color}`,
-        value: numPosts,
-        unit: 'kom',
-        price: postPrice
-    });
-
-    // 3. Pribor
-    // Spojnice:
-    // ... rest of fence logic ...
-
-    // 83-103 -> 2 kom
-    // 123, 143, 153, 163 -> 3 kom
-    // 173, 183, 203 -> 4 kom
-    let clampsPerPost = 3;
-    const h = parseInt(postHeight) || 0;
-
-    if (h <= 103) {
-        clampsPerPost = 2;
-    } else if (h <= 163) {
-        clampsPerPost = 3;
     } else {
-        clampsPerPost = 4;
+        // STUPOVI ZA BETON
+        let cKey = 150;
+        if (height == 83 || height == 103) cKey = 150;
+        else if (height == 123) cKey = 175;
+        else if (height == 153) cKey = 200;
+        else if (height == 173) cKey = 230;
+        else if (height == 203) cKey = 250;
+
+        if (prices.fence.posts_concrete[cKey]) {
+            postSku = prices.fence.posts_concrete[cKey].sku;
+            postName = prices.fence.posts_concrete[cKey].name;
+            postPrice = prices.fence.posts_concrete[cKey].price;
+        } else {
+            console.error("Missing Concrete Post price for height", height, "key", cKey);
+            postName = `Stup za beton (Greška: ${height})`;
+        }
     }
 
-    const totalClamps = numPosts * clampsPerPost;
+    items.push({ sku: postSku, name: postName, value: numPosts, unit: 'kom', price: postPrice });
 
+    // 3. PRIBOR
+    // Spojnice
     items.push({
-        sku: '2003',
-        name: 'Spojnice (Komplet s vijkom)',
-        value: totalClamps,
+        sku: prices.fence.set_spojnica.sku,
+        name: prices.fence.set_spojnica.name,
+        value: numPosts * (height >= 173 ? 4 : (height >= 123 ? 3 : 2)), // 2 for <123, 3 for 123-163, 4 for >173
         unit: 'kom',
-        price: prices.fence.set_spojnica, cost_price: costs.fence.set_spojnica
+        price: prices.fence.set_spojnica.price
     });
 
-    if (data.postType === 'plate') {
-        // Anker vijci (4 po stupu)
+    if (data.installation === 'parapet' || data.postType === 'plate') {
         items.push({
-            sku: '2004',
-            name: 'Anker vijci, M10 (za montažu na beton)',
+            sku: prices.fence.anker_vijci.sku,
+            name: prices.fence.anker_vijci.name,
             value: numPosts * 4,
             unit: 'kom',
-            price: prices.fence.anker_vijci, cost_price: costs.fence.anker_vijci
+            price: prices.fence.anker_vijci.price
         });
     }
 
-    // 4. Montaža (Optional)
+    // 4. MONTAŽA
     if (data.fenceInstallation === 'yes') {
-        let installPrice = prices.fence.montaza_plate;
-        let installName = 'Usluga montaže ograde';
-
-        if (data.postType === 'concrete') {
-            installPrice = prices.fence.montaza_concrete;
-            installName += '<br><small class="text-muted d-block" style="font-weight: normal; font-size: 0.85em;">(iskop i beton uključen u cijenu montaže)</small>';
+        if (data.installation === 'parapet') {
+            items.push({
+                sku: prices.fence.montaza_plate.sku,
+                name: prices.fence.montaza_plate.name,
+                value: length.toFixed(2),
+                unit: 'm\'',
+                price: prices.fence.montaza_plate.price
+            });
+        } else {
+            items.push({
+                sku: prices.fence.montaza_concrete.sku,
+                name: prices.fence.montaza_concrete.name,
+                value: length.toFixed(2),
+                unit: 'm\'',
+                price: prices.fence.montaza_concrete.price
+            });
         }
-
-        items.push({
-            sku: '2005',
-            name: installName,
-            value: length.toFixed(2),
-            unit: 'm',
-            price: installPrice
-        });
     }
 
-    // 5. Pješačka vrata (NEW)
+    // 5. VRATA
     if (data.gateNeeded === 'yes') {
-        const gSize = data.gateSize || '1000'; // 1000, 1200...
-        const gPostType = data.gatePostType || 'plate';
-        const gPostLabel = gPostType === 'plate' ? 's pločicom' : 'za betoniranje';
-        const fullSizeKey = `1000x${gSize}`;
+        const gSize = data.gateSize || '1000'; // Width
+        const gFullKey = `1000x${gSize}`; // e.g. 1000x1000
 
-        // Price lookup
-        let gatePrice = 0;
-        try {
-            // Priority 1: Dynamic Data (prices.fence.gates) - Simple Key (Size -> Price)
-            if (prices.fence.gates && prices.fence.gates[gSize]) {
-                gatePrice = prices.fence.gates[gSize];
-            }
-            // Priority 2: Static Data (prices.fence.gate_prices) - Complex Structure
-            else if (prices.fence.gate_prices && prices.fence.gate_prices[fullSizeKey]) {
-                const typeKey = gPostType === 'plate' ? 'plate' : 'concrete';
-                if (prices.fence.gate_prices[fullSizeKey][typeKey]) {
-                    gatePrice = prices.fence.gate_prices[fullSizeKey][typeKey].p || 0;
-                }
-            }
-            else {
-                console.warn("Pricing not found for gate:", gSize);
-            }
-        } catch (e) { console.error("Missing gate price logic", gSize, e); }
+        // Lookup
+        const subKey = (data.installation === 'parapet' || data.postType === 'plate') ? 'plate' : 'concrete';
 
-        items.push({
-            sku: '2006',
-            name: `Pješačka vrata 1000x${gSize}mm (Stupovi ${gPostLabel})`,
-            value: 1,
-            unit: 'kom',
-            price: gatePrice
-        });
+        if (prices.fence.gate_prices[gFullKey] && prices.fence.gate_prices[gFullKey][subKey]) {
+            const gData = prices.fence.gate_prices[gFullKey][subKey];
+            items.push({
+                sku: gData.s, // SKU from user list (e.g. 1034)
+                name: `Pješačka vrata 1000x${gSize}mm (${subKey === 'plate' ? 's pločicom' : 'za beton'})`,
+                value: 1,
+                unit: 'kom',
+                price: gData.p
+            });
+        }
     }
 
     return items;
