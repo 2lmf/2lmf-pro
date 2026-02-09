@@ -226,8 +226,7 @@ nav a:hover {
 /* USLUGE (HOMEPAGE) */
 .services {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    /* 5 columns in 1 row */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     padding: 60px 20px 100px 20px;
     /* Increased bottom padding again */
@@ -257,6 +256,12 @@ nav a:hover {
     /* Thicker orange border */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    /* Prevent huge cards */
+    margin: 0 auto;
+    /* Center in grid cell */
+    width: 100%;
+    /* Take available space up to max-width */
     padding: 15px;
     /* Reduced padding */
     text-align: center;
@@ -824,32 +829,67 @@ nav a:hover {
         transition: background 0.3s;
     }
 
-    background-color: #d35400;
-}
+    #cookie-banner button:hover {
+        background-color: #d35400;
+    }
 
-/* Agency Float Button (Sharpshark) */
-.agency-float-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #e67e22;
-    color: #000;
-    padding: 15px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    text-decoration: none;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 9999;
-    font-family: 'Chakra Petch', sans-serif;
-    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
-}
+    /* Agency Float Button (Sharpshark Neon Style) */
+    .agency-float-btn {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        border: 3px solid #00f3ff;
+        /* Neon Cyan */
+        color: #00f3ff;
+        padding: 1rem 1.5rem;
+        border-radius: 0 50px 50px 0;
+        /* Rounded on right side only */
+        font-family: 'Chakra Petch', sans-serif;
+        font-weight: bold;
+        text-decoration: none;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+        animation: blink-promo 2s infinite steps(1);
+        /* Blinking animation */
+    }
 
-.agency-float-btn:hover {
-    transform: translateY(-5px);
-    background-color: #000;
-    color: #e67e22;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
+    .agency-float-btn:hover {
+        transform: translateY(-50%) scale(1.05);
+        background: #00f3ff;
+        color: black;
+        box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+    }
+
+    @keyframes blink-promo {
+
+        0%,
+        50% {
+            background: rgba(0, 0, 0, 0.9);
+            color: #00f3ff;
+            border-color: #00f3ff;
+        }
+
+        51%,
+        100% {
+            background: #00f3ff;
+            color: #000000;
+            border-color: #000000;
+        }
+    }
+
+    /* Sharpshark Card Logo */
+    .service-card .sharpshark-logo {
+        height: 60px;
+        width: auto;
+        margin-bottom: 10px;
+        display: block;
+    }
