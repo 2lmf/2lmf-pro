@@ -937,14 +937,16 @@ nav a:hover {
 
     /* Sharpshark Card Logo */
     .service-card .sharpshark-logo {
-        height: 80px;
-        /* Increased from 60px */
+        height: 100px;
+        /* Increased from 80px */
         width: auto;
         margin-bottom: 15px;
         display: block;
         mix-blend-mode: multiply;
-        /* Makes white background transparent on colored bg */
+        /* THIS REMOVES WHITE BG */
         filter: contrast(1.1);
-        /* Slight pop */
+        background: transparent;
+        /* Ensure no own bg */
     }
+}
 }
