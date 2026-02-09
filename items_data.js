@@ -9,7 +9,7 @@ const prices = {
         2: { price: 2.5312500000000004, sku: "2001", name: "Ravatherm XPS, 2cm" },
         3: { price: 3.515625, sku: "2002", name: "Ravatherm XPS: 3cm" },
         4: { price: 4.6875, sku: "2003", name: "Ravatherm XPS: 4cm" },
-        5: { price: 5.390625, sku: "2004", name: "Ravatherm XPS: 5cm" },
+        5: { price: 5.859375, sku: "2004", name: "Ravatherm XPS: 5cm" },
         6: { price: 7.03125, sku: "2005", name: "Ravatherm XPS: 6cm" },
         8: { price: 9.375, sku: "2006", name: "Ravatherm XPS: 8cm" },
         10: { price: 11.71875, sku: "2007", name: "Ravatherm XPS: 10cm" },
