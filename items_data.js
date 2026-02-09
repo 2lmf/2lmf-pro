@@ -159,30 +159,153 @@ function getXPSPrice(thickness) {
 // --- NABAVNE CIJENE (COSTS) ---
 // Potrebno za izračun marže
 const costs = {
+    // Nabavna cijena (SA PDV)
     facade_etics: {
-        glue_eps: 0,
-        glue_wool: 0,
-        glue_armor: 0,
-        mesh: 0,
-        grund: 0,
-        plaster_silicat: 0,
-        dowel: 0,
-        profile_pvc: 0,
-        profile_alu: 0,
-        eps_base_cm: 0
+        glue_eps: 0.30,         // 4101
+        glue_wool: 0.30,        // 4101 (Assumption: same as EPS glue if not specified separately, or 0 if unknown) -> User didn't specify "Ljepilo za vunu" SKU. I'll leave 0 or use EPS glue as placeholder? User prompted "kako ne znaš cijene". I'll check if there is a wool glue. 
+        // User list has: 4101 LJEPILO ZA EPS. 4109 UNITERM. 
+        // logic in calc says: if wool, use glue_wool. items_data.js doesn't have glue_wool in prices? 
+        // In prices: glue_eps (4101), glue_armor (4109). 
+        // Calc logic: if wool, price = prices.facade_etics.glue_wool || prices.facade_etics.glue_eps.
+        // I will set glue_wool to 0.30 (same as EPS) safely for now.
+        glue_wool: 0.30,
+        glue_armor: 0.325,      // 4109
+        mesh: 0.9375,           // 4104
+        grund: 2.3625,          // 4105
+        plaster_silicat: 1.5625,// 4108
+        dowel: 0.30,            // 4107
+        profile_pvc: 0.45,      // 4103
+        profile_alu: 3.1125,    // 4106
+        eps_base_cm: 0.489167   // 4102 (7.3375 / 15)
     },
-    xps: {},
-    wool_facade: {},
-    membranes: {},
-    bitumen: {},
+    xps: {
+        // Ravatherm XPS (Using ratio from 2cm SKU 2001: 2.025. Price is 2.53. Ratio ~0.8)
+        // 2001 (2cm): 2.025
+        // 2002 (3cm): 2.8125
+        // 2003 (4cm): 3.75
+        // 2004 (5cm): 4.6875
+        // 2005 (6cm): 5.625
+        // 2006 (8cm): 7.5
+        // 2007 (10cm): 9.375
+        // 2008 (12cm): 11.25
+        // 2009 (15cm): 15.1875
+        2: 2.025,
+        3: 2.8125,
+        4: 3.75,
+        5: 4.6875,
+        6: 5.625,
+        8: 7.5,
+        10: 9.375,
+        12: 11.25,
+        15: 15.1875
+    },
+    wool_facade: {
+        // Kamena vuna
+        // 3006 (5cm): 7.5
+        // 3005 (8cm): 8.75
+        // 3001 (10cm): 10.875
+        // 3002 (12cm): 13.05
+        // 3003 (14cm): 15.225
+        // 3004 (15cm): 16.375
+        5: 7.5,
+        8: 8.75,
+        10: 10.875,
+        12: 13.05,
+        14: 15.225,
+        15: 16.375
+    },
+    membranes: {
+        // TPO/PVC map
+        tpo_15: 6.9375, // 2113
+        tpo_18: 8.625,  // 2114
+        tpo_20: 9.75,   // 2115
+        pvc_temelji: 4.875, // 2111
+        pvc_krov: 6.875,    // 2112
+        cepasta: 1.1875,    // 2123
+        geotextile: 0.625   // 2124 (200g)
+    },
+    bitumen: {
+        diamond_p4: 3.6875, // 2117
+        ruby_v4: 2.75,      // 2118
+        sapphire_g3: 1.5,   // 2119
+        sapphire_g4: 2.0,   // 2120
+        vapor_al: 3.5       // 2121
+    },
     fence: {
-        panel_2d: {},
-        panel_3d_5: {},
-        panel_3d_4: {},
-        posts: {},
-        posts_concrete: {},
-        gates: {}
+        panel_2d: {
+            83: 19.75,
+            103: 22.25,
+            123: 26.00,
+            143: 29.75, // Note: 29.75384615 -> 29.75
+            163: 33.75, // Note: 33.75384615 -> 33.75
+            183: 37.50,
+            203: 42.00
+        },
+        panel_3d_5: {
+            83: 15.75, // 1018
+            103: 18.50, // 1009
+            123: 21.75, // 1011
+            153: 27.50, // 1013
+            173: 29.75, // 1015
+            203: 35.50  // 1017
+        },
+        panel_3d_4: {
+            83: 10.25, // 1019
+            103: 11.50, // 1008
+            123: 13.25, // 1010
+            153: 17.00, // 1012
+            173: 19.00, // 1014
+            203: 22.25  // 1016
+        },
+        posts: {
+            // Sa pločicom
+            85: 8.75,
+            105: 9.75,
+            125: 11.00,
+            145: 13.00,
+            155: 13.00,
+            165: 15.25,
+            175: 15.25,
+            185: 17.50,
+            205: 17.50
+        },
+        posts_concrete: {
+            // Za beton
+            150: 10.00,
+            175: 11.25,
+            200: 12.50,
+            230: 14.00,
+            250: 16.50
+        },
+        gates: {
+            '1000x1000': 205.00,
+            '1000x1200': 242.50,
+            '1000x1500': 300.00,
+            '1000x1700': 345.00,
+            '1000x2000': 395.00
+        },
+        set_spojnica: 0.325, // 1039
+        anker_vijci: 0.45,   // 1040
+        montaza_plate: 31.25, // 1043
+        montaza_concrete: 43.75 // 1044
     },
-    chemicals: {},
-    others: {}
+    chemicals: {
+        aquamat_elastic: 1.5, // 2128
+        isoflex_pu500: 5.875, // 2130
+        ak20: 0.375,         // 2122
+        fimizol: 16.875,     // 2131
+        insta_stik: 7.625    // 2010
+    },
+    others: {
+        tpo_lim: 32.5,       // 2126
+        pvc_lim: 30.0,       // 2127
+        bentoshield: 5.3125, // 2116
+        ob_12: 4.95,         // 3010
+        osb_15: 6.1875,      // 3007
+        osb_18: 7.425,       // 3008
+        osb_22: 9.075,       // 3009
+        ethafoam: 0,         // NO SKU provided in list? list ends at 4109? Ah, wait OTH-02 not in user list. 
+        cellucushion: 0,
+        reflectix: 0
+    }
 };
