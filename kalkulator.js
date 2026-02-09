@@ -781,9 +781,6 @@ function handleCalculation(e) {
         }
     }, 2000);
 
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-
     // VALIDATION: Strict check for Email and Phone
     if (!data.userEmail || !data.userPhone) {
         alert("Molimo unesite Email i Kontakt broj za izračun.");
