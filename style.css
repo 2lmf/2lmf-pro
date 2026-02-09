@@ -317,11 +317,7 @@ nav a:hover {
     mix-blend-mode: multiply;
     /* THIS REMOVES WHITE BG */
     filter: contrast(1.1);
-    background: transparent;
     /* Ensure no own bg */
-}
-
-/* Ensure no own bg */
 }
 
 /* ZAŠTO MI? + MISIJA (HOMEPAGE) */
