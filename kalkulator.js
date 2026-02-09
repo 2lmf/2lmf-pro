@@ -839,9 +839,7 @@ function handleCalculation(e) {
 
 function calculateFacade(data) {
     const area = parseFloat(data.area.replace(',', '.'));
-    // 2LMF PRO CALC SCRIPT
-    const VERSION = "2.2"; // Cache busting
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIWixcWJRDQOzcBPTCTfstUzbhrFJlTa7dMq21lnE2YunRDJL-IJlpxEnjf3w76-KI/exec";
+    const waste = 1.05; // 5% waste
     let items = [];
 
     // console.log("Calculating Facade...", data); // Debug
