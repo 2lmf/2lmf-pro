@@ -801,14 +801,20 @@ function handleCalculation(e) {
     let results = [];
 
     // --- LOGIC ROUTER ---
-    if (currentModule === 'facade') {
-        results = calculateFacade(data);
-    } else if (currentModule === 'thermal') {
-        results = calculateThermal(data);
-    } else if (currentModule === 'hydro') {
-        results = calculateHydro(data);
-    } else if (currentModule === 'fence') {
-        results = calculateFence(data);
+    try {
+        if (currentModule === 'facade') {
+            results = calculateFacade(data);
+        } else if (currentModule === 'thermal') {
+            results = calculateThermal(data);
+        } else if (currentModule === 'hydro') {
+            results = calculateHydro(data);
+        } else if (currentModule === 'fence') {
+            results = calculateFence(data);
+        }
+    } catch (err) {
+        console.error("Calculation Error:", err);
+        alert("Greška u izračunu: " + err.message);
+        return;
     }
 
     displayResults(results);
@@ -1203,12 +1209,26 @@ function calculateFence(data) {
         const gSize = data.gateSize || '1000'; // 1000, 1200...
         const gPostType = data.gatePostType || 'plate';
         const gPostLabel = gPostType === 'plate' ? 's pločicom' : 'za betoniranje';
+        const fullSizeKey = `1000x${gSize}`;
 
         // Price lookup
         let gatePrice = 0;
         try {
-            gatePrice = prices.fence.gates[gSize] || 0;
-        } catch (e) { console.error("Missing gate price", gSize); }
+            // Priority 1: Dynamic Data (prices.fence.gates) - Simple Key (Size -> Price)
+            if (prices.fence.gates && prices.fence.gates[gSize]) {
+                gatePrice = prices.fence.gates[gSize];
+            }
+            // Priority 2: Static Data (prices.fence.gate_prices) - Complex Structure
+            else if (prices.fence.gate_prices && prices.fence.gate_prices[fullSizeKey]) {
+                const typeKey = gPostType === 'plate' ? 'plate' : 'concrete';
+                if (prices.fence.gate_prices[fullSizeKey][typeKey]) {
+                    gatePrice = prices.fence.gate_prices[fullSizeKey][typeKey].p || 0;
+                }
+            }
+            else {
+                console.warn("Pricing not found for gate:", gSize);
+            }
+        } catch (e) { console.error("Missing gate price logic", gSize, e); }
 
         items.push({
             sku: '2006',
